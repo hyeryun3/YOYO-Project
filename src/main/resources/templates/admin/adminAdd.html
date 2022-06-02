@@ -28,7 +28,7 @@
         margin: 50px 0px;
     }
 
-    input[type=button]{
+    input[type=button], input[type=submit]{
         width: 60px;
         height: 40px;
         border-radius: 15px;
@@ -39,7 +39,7 @@
         font-size: 16px;
         box-shadow: 2px 2px 3px #888888;
     }
-    input[type=button]:hover{
+    input[type=button]:hover, input[type=submit]:hover{
         background-color: #f1f3f5;
         box-shadow: 2px 2px 3px #888888;
     }
@@ -320,39 +320,28 @@
 
         });
 
-
-
-        //추가 버튼 클릭
-        $("#add").click(function(){
-
-            let standard = /\s/g;
-            let foodName = $("#foodName").val();
-            if(foodName=='' || foodName.match(standard)){
-                alert('음식 이름을 입력하세요.');
-                $("#foodName").focus();
-                return false;
-            }
-            if($("#foodCategory").val()==''){
-                alert("음식 종류를 입력하세요. (ex.한식, 양식, 중식, 일식, 디저트..)");
-                $("#foodCategory").focus();
-                return false;
-            }
-            if($("#foodImg").val()==''){
-                alert("음식 이미지 파일을 선택해 업로드 하세요.");
-                return false;
-            }
-
-            //추가 버튼 클릭시 submit
-            $("#adminForm").attr("action", "foodAdd");
-
-            $("#adminForm").submit();
-
-        });
-
-
-
-
     });
+
+    function addCheck(){
+        let standard = /\s/g;
+        let foodName = $("#foodName").val();
+        if(foodName=='' || foodName.match(standard)){
+            alert('음식 이름을 입력하세요.');
+            $("#foodName").focus();
+            return false;
+        }
+        if($("#foodCategory").val()==''){
+            alert("음식 종류를 입력하세요. (ex.한식, 양식, 중식, 일식, 디저트..)");
+            $("#foodCategory").focus();
+            return false;
+        }
+        if($("#foodImg").val()==''){
+            alert("음식 이미지 파일을 선택해 업로드 하세요.");
+            return false;
+        }
+        return true;
+
+    }
 
 
 </script>
@@ -365,7 +354,7 @@
         <h3>음식 추가</h3>
 
         <div id="foodForm">
-            <form method="post" id="adminForm" name="adminForm" enctype="multipart/form-data">
+            <form method="post" action="/admin/foodAdd" id="adminForm" name="adminForm" enctype="multipart/form-data" onsubmit="return addCheck()">
 
                 <!--음식 이름 작성 (Not Null)-->
                 <div class="form-group row">
@@ -459,15 +448,12 @@
                 <div class="row" id="buttons">
                     <div class="col-lg-12">
                         <input type="button" class="btn" id="cancel" value="취소">
-                        <input type="button" class="btn" id="add" value="추가">
+                        <input type="submit" class="btn" id="add" value="추가">
                     </div>
                 </div>
 
-
             </form>
         </div>
-
-
     </div>
     <div th:replace="fragments/footer :: footer"></div>
 </div>

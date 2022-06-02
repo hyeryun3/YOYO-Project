@@ -142,6 +142,80 @@
 
 
 </style>
+<script>
+    //음식 목록에서 해당하는 음식 종류의 음식 show
+    $(function (){
+
+        foodAll();
+
+        $(".foodType").click(function(){
+
+            let type = $(this).text();
+
+            $.ajax({
+                url: "/admin/showFoods",
+                data : 'foodType=' + type,
+                method: 'post',
+
+                success: function(result){
+                    let tag = "";
+                    let $result = $(result);
+
+                    $result.each(function(idx,vo){
+                        tag+= "<li class='eachFood'>";
+                        tag += "<span class='foodName'>" + vo.foodName+ "</span><br/>";
+                        tag += "<img class='foodPicture img-fluid' src='/static/image/food/" + vo.foodImg + "'><br/>";
+                        tag += "<span class='foodCate'>" + vo.foodCategory + "</span></li>";
+
+                        $("#foods").html(tag);
+                    });
+                },
+                error: function(error){
+                    console.log(error.responseText);
+                }
+            });
+        });
+
+        function foodAll(){
+
+            $.ajax({
+
+                url : "/admin/getFoodAll",
+                data : 'foodType=전체',
+                type : "get",
+
+                success : function(result, status){
+
+                    let tagAll = "";
+                    let $resultAll = $(result);
+
+                    $resultAll.each(function(idx, vo){
+
+                        console.log(vo);
+
+                        tagAll +="<li class='eachFood'>";
+                        tagAll += "<span class='foodName'>" + vo.foodName + "</span><br/>";
+                        tagAll += "<img class='foodPicture img-fluid' src='/static/image/food/" + vo.foodImg + "'><br/>";
+
+                        tagAll += "<span class='foodCate'>" + vo.foodCategory + "</span></li>"
+
+                        $("#foods").html(tagAll);
+
+                    });
+
+                },
+                error : function(error){
+                    console.log(error.responseText);
+                }
+
+            });
+
+
+        }
+
+    });
+
+</script>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
 <div class="page">
@@ -161,26 +235,6 @@
             </div>
             <div id="foodAll">
                 <ul id="foods">
-                    <li class='eachFood'>
-                        <span class='foodName'>김치찌개</span><br>
-                        <img class='foodPicture img-fluid' src=''><br/>
-                        <span class='foodCategory'>한식</span>
-                    </li>
-                    <li class='eachFood'>
-                        <span class='foodName'>짜장면</span><br>
-                        <img class='foodPicture img-fluid' src=''><br/>
-                        <span class='foodCategory'>중식</span>
-                    </li>
-                    <li class='eachFood'>
-                        <span class='foodName'>김치전</span><br>
-                        <img class='foodPicture img-fluid' src=''><br/>
-                        <span class='foodCategory'>한식</span>
-                    </li>
-                    <li class='eachFood'>
-                        <span class='foodName'>마카롱</span><br>
-                        <img class='foodPicture img-fluid' src=''><br/>
-                        <span class='foodCategory'>디저트</span>
-                    </li>
 
                 </ul>
             </div>

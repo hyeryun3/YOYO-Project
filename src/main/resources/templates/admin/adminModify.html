@@ -6,6 +6,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <head th:replace="fragments/header :: header">
 
 </head>
@@ -27,7 +28,7 @@
     margin: 50px 0px;
   }
 
-  input[type=button]{
+  input[type=button], input[type=submit]{
     width: 60px;
     height: 40px;
     border-radius: 15px;
@@ -38,7 +39,7 @@
     font-size: 16px;
     box-shadow: 2px 2px 3px #888888;
   }
-  input[type=button]:hover{
+  input[type=button]:hover, input[type=submit]:hover{
     background-color: #f1f3f5;
     box-shadow: 2px 2px 3px #888888;
   }
@@ -149,6 +150,7 @@
   }
   #foodimgName{
     color : gray;
+    text-align: center;
   }
 
 
@@ -181,6 +183,8 @@
       $("#deleteDate").css('display', 'none');
       $("#event").val("");
       chEvent = false;
+
+      checkPriority();
     }
 
     //사진 지우기
@@ -213,7 +217,7 @@
       $("#searchFood").val('');
       $("#foodName").val('');
       $("#foodCategory").val('');
-
+      $("#foodName").attr("readonly", false);
 
       $("#weather option:eq(0)").prop("selected", true);
       $("#temperature option:eq(0)").prop("selected", true);
@@ -319,6 +323,12 @@
 
     });
 
+    //날짜 삭제 버튼 클릭
+    $("#deleteDate").click(function(){
+      eventDelete();
+
+      checkPriority();
+    })
 
 
      /////////////////////////////////////////////////////////////////
@@ -337,7 +347,7 @@
       let searchFood = $("#searchFood").val();
 
       $.ajax({
-        url : "/getFoodData",
+        url : "/admin/getFoodData",
         data : "searchFood=" + searchFood,
         method : 'post',
         success : function(result){
@@ -366,7 +376,7 @@
             chTemp = false;
           }
 
-          if(result.weather==null){
+          if(result.weather == "0"){
             $("#weather option:eq(0)").prop("selected", true);
             chWeather=false;
           }else{
@@ -380,6 +390,8 @@
             let event = result.event;
             let idx = event.indexOf("-");
             console.log(idx);
+
+            $("#event").val(result.event);
 
             //월일만 보이게 하기
 
@@ -399,10 +411,9 @@
 
           //우선순위 반영
           checkPriority();
-
-          //3.
+          
           //음식 사진 가져오기
-          $("#foodPhoto").attr("src", "/img/foodimg/upload/"+result.foodImg);
+          $("#foodPhoto").attr("src", "/static/image/food/"+result.foodImg);
           $("#photoDelete").css("display", "inline-block");
           $("#foodPhoto").css("display", "block");
           $("#foodimgName").text("저장되어 있는 이미지 파일 : " + result.foodImg);
@@ -423,33 +434,28 @@
     });
 
 
-
-    //수정 버튼 클릭
-    $("#modify").click(function(){
-
-      if($("#foodName").val()==''){
-        alert('수정할 음식을 검색하세요');
-        $("#searchFood").focus();
-        return false;
-      }
-      if($("#foodCategory").val()==''){
-        alert("음식 종류를 입력하세요. (ex.한식, 양식, 중식, 일식, 디저트..)");
-        $("#foodCategory").focus();
-        return false;
-      }
-      if($("#foodImg").val()=='' && $("#foodPhoto").attr("src") == ''){
-        alert("음식 이미지 파일을 선택해 업로드 하세요.");
-        return false;
-      }
-
-      //수정 버튼 클릭 시 submit
-      $("#adminForm").attr("action", "foodModify");
-
-      $("#adminForm").submit();
-    });
-
-
   });
+
+
+  function modify(){
+
+    if($("#foodName").val()==''){
+      alert('수정할 음식을 검색하세요');
+      $("#searchFood").focus();
+      return false;
+    }
+    if($("#foodCategory").val()==''){
+      alert("음식 종류를 입력하세요. (ex.한식, 양식, 중식, 일식, 디저트..)");
+      $("#foodCategory").focus();
+      return false;
+    }
+    if($("#foodImg").val()=='' && $("#foodPhoto").attr("src") == ''){
+      alert("음식 이미지 파일을 선택해 업로드 하세요.");
+      return false;
+    }
+    return true;
+  }
+
 
 
 </script>
@@ -461,7 +467,7 @@
     <h3>음식 수정</h3>
 
     <div id="foodForm">
-      <form method="post" id="adminForm" name="adminForm" enctype="multipart/form-data">
+      <form method="post" action="/admin/foodModify" id="adminForm" name="adminForm" onsubmit="return modify()" enctype="multipart/form-data">
 
         <div class="form-group row searchForm">
           <!--수정할 음식 이름 검색-->
@@ -557,8 +563,8 @@
         <div class="form-group row">
           <label class="col-lg-3 col-form-label" for="foodImg">음식 사진</label>
           <input type="file" class="col-lg-8 form-control-file" id="foodImg" name="filename" >
-          <button type="button"  class="close"  aria-label="Close" id="photoDelete"><span aria-hidden="true">&times;</span></button>
-          <span id="foodimgName" class="my-2 "></span>
+          <button type="button"  class="close col-lg-12"  aria-label="Close" id="photoDelete"><span aria-hidden="true">&times;</span></button>
+          <span class="col-lg-12" id="foodimgName" ></span>
           <img id="foodPhoto" class="my-2"/>
         </div>
 
@@ -567,7 +573,7 @@
         <div class="row" id="buttons">
           <div class="col-lg-12">
             <input type="button" class="btn" id="cancel" value="취소">
-            <input type="button" class="btn" id="modify" value="수정">
+            <input type="submit" class="btn" id="modify" value="수정">
           </div>
         </div>
 

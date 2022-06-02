@@ -33,7 +33,7 @@ public class Food {
 
     private String weather;
 
-    private LocalDate event;
+    private String event;
 
     @NotNull
     private char priority;
