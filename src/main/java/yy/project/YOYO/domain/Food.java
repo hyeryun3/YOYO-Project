@@ -16,21 +16,28 @@ public class Food {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fID;
 
+    @NotNull
     private String foodName;
 
+    @NotNull
     private String foodImg;
 
+    @NotNull
     private String foodCategory;
 
-    private int temperature;
+    @NotNull
+    private String temperature;
 
+    @NotNull
     private String season;
 
     private String weather;
 
-    private LocalDate event;
+    private String event;
 
+    @NotNull
     private char priority;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="tID")

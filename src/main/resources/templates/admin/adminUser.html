@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<head th:replace="fragments/header :: header">
+
+</head>
+<style>
+    ul, li, body{
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+    a{
+        text-decoration-line: none;
+        color: #727272;
+    }
+    a:hover{
+        color: #a0a0a0;
+        text-decoration-line: none;
+    }
+    input[type=button]{
+        width: 60px;
+        height: 40px;
+        background-color: #dcdcdc;
+        border-radius: 15px;
+        text-align: center;
+        border: none;
+    }
+    .page{
+        width: 100%;
+        height: 100vh;
+    }
+    .menu{
+        width: 20%;
+        float: left;
+        height: 100vh;
+        background-color: #f1f3f5;
+        font-size: 18px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .menu ul{
+        width: 100%;
+        height: 100%;
+    }
+    .menuGroup{
+        text-align: center;
+        width: 100%;
+        height: 150px;
+        line-height: 150px;
+    }
+    .menuGroup:hover{
+        background-color: #dedede;
+    }
+    #foodAdmin:hover .category{
+        display: block;
+    }
+    .category li:hover{
+        background-color: rgb(232,236,229);
+    }
+    .category{
+        display: none;
+        width: 100%;
+    }
+    .contentPage{
+        width: 80%;
+        float: right;
+        height: 100%;
+        background-color: #f8f9fa;
+    }
+    .box{
+        width: 95%;
+        margin: 0px auto;
+        text-align: center;
+    }
+    h3{
+        margin: 50px 0px;
+    }
+    .contents{
+        width: 100%;
+        height: 600px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        border-bottom: 1px solid #ddd;
+    }
+    .decide{
+        float: left;
+        width: 50%;
+        height: 50px;
+        position: absolute;
+        left: 0px;
+    }
+    .search{
+        float: right;
+        width: 50%;
+        height: 50px;
+    }
+    .contents ul {
+        width: 100%;
+        height: 100%;
+    }
+    .contents ul li:first-child {
+        color: grey;
+        font-size: 17px;
+    }
+    .eachContent {
+        height: 60px;
+        width: 100%;
+        line-height: 60px;
+        font-size: 16px;
+    }
+    hr{
+        margin: 0px;
+    }
+    .userInfo {
+        display: flex;
+        text-align: center;
+    }
+    .checkbox {
+        width: 40px;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+    }
+    .checkbox input[type=checkbox] {
+        display: inline-block;
+        width: 10px;
+        margin: auto;
+    }
+    .id {
+        flex: 0.8;
+    }
+    .name {
+        flex: 0.8;
+    }
+    .email {
+        flex: 1.2;
+    }
+    .address {
+        flex: 1.2;
+    }
+    input[type=submit], input[type=button]{
+        width: 60px;
+        height: 40px;
+        border-radius: 15px;
+        text-align: center;
+        border: none;
+        background-color: #dee2e6;
+        font-size: 16px;
+        box-shadow: 2px 2px 3px #888888;
+    }
+    input[type=submit]:hover, input[type=button]:hover{
+        background-color: white;
+        box-shadow: 2px 2px 3px #888888;
+    }
+    #searchWord{
+        height: 40px;
+    }
+
+</style>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="page">
+    <div th:replace="fragments/sideBar :: sideBar"></div>
+
+    <div class="contentPage">
+        <div class="box">
+        <h3>회원 관리</h3>
+        <div class="decide">
+            <input type="button" id="widthdraw" value="탈퇴"/>
+        </div>
+        <div class="search">
+            <form  class="searchForm" method="post" action="/admin/adminUsers">
+                <input type="text" id="searchWord" placeholder="검색" name="searchWord" value=""/>
+                <input type="submit" value="검색"/>
+            </form>
+        </div>
+        <form class="contents" method="post"><hr/>
+            <ul>
+                <li class="eachContent">
+                    <div class="userInfo">
+                        <div class="checkbox">
+
+                        </div>
+                        <div class="id">
+                            <span>아이디</span>
+                        </div>
+                        <div class="name">
+                            <span>이름</span>
+                        </div>
+                        <div class="email">
+                            <span>이메일</span>
+                        </div>
+                        <div class="address">
+                            <span>주소</span>
+                        </div>
+                   </div><hr/>
+                </li>
+
+                    <li class="eachContent">
+                    <div class="userInfo">
+                        <div class="checkbox">
+                            <input type="checkbox" name="userList" class="check"/>
+                        </div>
+                        <div class="id">
+                            <a>아이디</a>
+                        </div>
+                        <div class="name">
+                            <span>이름</span>
+                        </div>
+                        <div class="email">
+                            <span>이메일</span>
+                        </div>
+                        <div class="address">
+                            <span>주소</span>
+                        </div>
+
+
+                    </div><hr/>
+                    </li>
+            </ul>
+        </form>
+        </div>
+
+    </div>
+    <div th:replace="fragments/footer :: footer"></div>
+
+</div>
+</body>
+</html>
