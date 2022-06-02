@@ -71,6 +71,7 @@ button:hover{
 }
 /* ---------------header------------------- */
 .header {
+    height: 120px;
     padding: 10px 0;
     box-shadow: 0 2px 28px 0 rgba(0 0 0 /8%);
 }
@@ -81,7 +82,7 @@ button:hover{
     padding-bottom: 10px;
 }
 .header img {
-    height: 70px;
+    height: 60px;
 }
 .header ul {
     display: inline-block;
