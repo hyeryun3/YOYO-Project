@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<h3 style="text-align: center; color: #386ad1; margin-top: 50px;">Create Meeting</h3>
+<div class="meetingContainer">
+    <div class="col-7" style="margin: 0 auto; width:700px">
+        <form id="CreateForm" >
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="meetingName">*모임 이름</label>
+                <div class="col-sm-8">
+                    <input type="text" name="meetingName" id="meetingName" placeholder="모임 이름을 입력해주세요." class="form-control"  required/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">모임 멤버</label>
+                <div class="col-sm-8" id="plususers">
+                    <div class="btn-group" role="group">
+                        <div class="col-sm-10" style="padding:0">
+                            <input type="text" name="users" id="users" class="form-control" size="25" placeholder="멤버 아이디를 입력해주세요."/>
+                        </div>
+                        <div class="col-sm-2" >
+                            <input type="button" value="추가" id="usersplus" class="btn btn-outline-secondary"/>
+                        </div>
+                    </div>
+                    <div class="mb-3 row" id="pu"> </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="meetingPlace">모임 장소</label>
+                <div class="col-sm-8">
+                    <select id="meetingPlace" class="form-control" style="font-size: 14px">
+                        <option>중간 지점</option>
+                        <option>직접 지정</option>
+                    </select>
+                    <input type="text" class="form-control" id="writePlace" name="writePlace" hidden>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="meetingDate">모임 날짜</label>
+                <div class="col-sm-8">
+                    <input type="datetime-local" onchange="setMinValue()" name="meetingDate" id="meetingDate" class="form-control" style="color:#00000090"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <button type="submit" class="btn" id="submit">그룹 생성</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+<script>
+    $('#meetingPlace').click(function(){
+        console.log($('#meetingPlace').val())
+        if($('#meetingPlace').val()=="직접 지정"){
+            $('#writePlace').attr('hidden',false);
+        }else{
+            $('#writePlace').attr('hidden',true);
+        }
+    })
+
+    document.getElementById('meetingDate').value = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0,-5);
+
+    let dateElement = document.getElementById('meetingDate');
+    let date = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -5);
+    dateElement.value = date;
+    dateElement.setAttribute("min", date);
+
+    function setMinValue() {
+        if(dateElement.value < date) {
+            alert('현재 시간보다 이전의 날짜는 설정할 수 없습니다.');
+            dateElement.value = date;
+        }
+    }
+
+    let members= [];
+    let me = '[[${user}]]'; // 나의 계정
+
+    function plusMem (sendData){
+        let div = document.querySelector('#pu');
+        let group = document.createElement('div');
+        group.setAttribute('class','btn-group');
+        group.setAttribute('role','group');
+
+        let userdiv = document.createElement('div');
+        userdiv.setAttribute('class','col-sm-10');
+        userdiv.setAttribute('style','padding:0px 0px 0px 15px');
+        let usertxt = document.createElement('input');
+        usertxt.setAttribute('type', 'text');
+        usertxt.setAttribute('size','25');
+        usertxt.setAttribute('name', 'users');
+        usertxt.setAttribute('id', 'users');
+        usertxt.setAttribute('class', 'form-control');
+        usertxt.setAttribute('value', sendData);
+        usertxt.setAttribute('readonly',true);
+        userdiv.append(usertxt);
+
+        let btndiv = document.createElement('div');
+        btndiv.setAttribute('class','col-sm-2')
+        let btn = document.createElement('input');
+        btn.setAttribute('type', 'button');
+        btn.setAttribute('value', '삭제');
+        btn.setAttribute('name', 'usersminus');
+        btn.setAttribute('class', 'btn btn-outline-secondary');
+        btndiv.append(btn);
+
+        group.append(userdiv);
+        group.append(btndiv);
+
+        div.append(group);
+    }
+
+    $('#usersplus').click(function (evt){
+        let sendData = document.querySelector('#users').value;
+        $('#users').attr('placeholder','구성원 아이디를 입력해주세요.');
+        $.ajax({
+            type: "POST",
+            url: "validateMem",
+            data: {sendData:sendData},
+            success: function (data) {
+                if(data == 1){
+                    if (me == sendData) {
+                        $('#users').focus();
+                        $('#users').val("");
+                        $('#users').attr('placeholder','본인은 선택할 수 없습니다.');
+                        evt.preventDefault();
+                        return;
+                    }else{
+                        if(!members.includes(sendData)){
+                            members.push(sendData);
+                            plusMem(sendData);
+                            $('#users').focus();
+                            $('#users').val("");
+                        }else{
+                            $('#users').val("");
+                            $('#users').focus();
+                        }
+                    }
+                    $('input[name="usersminus"]').click(function(){
+                        // 현재 삭제할 구성원
+                        var remuser=members.indexOf($(this).parent().siblings().children().val());
+                        members.splice(remuser,1);
+                        $(this).parent().siblings().remove()
+                        $(this).remove();
+                    })
+                }else if(data==-1){
+                    $('#users').focus();
+                    $('#users').val("");
+                }else{
+                    $('#users').val("");
+                    $('#users').focus();
+                    $('#users').attr('placeholder','존재하지 않는 구성원입니다.');
+                }
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    })
+
+    $('#submit').click(function (evt) {
+        evt.preventDefault();
+        let meetingName = document.querySelector('input[name="meetingName"]');
+        if (!meetingName.value) {
+            meetingName.focus();
+            evt.preventDefault();
+            return;
+        }
+        let meetingDate = document.querySelector('input[name="meetingDate"]');
+        if(!meetingDate.value){
+            meetingDate.focus();
+            evt.preventDefault();
+            return;
+        }
+
+        let res = confirm("모임 약속을 생성하시겠습니까?");
+        if (res == true) {
+            let qs = $('#CreateForm').serialize();
+            $.ajax({
+                type: "POST",
+                url: "createMeeting",
+                data: qs,
+                success: function (data) {
+                    alert('생성이 완료되었습니다.');
+                    location.href="/";
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            });
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="container" style="text-align: center" id="container">
+<!--    <table>-->
+<!--        <tr th:each="list:${voList}" >-->
+<!--            <td th:text="${list.TeamName}"></td>-->
+<!--            <td th:text="${list.Place}"></td>-->
+<!--            <td th:text="${list.Time}"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--    <div>-->
+<!--        <div style="margin:100px 0; max-width:100%; height:auto;">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--        <div style="margin:100px 0; max-width:100%; height:auto;">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div style="margin:100px 0; max-width:100%; height:auto;">-->
+<!--    </div>-->
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+<script>
+    findMeeting()
+    function findMeeting() {
+        $.ajax({
+            url: "/findMeeting",
+            type: "GET",
+            success: function (data) {
+                let container = document.getElementById('container');
+                data.forEach(function (vo) {
+                    let div = document.createElement('div');
+                    div.setAttribute('style', 'border-radius:10px; margin:100px 0; max-width:100%; height:auto; background-color:#00000010; padding:30px;');
+                    let teamName = document.createElement('h2')
+                    teamName.innerHTML='[ '+vo.teamName +' ]';
+                    let place = document.createElement('h2')
+                    place.setAttribute('style','margin:20px 0 ')
+
+                    place.innerHTML=vo.place + '에서 만나요😉';
+                    let time = document.createElement('h2')
+
+                    vo.time= vo.time.replace("T"," ").slice(0,16)
+                    var year = vo.time.slice(0,4)
+                    var month = vo.time.slice(5,7)
+                    var day = vo.time.slice(8,10)
+                    var hour = vo.time.slice(11,13)
+                    var min = vo.time.slice(14,16)
+
+                    var str = year+'년 ' + month + '월 ' + day + '일 ' + hour + '시 '+ min+'분';
+                    console.log(str)
+                    time.innerHTML=str
+
+
+                    let memDiv = document.createElement('div');
+                    vo.members.forEach(function(mem){
+                        let img = document.createElement('img');
+                        img.setAttribute('src',mem)
+                        img.setAttribute('style','border:1px solid #000000; border-radius:10px;width:50px;height:50px; margin:0 10px')
+
+                        memDiv.appendChild(img);
+                    })
+
+
+                    div.appendChild(teamName);
+                    div.appendChild(memDiv)
+                    div.appendChild(place);
+                    div.appendChild(time);
+
+                    container.appendChild(div);
+                });
+
+                let plusbtn = document.createElement('button');
+                plusbtn.setAttribute('onclick','location.href="/createMeeting"')
+                plusbtn.setAttribute('style','background-color:#00000030; font-size:30px; height:200px')
+                plusbtn.innerHTML='+';
+                container.appendChild(plusbtn);
+
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

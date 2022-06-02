@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="container" style="text-align: center; width:850px; margin-bottom: 250px;">
+    <div class="topMargin" style="display:inline-block; ">
+        <div style=" margin:50px;" class="topMargin">
+            <img src="/adminImage/logo_blue.png" width="300px" alt="YOYO!">
+        </div>
+    </div>
+    <div class="signup_form">
+        <div class="topMargin" style="width: 300px;display: inline-block">
+            <form id="form">
+                <div>
+                    <input type="text" id="name" name="userName" class="form-control" style="margin-top: 10px; "
+                           placeholder="성명">
+                </div>
+                <div>
+                    <input type="text" id="email" name="email" class="form-control" style="margin-top: 10px; "
+                           placeholder="E-mail">
+                </div>
+                <br>
+                <hr class="my-4">
+                <div class="row">
+                    <div class="col">
+                        <button class="w-100 btn btn-success btn-lg" id="find" type="submit">
+                            아이디 찾기
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button class="w-100 btn btn-warning btn-lg" onclick="location.href='/login'"
+                                type="button">돌아가기
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+<style>
+    .signup_form {
+        border: 1px solid white;
+        width: 400px;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .signup_form button {
+        display: block;
+        box-sizing: border-box;
+        margin: auto;
+        width: 50%;
+        padding: 1rem;
+        font-size: 1rem;
+        background-color: #333333;
+        border: 1px solid #b1b1b1;
+        color: #fff;
+        border-radius: 0.3rem;
+        margin-top: 2rem;
+    }
+
+    .signup_form fieldset {
+        margin-top: 4em;
+        margin-bottom: 5em;
+        border: 2px solid #e2e2e2;
+        padding: 1.8rem 2rem 1.8rem;
+    }
+
+</style>
+<script type="text/javascript">
+    $('document').ready(function () {
+        let btn = document.querySelector('button[id="find"]');
+
+        btn.addEventListener('click', function (evt) {
+            evt.preventDefault()
+            let name = $('#name').val();
+            let email = $('#email').val()
+
+            if (!name) {
+                $('#name').focus();
+                return
+            }
+            if (!email) {
+                $('#email').focus();
+                return
+            }
+            $.ajax({
+                type: "post",
+                url: "/findID",
+                data: {name: name, email: email},
+                success: function (data) {
+
+                    if (data == "no") {
+                        alert("존재하지 않는 회원정보입니다.");
+                    } else {
+                        alert("회원님의 아이디는 " + data + "입니다.")
+                        location.href = "/login";
+                    }
+                }, error: function (error) {
+                    console.log(error);
+                }
+            });
+        })
+    })
+</script>
+</body>
+</html>

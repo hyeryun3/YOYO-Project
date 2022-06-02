@@ -17,7 +17,7 @@ public class UserTeam {
     @NotNull
     private Boolean boss;
 
-    private Long startPlace;
+    private String startPlace;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="uID")

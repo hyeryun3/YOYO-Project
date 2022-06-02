@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<h3 style="text-align: center; color: #386ad1; margin-top: 50px;">My Page</h3>
+<div class="myPageContainer" >
+    <div class="col-7" style="margin: 0 auto">
+    <fieldset>
+        <form role="form" id="form" th:object="${user}" enctype="multipart/form-data" method="post"
+              novalidate>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" th:for="id">아이디</label>
+                <div class="col-sm-8">
+                    <input type="text" id="userID" name="userID" class="form-control" th:value="*{userID}" readonly>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" th:for="pw">비밀번호</label>
+                <div class="col-sm-8">
+                    <input type="password" id="pw" name="password" class="form-control" th:value="*{password}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" th:for="pwCheck">비밀번호 확인</label>
+                <div class="col-sm-8">
+                    <input type="password" name="passwordCheck" id="pwCheck" class="form-control">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" th:for="name">닉네임</label>
+                <div class="col-sm-8">
+                    <input type="text" id="userName" name="userName" class="form-control" th:value="*{userName}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" th:for="email">E-mail</label>
+                <div class="col-sm-8">
+                    <input type="text" id="email" name="email" class="form-control" th:value="*{email}" readonly>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" th:for="address">주소</label>
+                <div class="col-sm-8">
+                    <input type="text" id="address" name="address" class="form-control" th:value="*{address}" readonly>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" th:for="userImage">프로필 사진 수정</label>
+                <div class="col-sm-8">
+                    <img style="width: 150px;" id="View" class="form-control img-thumbnail" th:src="${userImg}">
+                    <input type="file" id="input-image" name="userImage" style="margin:0; width:250px" class="form-control">
+                </div>
+            </div>
+        </form>
+    </fieldset>
+        <div class="form-group">
+            <button type="submit" class="btn btn-outline-secondary" id="update" style="display:inline-block; float: left">저장하기</button>
+        </div>
+        <form >
+            <button type="button" class="btn btn-primary" id="deleteAccount" style="display: inline-block">회원탈퇴</button>
+        </form>
+    </div>
+
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+<script>
+    $(function () {
+        $("#input-image").on('change', function () {
+            $("#preview").css('display', 'none');
+            readURL(this);
+        });
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#View').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else {
+
+        }
+    }
+
+    $('#update').click(function (evt) {
+        evt.preventDefault();
+        if ($('#pw').val() != $('#pwCheck').val()) {
+            alert("비밀번호가 일치하지 않습니다.")
+            $('#pw').focus();
+            document.querySelector('input[id="pw"]').focus();
+            return;
+        } else {
+            const formElement = document.getElementById('form');
+            formElement.setAttribute("action", "/myPage");
+            formElement.setAttribute("method", "post");
+            formElement.submit();
+            alert('수정이 완료되었습니다.')
+        }
+    });
+
+    $('#deleteAccount').click(function () {
+        let check = confirm("탈퇴하시겠습니까?")
+        if (check) {
+            if ($('#pw').val() != $('#pwCheck').val()) {
+                alert("비밀번호가 일치하지 않습니다.")
+                $('#pw').focus();
+                document.querySelector('input[id="pw"]').focus();
+                return;
+            } else {
+                location.replace("/deleteUser");
+            }
+        }
+    })
+</script>
+</body>
+</html>

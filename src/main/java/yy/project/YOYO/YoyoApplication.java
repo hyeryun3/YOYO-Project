@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class YoyoApplication {
-//Test2!
+
 	public static void main(String[] args) {
 		SpringApplication.run(YoyoApplication.class, args);
 	}
