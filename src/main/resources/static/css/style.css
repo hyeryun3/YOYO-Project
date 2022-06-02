@@ -55,10 +55,10 @@ button:hover{
     opacity: 80%;
 }
 .topMargin {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 .bottomMargin {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 .flexevenly {
     display: flex;

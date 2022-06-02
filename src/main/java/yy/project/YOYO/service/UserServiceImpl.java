@@ -1,9 +1,11 @@
 package yy.project.YOYO.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -15,12 +17,22 @@ import yy.project.YOYO.vo.UserVO;
 import java.io.File;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
+@EnableAsync
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final JavaMailSender javaMailSender;
+
+    @Override
+    public User login(String id, String pw) {
+        return userRepository.loginCheck(id, pw);
+    }
+    @Override
+    public List<User> findByLUserID(String userID){ return userRepository.searchUserInfo(userID); }
+
 
     public int memberCheck(String userID){
         User user = userRepository.findByUserID(userID);

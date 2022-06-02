@@ -7,12 +7,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import yy.project.YOYO.argumentresolver.Login;
 import yy.project.YOYO.domain.User;
 import yy.project.YOYO.domain.UserTeam;
+import yy.project.YOYO.interceptor.SessionConst;
 import yy.project.YOYO.service.UserService;
 import yy.project.YOYO.service.UserTeamService;
 import yy.project.YOYO.vo.UserVO;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -22,6 +26,9 @@ public class UserController {
 
     private final UserService userService;
     private final UserTeamService userTeamService;
+
+
+
 
     @GetMapping("/myPage")
     public String myPage(Model model){
