@@ -97,9 +97,9 @@
         width: 100%;
         margin-top:20px;
         text-align: center;
-        height : 80px;
+        height : 100px;
         font-size: 20px;
-        line-height: 80px;
+        line-height: 100px;
 
     }
     #foodCategory ul{
@@ -113,7 +113,7 @@
     #foodAll{
         /*margin: 20px;*/
         width: 100%;
-        height: 90%;
+        height: 700px;
         overflow: scroll;
     }
     #foodAll::-webkit-scrollbar{
@@ -146,7 +146,7 @@
     //음식 목록에서 해당하는 음식 종류의 음식 show
     $(function (){
 
-        foodAll();
+        //foodAll();
 
         $(".foodType").click(function(){
 
@@ -176,43 +176,6 @@
             });
         });
 
-        function foodAll(){
-
-            $.ajax({
-
-                url : "/admin/getFoodAll",
-                data : 'foodType=전체',
-                type : "get",
-
-                success : function(result, status){
-
-                    let tagAll = "";
-                    let $resultAll = $(result);
-
-                    $resultAll.each(function(idx, vo){
-
-                        console.log(vo);
-
-                        tagAll +="<li class='eachFood'>";
-                        tagAll += "<span class='foodName'>" + vo.foodName + "</span><br/>";
-                        tagAll += "<img class='foodPicture img-fluid' src='/static/image/food/" + vo.foodImg + "'><br/>";
-
-                        tagAll += "<span class='foodCate'>" + vo.foodCategory + "</span></li>"
-
-                        $("#foods").html(tagAll);
-
-                    });
-
-                },
-                error : function(error){
-                    console.log(error.responseText);
-                }
-
-            });
-
-
-        }
-
     });
 
 </script>
@@ -235,6 +198,11 @@
             </div>
             <div id="foodAll">
                 <ul id="foods">
+                    <li class='eachFood' th:each="food : ${allFood}">
+                        <span class='foodName' th:text="${food.foodName}"></span><br/>
+                        <img class='foodPicture img-fluid' th:src="@{/static/image/food/} + ${food.foodImg}"><br/>
+                        <span class='foodCate' th:text="${food.foodCategory}"></span>
+                    </li>
 
                 </ul>
             </div>

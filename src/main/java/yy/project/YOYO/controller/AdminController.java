@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,7 +34,12 @@ public class AdminController {
 
 
     @GetMapping("/admin/adminFood")
-    public String adminFood(){
+    public String adminFood(Model model){
+
+        List<Food> allFood = new ArrayList<>();
+
+        model.addAttribute("allFood",foodService.findAll());
+
         return "admin/adminFood";
     }
 
@@ -146,20 +152,6 @@ public class AdminController {
     }
 
 
-    //음식 목록
-    //초기 화면(전체 음식)
-    @GetMapping("/admin/getFoodAll")
-    @ResponseBody
-    public List<Food> getFoodAll(@RequestParam("foodType") String type){
-
-        List<Food> allFood = new ArrayList<>();
-
-        allFood = foodService.findAll();
-
-        return allFood;
-    }
-
-
     //음식 종류 선택
     @PostMapping("/admin/showFoods")
     @ResponseBody
@@ -200,14 +192,8 @@ public class AdminController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("text", "html", Charset.forName("UTF-8")));
 
-        /*System.out.println(vo.getFoodName());
-        System.out.println(vo.getEvent());
-
-        System.out.println(food.getFoodName());
-        System.out.println(food.getEvent());*/
 
         Food modifyFood = foodService.findByFoodName(food.getFoodName());
-
 
         //사진 파일 이름
         String beforeFile = foodService.findByFoodName(vo.getFoodName()).getFoodImg();
