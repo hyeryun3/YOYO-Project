@@ -27,7 +27,6 @@
   h3{
     margin: 50px 0px;
   }
-
   input[type=button], input[type=submit]{
     width: 60px;
     height: 40px;
@@ -43,13 +42,11 @@
     background-color: #f1f3f5;
     box-shadow: 2px 2px 3px #888888;
   }
-
   .page{
     width: 100%;
     height: 100vh;
     text-align: center;
   }
-
   .menu{
     width: 20%;
     float: left;
@@ -67,7 +64,6 @@
     width: 100%;
     height: 150px;
     line-height: 150px;
-
   }
   .menuGroup:hover{
     background-color: #dedede;
@@ -91,7 +87,6 @@
   .category{
     width: 100%;
   }
-
   #foodForm{
     width: 80%;
     display: flex;
@@ -124,7 +119,6 @@
   #deleteDate:hover{
     color: gray;
   }
-
   #eventSelected{
     font-size: 17px;
     text-align: center;
@@ -137,10 +131,6 @@
   #foodimgName{
     color : gray;
   }
-  #alertDate{
-    display: none;
-    color: blueviolet;
-  }
   #foodPhoto{
     width : 200px;
     margin: 0 auto;
@@ -152,10 +142,9 @@
     color : gray;
     text-align: center;
   }
-
-
-
-
+  #priorityForm{
+    display: none;
+  }
 </style>
 <script>
   $(function(){
@@ -197,7 +186,7 @@
 
     }
 
-    //사진 미리 보기-----------------------
+    //사진 미리 보기
     function imagePreview(input, expression){
       if(input.files && input.files[0]){
         let reader = new FileReader();
@@ -235,7 +224,6 @@
       checkPriority();
 
       photoDelete();
-
 
     });
 
@@ -302,12 +290,6 @@
       checkPriority();
     });
 
-    $("#deleteDate").click(function(){
-      eventDelete();
-
-      checkPriority();
-    });
-
 
     //사진 파일 변경
     $("#foodImg").change(function(){
@@ -331,7 +313,6 @@
     })
 
 
-     /////////////////////////////////////////////////////////////////
     //검색 버튼 클릭
     $("#searchButton").click(function(){
       //수정할 음식을 입력 안했을 때
@@ -384,8 +365,9 @@
             chWeather=true;
           }
 
-          if(result.event==null){
+          if(result.event==null || result.event ==""){
             chEvent=false;
+            eventDelete();
           }else{
             let event = result.event;
             let idx = event.indexOf("-");
@@ -401,13 +383,6 @@
             $("#deleteDate").css('display', 'inline-block');
             chEvent=true;
           }
-
-          //날짜 삭제 버튼 클릭
-          $("#deleteDate").click(function(){
-            eventDelete();
-
-            checkPriority();
-          })
 
           //우선순위 반영
           checkPriority();
@@ -433,7 +408,6 @@
       });
     });
 
-
   });
 
 
@@ -455,8 +429,6 @@
     }
     return true;
   }
-
-
 
 </script>
 <body>
@@ -568,7 +540,6 @@
           <img id="foodPhoto" class="my-2"/>
         </div>
 
-
         <!--취소, 수정 버튼-->
         <div class="row" id="buttons">
           <div class="col-lg-12">
@@ -576,7 +547,6 @@
             <input type="submit" class="btn" id="modify" value="수정">
           </div>
         </div>
-
       </form>
     </div>
   </div>

@@ -27,7 +27,6 @@
     h3{
         margin: 50px 0px;
     }
-
     input[type=button], input[type=submit]{
         width: 60px;
         height: 40px;
@@ -35,7 +34,6 @@
         text-align: center;
         border: none;
         background-color: #dee2e6;
-        /*color: rgba(85, 76, 66, 80%);*/
         font-size: 16px;
         box-shadow: 2px 2px 3px #888888;
     }
@@ -43,13 +41,11 @@
         background-color: #f1f3f5;
         box-shadow: 2px 2px 3px #888888;
     }
-
     .page{
         width: 100%;
         height: 100vh;
         text-align: center;
     }
-
     .menu{
         width: 20%;
         float: left;
@@ -67,7 +63,6 @@
         width: 100%;
         height: 150px;
         line-height: 150px;
-
     }
     .menuGroup:hover{
         background-color: #dedede;
@@ -91,10 +86,8 @@
     .category{
         width: 100%;
     }
-
     #foodForm{
         width: 80%;
-        /*height: 750px;*/
         display: flex;
         align-items: center;
         margin: 0 auto;
@@ -125,7 +118,6 @@
     #deleteDate:hover{
         color: gray;
     }
-
     #eventSelected{
         font-size: 17px;
         text-align: center;
@@ -138,10 +130,6 @@
     #foodimgName{
         color : gray;
     }
-    #alertDate{
-        display: none;
-        color: blueviolet;
-    }
     #foodPhoto{
         width : 200px;
         margin: 0 auto;
@@ -152,8 +140,9 @@
     #foodimgName{
         color : gray;
     }
-
-
+    #priorityForm{
+        display: none;
+    }
 </style>
 
 <script>
@@ -193,7 +182,7 @@
 
         }
 
-        //사진 미리 보기-----------------------
+        //사진 미리 보기
         function imagePreview(input, expression){
             if(input.files && input.files[0]){
                 let reader = new FileReader();
@@ -230,7 +219,6 @@
             checkPriority();
 
             photoDelete();
-
 
         });
 
@@ -343,7 +331,6 @@
 
     }
 
-
 </script>
 
 <body>
@@ -451,13 +438,11 @@
                         <input type="submit" class="btn" id="add" value="추가">
                     </div>
                 </div>
-
             </form>
         </div>
     </div>
     <div th:replace="fragments/footer :: footer"></div>
 </div>
-
 </body>
 
 </html>

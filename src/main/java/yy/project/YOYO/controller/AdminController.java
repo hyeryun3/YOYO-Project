@@ -28,7 +28,6 @@ import javax.inject.Inject;
 @Controller
 public class AdminController {
 
-
     @Inject
     FoodService foodService;
 
@@ -126,6 +125,10 @@ public class AdminController {
                 System.out.println(">>"+ vo.getFoodImg());
 
                 food.setFoodImg(vo.getFoodImg());
+
+                if(vo.getEvent().equals("")){
+                    food.setEvent(null);
+                }
 
                 //음식 추가
                 foodService.save(food);
@@ -253,6 +256,10 @@ public class AdminController {
                     }
                 }//if(fileName != null && fileName.equals(""))
             }//if(newfile !=null)
+
+            if(vo.getEvent().equals("")){
+                vo.setEvent(null);
+            }
 
             modifyFood.setFoodCategory(vo.getFoodCategory());
             modifyFood.setEvent(vo.getEvent());
