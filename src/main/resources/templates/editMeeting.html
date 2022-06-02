@@ -4,14 +4,14 @@
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<h3 style="text-align: center; color: #386ad1; margin-top: 50px;">Create Meeting</h3>
+<h3 style="text-align: center; color: #386ad1; margin-top: 50px;">Edit Meeting</h3>
 <div class="meetingContainer">
     <div class="col-7" style="margin: 0 auto; width:700px">
-        <form id="CreateForm" >
+        <form id="EditForm" th:object="${team}" >
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label" for="meetingName">*모임 이름</label>
+                <label class="col-sm-4 col-form-label" for="meetingName">모임 이름</label>
                 <div class="col-sm-8">
-                    <input type="text" name="meetingName" id="meetingName" placeholder="모임 이름을 입력해주세요." class="form-control"  required/>
+                    <input type="text" name="meetingName" id="meetingName" th:value="*{teamName}" class="form-control"  readonly/>
                 </div>
             </div>
             <div class="form-group row">
@@ -31,7 +31,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="meetingPlace">모임 장소</label>
                 <div class="col-sm-8">
-                    <select id="meetingPlace" class="form-control" style="font-size: 14px">
+                    <select id="meetingPlace" class="form-control" style="font-size: 14px" th:value="*{place}">
                         <option>중간 지점</option>
                         <option>직접 지정</option>
                     </select>
@@ -41,7 +41,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="meetingDate">모임 날짜</label>
                 <div class="col-sm-8">
-                    <input type="datetime-local" onchange="setMinValue()" name="meetingDate" id="meetingDate" class="form-control" style="color:#00000090"/>
+                    <input type="datetime-local" onchange="setMinValue()" name="meetingDate" id="meetingDate" class="form-control" style="color:#00000090" th:value="*{date}" />
                 </div>
             </div>
             <div class="form-group row">
@@ -54,21 +54,41 @@
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 <script>
+    let me = '[[${user}]]'; // 나의 계정
+    let members= [];
+    let place = '[[${team.place}]]'
+    let userList = '[[${userIDs}]]'
+    let tid='[[${tID}]]'
+
+    userList = userList.replace('[','')
+    userList = userList.replace(']','')
+    let aa = userList.split(',')
+    if(aa!=''){
+        aa.forEach(function (mem){
+            mem = mem.trim()
+            plusMem(mem);
+        })
+    }
+
+    if(place == "중간 지점" || place == "중간지점"){
+        $('#meetingPlace').val("중간 지점")
+        $('#writePlace').val('')
+        $('#writePlace').attr('hidden',true)
+    }else{
+        $('#meetingPlace').val("직접 지정")
+        $('#writePlace').attr('hidden',false);
+        $('#writePlace').val(place)
+    }
+
+
     $('#meetingPlace').click(function(){
-        console.log($('#meetingPlace').val())
         if($('#meetingPlace').val()=="직접 지정"){
             $('#writePlace').attr('hidden',false);
         }else{
+            $('#writePlace').val('')
             $('#writePlace').attr('hidden',true);
         }
     })
-
-    document.getElementById('meetingDate').value = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0,-5);
-
-    let dateElement = document.getElementById('meetingDate');
-    let date = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -5);
-    dateElement.value = date;
-    dateElement.setAttribute("min", date);
 
     function setMinValue() {
         if(dateElement.value < date) {
@@ -76,9 +96,6 @@
             dateElement.value = date;
         }
     }
-
-    let members= [];
-    let me = '[[${user}]]'; // 나의 계정
 
     function plusMem (sendData){
         let div = document.querySelector('#pu');
@@ -119,7 +136,7 @@
         $('#users').attr('placeholder','구성원 아이디를 입력해주세요.');
         $.ajax({
             type: "POST",
-            url: "validateMem",
+            url: "/validateMem",
             data: {sendData:sendData},
             success: function (data) {
                 if(data == 1){
@@ -162,14 +179,16 @@
         });
     })
 
+    $('input[name="usersminus"]').click(function(){
+        // 현재 삭제할 구성원
+        var remuser=members.indexOf($(this).parent().siblings().children().val());
+        members.splice(remuser,1);
+        $(this).parent().siblings().remove()
+        $(this).parent().remove();
+    })
+
     $('#submit').click(function (evt) {
         evt.preventDefault();
-        let meetingName = document.querySelector('input[name="meetingName"]');
-        if (!meetingName.value) {
-            meetingName.focus();
-            evt.preventDefault();
-            return;
-        }
         let meetingDate = document.querySelector('input[name="meetingDate"]');
         if(!meetingDate.value){
             meetingDate.focus();
@@ -177,16 +196,16 @@
             return;
         }
 
-        let res = confirm("모임 약속을 생성하시겠습니까?");
+        let res = confirm("모임 약속을 수정하시겠습니까?");
         if (res == true) {
-            let qs = $('#CreateForm').serialize();
+            let qs = $('#EditForm').serialize();
             $.ajax({
                 type: "POST",
-                url: "createMeeting",
+                url: "/editMeeting/"+tid,
                 data: qs,
                 success: function (data) {
-                    alert('생성이 완료되었습니다.');
-                    location.href="/";
+                    alert('수정이 완료되었습니다.');
+                    location.href="/checkMeeting";
                 },
                 error: function (error) {
                     console.log(error)

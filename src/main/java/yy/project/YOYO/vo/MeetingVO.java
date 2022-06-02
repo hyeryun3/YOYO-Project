@@ -12,4 +12,5 @@ public class MeetingVO {
     private List<String> members;
     private String place;
     private LocalDateTime time;
+    private Long tID;
 }

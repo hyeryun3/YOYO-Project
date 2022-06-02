@@ -6,31 +6,31 @@
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
 <div class="container" style="text-align: center; width:850px; margin-bottom: 250px;">
     <div class="topMargin" style="display:inline-block; ">
-        <div style=" margin:50px;" class="topMargin">
+        <div class="topMargin2" style=" margin:50px;">
             <img src="/adminImage/logo_blue.png" width="300px" alt="YOYO!">
         </div>
-    </div>
-    <div class="signup_form">
-        <div class="topMargin" style="width: 300px;display: inline-block">
+<!--    </div>-->
+<!--    <div class="" style="display:inline-block;">-->
+        <div class="signup_form" style="width: 300px;display: inline-block;">
             <form id="form">
                 <div>
-                    <input type="text" id="name" name="userName" class="form-control" style="margin-top: 10px; "
+                    <input type="text" id="name" name="userName" class="form-control" style="margin-top: 10px;"
                            placeholder="성명">
                 </div>
                 <div>
-                    <input type="text" id="email" name="email" class="form-control" style="margin-top: 10px; "
+                    <input type="text" id="email" name="email" class="form-control" style="margin-top: 10px;"
                            placeholder="E-mail">
                 </div>
                 <br>
                 <hr class="my-4">
                 <div class="row">
                     <div class="col">
-                        <button class="w-100 btn btn-success btn-lg" id="find" type="submit">
+                        <button class="w-100 btn btn-outline-light" id="find" type="submit">
                             아이디 찾기
                         </button>
                     </div>
                     <div class="col">
-                        <button class="w-100 btn btn-warning btn-lg" onclick="location.href='/login'"
+                        <button class="w-100 btn btn-outline-light" onclick="location.href='/login'"
                                 type="button">돌아가기
                         </button>
                     </div>
@@ -55,9 +55,9 @@
         width: 50%;
         padding: 1rem;
         font-size: 1rem;
-        background-color: #333333;
+        background-color: #283C82;
         border: 1px solid #b1b1b1;
-        color: #fff;
+        color: #FFFFFF;
         border-radius: 0.3rem;
         margin-top: 2rem;
     }

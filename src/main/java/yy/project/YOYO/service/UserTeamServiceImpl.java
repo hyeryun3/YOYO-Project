@@ -17,7 +17,10 @@ public class UserTeamServiceImpl implements UserTeamService{
     }
 
     public void deleteByUID(Long uid){
-        userTeamRepository.deleteById(uid);
+        userTeamRepository.deleteByUID(uid);
+    };
+    public void deleteByTID(Long tid){
+        userTeamRepository.deleteByTID(tid);
     };
 
     public List<UserTeam> findByUID(Long uid){

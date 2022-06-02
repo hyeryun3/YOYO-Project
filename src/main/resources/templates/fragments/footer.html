@@ -1,4 +1,4 @@
-<div th:fragment="footer">
+<div th:fragment="footer" xmlns="http://www.w3.org/1999/html">
     <div class="footer">
         <div class="container grid2">
             <div class="box">
@@ -20,8 +20,9 @@
 
             <div class="box">
                 <img src="/adminImage/logo_white.png" alt="logo_white"/>
-                    <p>공지사항 | 회사소개 | 이용약관 | 고객센터</p>
-                <div>
+                <div class="icon" style="margin-top: 33px;">
+                    <i class="fa fa-user"></i>
+                    <label htmlFor="">공지사항 | 회사소개 | 이용약관 | 고객센터</label>
                 </div>
             </div>
         </div>

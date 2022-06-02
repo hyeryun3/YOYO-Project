@@ -133,8 +133,8 @@ public class UserServiceImpl implements UserService{
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);                              //수신자
         message.setFrom("mannayo0609@gmail.com");        //발신자.
-        message.setSubject("[YOYO!] "+userName+"님 임시비밀번호 발급 메일입니다.");       //메일 제목
-        String sendMsg = userName+"님의 임시 비밀번호 생성 안내를 위해 발송된 메일입니다.\n 임시 비밀번호는 "+tempPW + "입니다.";
+        message.setSubject("[YOYO! 요기서 만나요!] "+userName+"님의 임시비밀번호 발급 메일입니다.");       //메일 제목
+        String sendMsg = userName+"님의 임시 비밀번호 생성 안내를 위해 발송된 메일입니다.\n 회원님의 임시 비밀번호는 "+tempPW + "입니다.\n 해당 비밀번호로 로그인 후 새로운 비밀번호로 변경하시기 바랍니다.";
         message.setText(sendMsg);                   //메일 내용
         javaMailSender.send(message);
     }

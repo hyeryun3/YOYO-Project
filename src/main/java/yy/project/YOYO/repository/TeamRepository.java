@@ -9,5 +9,5 @@ import javax.transaction.Transactional;
 @Repository
 @Transactional
 public interface TeamRepository extends JpaRepository<Team,Long> {
-    
+    Team findBytID(Long tID);
 }

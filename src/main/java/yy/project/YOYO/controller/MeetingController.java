@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import yy.project.YOYO.domain.Team;
 import yy.project.YOYO.domain.User;
 import yy.project.YOYO.domain.UserTeam;
@@ -67,7 +64,7 @@ public class MeetingController {
         if(teamForm.getWritePlace()!=""){
             team.setPlace(teamForm.getWritePlace());
         }else{
-            team.setPlace("중간지점");
+            team.setPlace("중간 지점");
         }
         Team saveTeam = teamService.save(team);
 
@@ -122,7 +119,6 @@ public class MeetingController {
                 vo.setPlace(team.getPlace());
                 vo.setTeamName(team.getTeamName());
                 vo.setTime(team.getDate());
-
                 List<UserTeam> byTID = userTeamService.findByTID(tid);
                 List<String> mem = new ArrayList<>();
                 for (int j = 0; j < byTID.size(); j++) {
@@ -133,7 +129,7 @@ public class MeetingController {
                     }
                 }
                 vo.setMembers(mem);
-
+                vo.setTID(tid);
                 voList.add(vo);
             }
         }
@@ -142,5 +138,66 @@ public class MeetingController {
 
         return voList;
     }
+
+    @GetMapping("/meeting/{tID}")
+    public String meeting(@PathVariable("tID") Long tID,Model model){
+        Team team = teamService.findBytID(tID);
+        System.out.println(team.getTeamName());
+        model.addAttribute("team",team);
+
+        List<UserTeam> ut = userTeamService.findByTID(tID);
+        List<String> userIDs = new ArrayList<>();
+        for(int i=0; i<ut.size(); i++){
+            if(!ut.get(i).getUser().getUserID().equals("rabbith3")) {
+                userIDs.add(ut.get(i).getUser().getUserID());
+            }
+        }
+        model.addAttribute("user", "rabbith3");
+        model.addAttribute("userIDs",userIDs);
+        return "editMeeting";
+    }
+
+    @PostMapping("/editMeeting/{tID}")
+    public String editMeeting(TeamForm teamForm, @PathVariable("tID") Long tID){
+        Team team = teamService.findBytID(tID);
+        String getDates = teamForm.getMeetingDate().replace("T"," ");
+        LocalDateTime dateTime = LocalDateTime.parse(getDates,DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        team.setDate(dateTime);
+        if(teamForm.getWritePlace()!=""){
+            team.setPlace(teamForm.getWritePlace());
+        }else{
+            team.setPlace("중간 지점");
+        }
+        teamService.save(team);
+
+        userTeamService.deleteByTID(team.getTID());
+
+        UserTeam ut = new UserTeam();
+
+//        == 임시 로그인 계정 ==
+        User loginuser = userService.findByUserID("rabbith3");
+        ut.setUser(loginuser);
+        ut.setTeam(team);
+        ut.setBoss(true);
+        userTeamService.save(ut);
+
+        for (int i = 0; i < teamForm.getUsers().length; i++) {
+            if( teamForm.getUsers()[i] != ""){
+                // 추가한 구성원의 정보
+                User userInfo = userService.findByUserID(teamForm.getUsers()[i]);
+
+                // 그룹의 구성원이 추가되었으므로, 유저-팀테이블을 업데이트 해준다.
+                ut = new UserTeam();
+                ut.setTeam(team);
+                ut.setUser(userInfo);
+                ut.setBoss(false);
+                // 유저-팀 객체를 UserTeam 테이블에 저장
+                userTeamService.save(ut);
+            }
+        }
+        return "checkMeeting";
+    }
+
 
 }
