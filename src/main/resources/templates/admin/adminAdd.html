@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Latest compiled and minified CSS -->
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">-->
+<!-- jQuery library -->
+<!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>-->
+<!-- Latest compiled JavaScript -->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--<script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
+<head th:replace="fragments/header :: header">
+
+</head>
+<style>
+    ul, li, body{
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+    a{
+        text-decoration-line: none;
+        color: #727272;
+    }
+    a:hover{
+        color: #a0a0a0;
+        text-decoration-line: none;
+    }
+    h3{
+        margin: 50px 0px;
+    }
+    input[type=button], input[type=submit]{
+        width: 60px;
+        height: 40px;
+        border-radius: 15px;
+        text-align: center;
+        border: none;
+        background-color: #dee2e6;
+        font-size: 16px;
+        box-shadow: 2px 2px 3px #888888;
+    }
+    input[type=button]:hover, input[type=submit]:hover{
+        background-color: #f1f3f5;
+        box-shadow: 2px 2px 3px #888888;
+    }
+    .page{
+        width: 100%;
+        height: 100vh;
+        text-align: center;
+    }
+    .menu{
+        width: 20%;
+        float: left;
+        height: 100vh;
+        background-color: #f1f3f5;
+        font-size: 18px;
+        margin: 0 auto;
+    }
+    .menu ul{
+        width: 100%;
+        height: 100%;
+    }
+    .menuGroup{
+        text-align: center;
+        width: 100%;
+        height: 150px;
+        line-height: 150px;
+    }
+    .menuGroup:hover{
+        background-color: #dedede;
+    }
+    #foodAdmin:hover .category{
+        display: block;
+    }
+    .category li:hover{
+        background-color: rgb(232,236,229);
+    }
+    .category{
+        display: none;
+        width: 100%;
+    }
+    .contentPage{
+        width: 80%;
+        float: right;
+        height: 100%;
+        background-color: #f8f9fa;
+    }
+    .category{
+        width: 100%;
+    }
+    #foodForm{
+        width: 80%;
+        display: flex;
+        align-items: center;
+        margin: 0 auto;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    }
+    #adminForm{
+        width: 100%;
+    }
+    .form-group{
+        margin: 20px 0px;
+    }
+    #buttons input{
+        margin: 20px 30px;
+    }
+    #buttons{
+        float: right;
+    }
+    #searchButton{
+        margin-left: 0px;
+    }
+    #deleteDate{
+        text-decoration: none;
+        color: darkgray;
+        display: none;
+    }
+    #deleteDate:hover{
+        color: gray;
+    }
+    #eventSelected{
+        font-size: 17px;
+        text-align: center;
+        font-weight: bold;
+    }
+    #eventYes{
+        color: blue;
+        display : none;
+    }
+    #foodimgName{
+        color : gray;
+    }
+    #foodPhoto{
+        width : 200px;
+        margin: 0 auto;
+    }
+    #photoDelete{
+        display: none;
+    }
+    #foodimgName{
+        color : gray;
+    }
+    #priorityForm{
+        display: none;
+    }
+</style>
+
+<script>
+    $(function(){
+
+        //우선순위 체크
+        let chSeason = false;
+        let chTemp = false;
+        let chWeather = false;
+        let chEvent = false;
+
+        function checkPriority(){
+            if(chSeason == false && chTemp == false && chWeather == false && chEvent == false){
+                $("#priorityNo").prop("checked", true);
+            }
+            else{
+                $("#priorityYes").prop("checked", true);
+            }
+        }
+
+        //이벤트 지우기
+        function eventDelete(){
+            $("#eventYes").css('display', 'none');
+            $("#eventSelected").html('');
+            $("#eventSelected").css('display', 'none');
+            $("#deleteDate").css('display', 'none');
+            $("#event").val("");
+        }
+
+        //사진 지우기
+        function photoDelete(){
+            $("#foodPhoto").attr("src", "");
+            $("#photoDelete").css("display", "none");
+            $("#foodImg").val('');
+            $("#foodPhoto").css('display', 'none');
+            $("#foodimgName").text("");
+
+        }
+
+        //사진 미리 보기
+        function imagePreview(input, expression){
+            if(input.files && input.files[0]){
+                let reader = new FileReader();
+
+                reader.onload = function(e){
+                    $(expression).attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+        //취소 버튼 클릭
+        $("#cancel").click(function(){
+
+            //텍스트 입력란은 공백으로 초기화
+            $("#foodName").val('');
+            $("#foodCategory").val('');
+
+
+            $("#weather option:eq(0)").prop("selected", true);
+            $("#temperature option:eq(0)").prop("selected", true);
+            $("#season option:eq(0)").prop("selected", true);
+            $(".form-check").attr("checked", false);
+
+
+            eventDelete();
+
+            chSeason = false;
+            chTemp = false;
+            chWeather = false;
+            chEvent = false;
+
+            checkPriority();
+
+            photoDelete();
+
+        });
+
+        //계절, 온도, 날찌, 이벤트 변화시
+        //계절 선택 변경
+        $("#season").change(function(){
+            let season = $("#season option:selected").val();
+
+            if(season != '0'){
+                $("#priorityYes").prop("checked", true);
+                chSeason=true;
+            }
+            if(season == '0'){
+                chSeason=false;
+            }
+            checkPriority();
+        });
+        //온도 선택 변경
+        $("#temperature").change(function(){
+            let temp = $("#temperature option:selected").val();
+            if(temp != '0'){
+                $("#priorityYes").prop("checked", true);
+                chTemp = true;
+            }
+            if(temp == '0'){
+                chTemp = false;
+            }
+            checkPriority();
+        });
+        //날씨 선택 변경
+        $("#weather").change(function(){
+            let weather = $("#weather option:selected").val();
+            if(weather != '0'){
+                $("#priorityYes").prop("checked", true);
+                chWeather = true;
+            }
+            if(weather == '0'){
+                chWeather = false;
+            }
+            checkPriority();
+        });
+        //이벤트 선택 변경
+        $("#event").change(function(){
+            let event = $("#event").val();
+            if(event != ''){
+
+                chEvent = true;
+
+                //월일만 보이게 하기
+                let idx = event.indexOf("-");
+                console.log(idx);
+
+                $("#eventYes").css('display', 'inline-block');
+                $("#eventSelected").html(event.substring(idx+1));
+                $("#eventSelected").css('display', 'inline-block');
+                $("#deleteDate").css('display', 'inline-block');
+
+                chEvent = true;
+            }
+            if(event == ''){
+                //이벤트 선택 X
+                eventDelete();
+                chEvent = false;
+            }
+            checkPriority();
+        });
+        //날짜 삭제
+        $("#deleteDate").click(function(){
+            eventDelete();
+            //이벤트 없음으로 되돌리기
+
+            chEvent = false;
+            checkPriority();
+        });
+
+        //사진 파일 변경
+        $("#foodImg").change(function(){
+
+            //이미지 미리보기
+            imagePreview(this, "#foodPhoto");
+            $("#photoDelete").css("display", "inline-block");
+            $("#foodPhoto").css('display', 'block');
+
+            $("#photoDelete").click(function(){
+                photoDelete();
+            });
+
+        });
+
+    });
+
+    function addCheck(){
+        let standard = /\s/g;
+        let foodName = $("#foodName").val();
+        if(foodName=='' || foodName.match(standard)){
+            alert('음식 이름을 입력하세요.');
+            $("#foodName").focus();
+            return false;
+        }
+        if($("#foodCategory").val()==''){
+            alert("음식 종류를 입력하세요. (ex.한식, 양식, 중식, 일식, 디저트..)");
+            $("#foodCategory").focus();
+            return false;
+        }
+        if($("#foodImg").val()==''){
+            alert("음식 이미지 파일을 선택해 업로드 하세요.");
+            return false;
+        }
+        return true;
+
+    }
+
+</script>
+
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="page">
+    <div th:replace="fragments/sideBar :: sideBar"></div>
+    <div class="contentPage">
+        <h3>음식 추가</h3>
+
+        <div id="foodForm">
+            <form method="post" action="/admin/foodAdd" id="adminForm" name="adminForm" enctype="multipart/form-data" onsubmit="return addCheck()">
+
+                <!--음식 이름 작성 (Not Null)-->
+                <div class="form-group row">
+                    <label for="foodName" class="col-lg-3 col-form-label">음식이름</label>
+                    <div class="col-lg-7">
+                        <input type="text" class="form-control " id="foodName" name="foodName" placeholder="음식이름">
+                    </div>
+                </div>
+                <!--음식 종류 작성 (Not Null)-->
+                <div class="form-group row">
+                    <label for="foodCategory" class="col-lg-3 col-form-label">음식종류</label>
+                    <div class="col-lg-7">
+                        <input type="text" class="form-control " id="foodCategory" name="foodCategory" placeholder="음식종류">
+                    </div>
+                </div>
+                <!--계절 선택 (Not Null)-->
+                <div class="form-group row">
+                    <label for="season" class="col-lg-3 col-form-label">계절</label>
+                    <div class="col-lg-7">
+                        <select class="form-control" id="season" name="season">
+                            <option selected value="0">계절 무관</option>
+                            <option value="spring">봄</option>
+                            <option value="summer">여름</option>
+                            <option value="fall">가을</option>
+                            <option value="winter">겨울</option>
+                        </select>
+                    </div>
+                </div>
+                <!--온도 선택 (Not Null)-->
+                <div class="form-group row">
+                    <label for="temperature" class="col-lg-3 col-form-label">온도</label>
+                    <div class="col-lg-7">
+                        <select class="form-control" id="temperature" name="temperature">
+                            <option selected value="0">상관 없음</option>
+                            <option value="1">25도 이상일 때 추천</option>
+                            <option value="2">15도 이하일 때 추천</option>
+                        </select>
+                    </div>
+                </div>
+                <!--날씨 선택-->
+                <div class="form-group row">
+                    <label for="weather" class="col-lg-3 col-form-label">날씨</label>
+                    <div class="col-lg-7">
+                        <select class="form-control" id="weather" name="weather">
+                            <option selected value="0">상관 없음</option>
+                            <option value="clear">맑음</option>
+                            <option value="rain">비</option>
+                            <option value="snow">눈</option>
+                        </select>
+                    </div>
+                </div>
+                <!--이벤트 선택 (있으면 모달로 날짜 입력 받기)-->
+                <div class="form-group row" id="eventForm">
+                    <label for="event" class="col-lg-3 col-form-label">이벤트</label>
+                    <div class="col-lg-7">
+                        <input type="date" name="event" id="event"/>
+                    </div>
+                </div>
+                <!--이벤트 있을 경우-->
+                <div class="form-group row">
+                    <div class="col-lg-3" id="eventYes">날짜</div>
+                    <span class="col-lg-3 day" id="eventSelected"></span>
+                    <a href="#" class="col-lg-2 " id="deleteDate">삭제</a>
+                </div>
+                <!--우선순위 (Not Null)-->
+                <div class="form-group row"  id="priorityForm">
+                    <label class="col-lg-3 col-form-label">우선순위</label>
+                    <div class="form-check col-lg-3">
+                        <input class="form-check-input" type="radio" id="priorityYes" name="priority" value='Y'>
+                        <label class="form-check-label" for="priorityYes">
+                            Y
+                        </label>
+                    </div>
+                    <div class="form-check col-lg-3">
+                        <input class="form-check-input" type="radio" id="priorityNo" name="priority" checked="checked" value='N'>
+                        <label class="form-check-label" for="priorityNo">
+                            N
+                        </label>
+                    </div>
+                </div>
+                <!--음식 사진 파일 업로드 (Not Null)-->
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label" for="foodImg">음식 사진</label>
+                    <input type="file" class="col-lg-8 form-control-file" id="foodImg" name="filename" >
+                    <button type="button"  class="close"  aria-label="Close" id="photoDelete"><span aria-hidden="true">&times;</span></button>
+                    <span id="foodimgName" class="my-2 "></span>
+                    <img id="foodPhoto" class="my-2"/>
+                </div>
+
+                <!--취소, 추가 버튼-->
+                <div class="row" id="buttons">
+                    <div class="col-lg-12">
+                        <input type="button" class="btn" id="cancel" value="취소">
+                        <input type="submit" class="btn" id="add" value="추가">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div th:replace="fragments/footer :: footer"></div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+<div th:fragment="sideBar">
+    <div class="menu">
+        <h3>관리자 페이지</h3>
+        <ul>
+            <li class="menuGroup"><a href="/admin/adminUser">회원 관리</a></li>
+            <li class="menuGroup" id="foodAdmin"><a href="/admin/adminFood">음식 관리</a>
+                <ul class="category">
+                    <li><a href="/admin/adminModify">음식 수정</a></li>
+                    <li><a href="/admin/adminAdd">음식 추가</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
