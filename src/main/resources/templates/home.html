@@ -8,25 +8,51 @@
 <div class="container" style="text-align: center">
     <div>
         <div style="margin:100px 0;">
-            <img src="/adminImage/main_des_1_ver2.png" alt="yoyo 기능설명 1 _ 음식점 추천" style="max-width:100%; height:auto;">
+            <img src="/adminImage/main_des_1.png" alt="yoyo 기능설명 1 _ 편리한 약속 잡기" style="max-width:100%; height:auto;">
         </div>
     </div>
-    <div data-aos="fade-down" data-aos-offset="600">
+    <div data-aos="fade-down" data-aos-offset="700">
         <div style="margin:100px 0;">
-            <img src="/adminImage/main_des_2.png" alt="yoyo 기능설명 2 _ 날씨별 음식 추천" style="max-width:100%; height:auto;">
+            <img src="/adminImage/main_des_2.png" alt="yoyo 기능설명 2 _ 음식점 추천" style="max-width:100%; height:auto;">
         </div>
     </div>
-    <div style="margin:100px 0;" data-aos="fade-down" data-aos-offset="700">
-        <img src="/adminImage/main_des_3.png" alt="yoyo 기능설명 3 _ 편리한 약속 잡기" style="max-width:100%; height:auto;">
+    <div style="margin:100px 0;" data-aos="fade-down" data-aos-offset="900">
+        <img src="/adminImage/main_des_3.png" alt="yoyo 기능설명 3 _ 날씨별 음식 추천" style="max-width:100%; height:auto;">
     </div>
     <div style="margin-top:100px">
-        <button id="w-100 btn btn-outline-light" style="background-color: #283C82;    border: 1px solid #b1b1b1;
-            color: #FFFFFF;width: 1300px; height:45px; max-width:100%; font-size: 14px;" onclick="location.href='/login'">시작하기</button>
+        <button class="w-100 btn btn-outline-light" id="start">시작하기</button>
     </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
+
+<style>
+    #start {
+        display: block;
+        box-sizing: border-box;
+        margin: auto;
+        width: 50%;
+        padding: 1rem;
+        font-size: 1rem;
+        background-color: #283C82;
+        border: 1px solid #b1b1b1;
+        color: #FFFFFF;
+        border-radius: 0.3rem;
+        margin-top: 2rem;
+    }
+</style>
+
 <script type="text/javascript">
     AOS.init(); // 자바스크립트로 init()을 해야 동작한다.
+
+    let me = '[[${user}]]'; // 나의 계정
+    $('#start').click(function(){
+        if(me==='o'){
+            location.href="/createMeeting";
+        }else{
+            location.href="/login";
+        }
+    })
+
 </script>
 </body>
 </html>
