@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import yy.project.YOYO.argumentresolver.Login;
 import yy.project.YOYO.domain.Team;
 import yy.project.YOYO.domain.User;
 import yy.project.YOYO.domain.UserTeam;
@@ -34,8 +35,8 @@ public class MeetingController {
 
 
     @GetMapping("/createMeeting")
-    public String home(Model model){
-        model.addAttribute("user", "rabbith3");
+    public String home(Model model, @Login User loginUser){
+        model.addAttribute("user", loginUser.getUserID());
         return "createMeeting";
     }
 
@@ -49,7 +50,7 @@ public class MeetingController {
 
     @ResponseBody
     @PostMapping("/createMeeting")
-    public void createMeeting(TeamForm teamForm){
+    public void createMeeting(TeamForm teamForm, @Login User loginUser){
         Team team = new Team();
         System.out.println("================"+teamForm.getMeetingDate());
         String getDates = teamForm.getMeetingDate().replace("T"," ");
@@ -71,8 +72,7 @@ public class MeetingController {
         UserTeam ut = new UserTeam();
 
 //        == 임시 로그인 계정 ==
-        User loginuser = userService.findByUserID("rabbith3");
-        ut.setUser(loginuser);
+        ut.setUser(loginUser);
         ut.setTeam(saveTeam);
         ut.setBoss(true);
         userTeamService.save(ut);
@@ -102,9 +102,9 @@ public class MeetingController {
 
     @ResponseBody
     @GetMapping("/findMeeting")
-    public List<MeetingVO> findMeeting(Model model){
+    public List<MeetingVO> findMeeting(Model model,@Login User loginUser){
 //        임시 로그인
-        User user = userService.findByUserID("rabbith3");
+        User user = userService.findByUserID(loginUser.getUserID());
         List<UserTeam> myTeams = userTeamService.findByUID(user.getUID());
         model.addAttribute("user",user);
 
@@ -140,7 +140,7 @@ public class MeetingController {
     }
 
     @GetMapping("/meeting/{tID}")
-    public String meeting(@PathVariable("tID") Long tID,Model model){
+    public String meeting(@PathVariable("tID") Long tID,Model model,@Login User loginUser){
         Team team = teamService.findBytID(tID);
         System.out.println(team.getTeamName());
         model.addAttribute("team",team);
@@ -148,17 +148,17 @@ public class MeetingController {
         List<UserTeam> ut = userTeamService.findByTID(tID);
         List<String> userIDs = new ArrayList<>();
         for(int i=0; i<ut.size(); i++){
-            if(!ut.get(i).getUser().getUserID().equals("rabbith3")) {
+            if(!ut.get(i).getUser().getUserID().equals(loginUser.getUserID())) {
                 userIDs.add(ut.get(i).getUser().getUserID());
             }
         }
-        model.addAttribute("user", "rabbith3");
+        model.addAttribute("user", loginUser.getUserID());
         model.addAttribute("userIDs",userIDs);
         return "editMeeting";
     }
 
     @PostMapping("/editMeeting/{tID}")
-    public String editMeeting(TeamForm teamForm, @PathVariable("tID") Long tID){
+    public String editMeeting(TeamForm teamForm, @PathVariable("tID") Long tID, @Login User loginUser){
         Team team = teamService.findBytID(tID);
         String getDates = teamForm.getMeetingDate().replace("T"," ");
         LocalDateTime dateTime = LocalDateTime.parse(getDates,DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -176,8 +176,7 @@ public class MeetingController {
         UserTeam ut = new UserTeam();
 
 //        == 임시 로그인 계정 ==
-        User loginuser = userService.findByUserID("rabbith3");
-        ut.setUser(loginuser);
+        ut.setUser(loginUser);
         ut.setTeam(team);
         ut.setBoss(true);
         userTeamService.save(ut);

@@ -2,6 +2,7 @@ package yy.project.YOYO.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import yy.project.YOYO.argumentresolver.Login;
 import yy.project.YOYO.domain.User;
 import yy.project.YOYO.vo.UserVO;
 
@@ -22,7 +23,7 @@ public interface UserService{
 
     String filePathForUserProfileImage(List<MultipartFile> images) throws Exception;
 
-    void updateUser(String userID, UserVO form) throws Exception;
+    void updateUser(UserVO form,User loginUser) throws Exception;
 
     void deleteUser(User user);
 
