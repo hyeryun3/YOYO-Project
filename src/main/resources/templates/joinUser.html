@@ -78,6 +78,10 @@
 
 <script type="text/javascript">
         jQuery(document).ready(function () {
+            $('#address_kakao').click(function(){
+                $(this).siblings('label').attr('style', 'font-size:70%; top:4px;')
+                $(this).attr('style', 'font-size:70%; padding-top:20px')
+            })
             $('input[type=text]').keyup(function () {
                 $(this).siblings('label').attr('style', 'font-size:70%; top:4px;')
                 $(this).attr('style', 'font-size:70%; padding-top:20px')
