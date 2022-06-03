@@ -167,6 +167,25 @@
         border-radius: 5px;
         border : 1px solid gray;
     }
+    .paging{
+        width: 100%;
+        height: 30px;
+        margin: 0 auto;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .paging ul{
+        width: 300px;
+        height: 100%;
+        margin: 30px auto;
+    }
+    .paging ul li{
+        float: left;
+        width: 14.2%;
+        text-align: center;
+    }
+
 
 </style>
 <body>
@@ -231,6 +250,30 @@
             </ul>
         </form>
         </div>
+        <div class="paging">
+            <ul>
+                <li th:if="${pvo.pageNum==1}"><a href=""><</a></li>
+                <li th:if="${pvo.pageNum>1}">
+                    <a th:if="${pVO.searchWord!=null}" href="/admin/adminUser?pageNum=${pVO.pageNum-1}&searchWord=${pVO.searchWord}"><</a>
+                    <a th:unless="${pVO.searchWord!=null}" href="/admin/adminUser?pageNum=${pVO.pageNum-1}"><</a>
+                </li>
+                <th:block  th:with="start = ${pVO.startPage}, end = ${pvo.totalPage}">
+                    
+                </th:block>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">></a></li>
+                <li th:if="${pvo.pageNum==pvo.totalPage}"><a href=""><</a></li>
+                <li th:if="${pvo.pageNum<pvo.totalPage}">
+                    <a th:if="${pVO.searchWord!=null}" href="/admin/adminUser?pageNum=${pVO.pageNum+1}&searchWord=${pVO.searchWord}"><</a>
+                    <a th:unless="${pVO.searchWord!=null}" href="/admin/adminUser?pageNum=${pVO.pageNum+1}"><</a>
+                </li>
+            </ul>
+        </div>
+
 
     </div>
     <div th:replace="fragments/footer :: footer"></div>
