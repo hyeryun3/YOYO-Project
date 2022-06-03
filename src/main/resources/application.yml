@@ -6,8 +6,8 @@ spring:
 
   datasource:
     url: jdbc:mysql://yoyo.cgenyk496gbx.us-east-1.rds.amazonaws.com:3306/yoyo?serverTimezone=UTC&characterEncoding=UTF-8
-    username: admin
-    password: private_merge
+    username: 
+    password: 
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   servlet:
