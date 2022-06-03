@@ -20,13 +20,23 @@
         <img src="/adminImage/main_des_3.png" alt="yoyo 기능설명 3 _ 편리한 약속 잡기" style="max-width:100%; height:auto;">
     </div>
     <div style="margin-top:100px">
-        <button id="w-100 btn btn-outline-light" style="background-color: #283C82;    border: 1px solid #b1b1b1;
-            color: #FFFFFF;width: 1300px; height:45px; max-width:100%; font-size: 14px;" onclick="location.href='/login'">시작하기</button>
+        <button class="w-100 btn btn-outline-light" id="start" style="background-color: #283C82;    border: 1px solid #b1b1b1;
+            color: #FFFFFF;width: 1300px; height:45px; max-width:100%; font-size: 14px;" >시작하기</button>
     </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 <script type="text/javascript">
     AOS.init(); // 자바스크립트로 init()을 해야 동작한다.
+
+    let me = '[[${user}]]'; // 나의 계정
+    $('#start').click(function(){
+        if(me==='o'){
+            location.href="/createMeeting";
+        }else{
+            location.href="/login";
+        }
+    })
+
 </script>
 </body>
 </html>
