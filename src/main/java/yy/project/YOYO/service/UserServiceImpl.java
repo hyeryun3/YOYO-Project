@@ -139,4 +139,10 @@ public class UserServiceImpl implements UserService{
         javaMailSender.send(message);
     }
 
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+
 }

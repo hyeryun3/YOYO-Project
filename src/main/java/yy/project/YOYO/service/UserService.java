@@ -29,4 +29,6 @@ public interface UserService{
     String getTempPW();
 
     void mailToPW(String userName, String email, String tempPW);
+
+    List<User> findAll();
 }
