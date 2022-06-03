@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
+import yy.project.YOYO.argumentresolver.Login;
 import yy.project.YOYO.domain.User;
 import yy.project.YOYO.repository.UserRepository;
 import yy.project.YOYO.vo.UserVO;
@@ -91,22 +92,21 @@ public class UserServiceImpl implements UserService{
         return userPhoto;
     }
 
-    public void updateUser(String userID, UserVO form) throws Exception {
+    public void updateUser(UserVO form, @Login User loginUser) throws Exception {
 
         String userImage = filePathForUserProfileImage(form.getUserImage());
 
-        User user = findByUserID("rabbith3");
-        user.setUserID(form.getUserID());
-        user.setPassword(form.getPassword());
-        user.setUserName(form.getUserName());
-        user.setEmail(form.getEmail());
-        user.setAddress(form.getAddress());
+        loginUser.setUserID(form.getUserID());
+        loginUser.setPassword(form.getPassword());
+        loginUser.setUserName(form.getUserName());
+        loginUser.setEmail(form.getEmail());
+        loginUser.setAddress(form.getAddress());
 
         if(userImage != null){
-            user.setUserImage(userImage);
+            loginUser.setUserImage(userImage);
         }
 
-        userRepository.save(user);
+        userRepository.save(loginUser);
 
     }
 
@@ -150,5 +150,11 @@ public class UserServiceImpl implements UserService{
         message.setText(sendMsg);                   //메일 내용
         javaMailSender.send(message);
     }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
 
 }
