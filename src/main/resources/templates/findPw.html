@@ -1,49 +1,57 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head th:replace="fragments/header :: header">
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<div class="container" style="text-align: center; width:850px; margin-bottom: 180px;">
-    <div class="topMargin" style="display:inline-block; ">
-        <div style=" margin:50px;" class="topMargin">
-            <img src="/adminImage/logo_blue.png" width="300px" alt="YOYO!">
-        </div>
-<!--    </div>-->
-<!--    <div class="signup_form">-->
-        <div class="signup_form" style="width: 300px;display: inline-block;">
-            <form id="form">
-                <div>
-                    <input type="text" id="name" name="userName" class="form-control"
-                           placeholder="성명" style="margin-top: 10px;">
-                </div>
+<div class="container" style="text-align: center; width:850px;">
+<!--    <form id="form">-->
+            <div class="topMargin" style="display:inline-block;">
+<!--                <div style=" margin:50px;" class="topMargin">-->
+<!--                    <img src="/adminImage/logo_blue2.png" style="margin-top: 20px; width: 300px;" alt="YOYO!">-->
+<!--                </div>-->
+                <!--    </div>-->
+                <!--    <div class="signup_form">-->
+                <div class="signup_form" style="width: 500px; margin-top: 20px; display: inline-block;">
+                    <form id="form2">
+                        <fieldset>
+                        <div class="topMargin">
+                            <img src="/adminImage/logo_blue2.png" style="margin-top: 20px; margin-bottom: 20px; width: 300px; display: inline-block;" alt="YOYO!">
+                        </div>
+                        <div>
+<!--                            <h5 style="margin-bottom: 25px; margin-top: 20px;">비밀번호 찾기</h5>-->
+                            <input type="text" id="name" name="userName" class="form-control"
+                                   placeholder="성명" style="margin-top: 10px;">
+                        </div>
 
-                <div>
-                    <input type="text" id="id" name="userID" class="form-control"
-                           placeholder="아이디" style="margin-top: 10px; ">
+                        <div>
+                            <input type="text" id="id" name="userID" class="form-control"
+                                   placeholder="아이디" style="margin-top: 10px; ">
+                        </div>
+                        <div>
+                            <input type="text" id="email" name="email" class="form-control"
+                                   placeholder="E-mail" style="margin-top: 10px;">
+                        </div>
+<!--                        <br>-->
+<!--                        <hr class="my-4">-->
+                        <div class="row">
+                            <div class="col">
+                                <button class="w-100 btn btn-outline-light" type="submit" id="find">
+                                    비밀번호 찾기
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button class="w-100 btn btn-outline-light" onclick="location.href='/login'"
+                                        type="button">돌아가기
+                                </button>
+                            </div>
+                        </div>
+                        </fieldset>
+                    </form>
                 </div>
-                <div>
-
-                    <input type="text" id="email" name="email" class="form-control"
-                           placeholder="E-mail" style="margin-top: 10px;">
-                </div>
-                <br>
-                <hr class="my-4">
-                <div class="row">
-                    <div class="col">
-                        <button class="w-100 btn btn-outline-light" type="submit" id="find">
-                            비밀번호 찾기
-                        </button>
-                    </div>
-                    <div class="col">
-                        <button class="w-100 btn btn-outline-light" onclick="location.href='/login'"
-                                type="button">돌아가기
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+            </div>
+        </fieldset>
+    </form>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 <style>
@@ -69,10 +77,13 @@
     }
 
     .signup_form fieldset {
-        margin-top: 4em;
-        margin-bottom: 5em;
+        margin-top: 100px;
         border: 2px solid #e2e2e2;
         padding: 1.8rem 2rem 1.8rem;
+    }
+
+    h5 {
+        color: #595959;
     }
 </style>
 <script type="text/javascript">

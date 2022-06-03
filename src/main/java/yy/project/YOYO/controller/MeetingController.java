@@ -105,10 +105,9 @@ public class MeetingController {
     @ResponseBody
     @GetMapping("/findMeeting")
     public List<MeetingVO> findMeeting(Model model,@Login User loginUser){
-//        임시 로그인
-        User user = userService.findByUserID(loginUser.getUserID());
-        List<UserTeam> myTeams = userTeamService.findByUID(user.getUID());
-        model.addAttribute("user",user);
+
+        List<UserTeam> myTeams = userTeamService.findByUID(loginUser.getUID());
+        model.addAttribute("user",loginUser);
 
         MeetingVO vo = null;
         List<MeetingVO> voList = new ArrayList<>();

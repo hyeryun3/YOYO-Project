@@ -4,40 +4,48 @@
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<div class="container" style="text-align: center; width:850px; margin-bottom: 250px;">
-    <div class="topMargin" style="display:inline-block; ">
-        <div class="topMargin2" style=" margin:50px;">
-            <img src="/adminImage/logo_blue.png" width="300px" alt="YOYO!">
-        </div>
-<!--    </div>-->
-<!--    <div class="" style="display:inline-block;">-->
-        <div class="signup_form" style="width: 300px;display: inline-block;">
-            <form id="form">
-                <div>
-                    <input type="text" id="name" name="userName" class="form-control" style="margin-top: 10px;"
-                           placeholder="성명">
-                </div>
-                <div>
-                    <input type="text" id="email" name="email" class="form-control" style="margin-top: 10px;"
-                           placeholder="E-mail">
-                </div>
-                <br>
-                <hr class="my-4">
-                <div class="row">
-                    <div class="col">
-                        <button class="w-100 btn btn-outline-light" id="find" type="submit">
-                            아이디 찾기
-                        </button>
+<div class="container" style="text-align: center; width:850px;">
+    <div class="topMargin" style="display:inline-block;">
+        <!--        <div class="topMargin2" style=" margin:50px;">-->
+        <!--            <img src="/adminImage/logo_blue2.png" width="300px" alt="YOYO!">-->
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--    <div class="" style="display:inline-block;">-->
+        <div class="signup_form" style="width: 500px; margin-top: 20px; display: inline-block;">
+            <form id="form2">
+                <fieldset>
+                    <div class="topMargin">
+                        <img src="/adminImage/logo_blue2.png"
+                             style="margin-top: 20px; width: 300px; margin-bottom: 20px; display: inline-block;" alt="YOYO!">
                     </div>
-                    <div class="col">
-                        <button class="w-100 btn btn-outline-light" onclick="location.href='/login'"
-                                type="button">돌아가기
-                        </button>
-                    </div>
-                </div>
+                    <div>
+<!--                        <h5 style="margin-bottom: 25px; margin-top: 20px;">아이디 찾기</h5>-->
+                        <div>
+                            <input type="text" id="name" name="userName" class="form-control" style="margin-top: 10px;"
+                                   placeholder="성명">
+                        </div>
+                        <div>
+                            <input type="text" id="email" name="email" class="form-control" style="margin-top: 10px;"
+                                   placeholder="E-mail">
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button class="w-100 btn btn-outline-light" id="find" type="submit">
+                                    아이디 찾기
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button class="w-100 btn btn-outline-light" onclick="location.href='/login'"
+                                        type="button">돌아가기
+                                </button>
+                            </div>
+                        </div>
+                </fieldset>
             </form>
         </div>
     </div>
+    </fieldset>
+    </form>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 <style>
@@ -63,8 +71,7 @@
     }
 
     .signup_form fieldset {
-        margin-top: 4em;
-        margin-bottom: 5em;
+        margin-top: 100px;
         border: 2px solid #e2e2e2;
         padding: 1.8rem 2rem 1.8rem;
     }
