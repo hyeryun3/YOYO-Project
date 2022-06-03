@@ -18,7 +18,7 @@ public class CommentController {
     @Inject
     CommentService service;
 
-    @RequestMapping(value = "/comment/writeOk,  method = RequsetMethod.Post")
+    @GetMapping("/comment/writeOk")
     public int writeOk(CommentVO vo, HttpSession session){
         vo.setUID(Long.toString(session.getAttribute("logId"));
         return service.commentWrite(vo);
