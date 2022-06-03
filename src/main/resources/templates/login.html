@@ -1,82 +1,135 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header">
-    <style>
-        a {
-            text-decoration: none;
-            color: #00000090;
-        }
+<!--    <style>-->
+<!--        a {-->
+<!--            text-decoration: none;-->
+<!--            color: #00000090;-->
+<!--        }-->
 
-        login_btn {
-            display: block;
-            box-sizing: border-box;
-            margin: auto;
-            width: 50%;
-            padding: 1rem;
-            font-size: 1rem;
-            background-color: #283C82;
-            border: 1px solid #b1b1b1;
-            color: #FFFFFF;
-            border-radius: 0.3rem;
-            margin-top: 2rem;
-        }
-    </style>
+<!--        login_btn {-->
+<!--            display: block;-->
+<!--            box-sizing: border-box;-->
+<!--            margin: auto;-->
+<!--            width: 50%;-->
+<!--            padding: 1rem;-->
+<!--            font-size: 1rem;-->
+<!--            background-color: #283C82;-->
+<!--            border: 1px solid #b1b1b1;-->
+<!--            color: #FFFFFF;-->
+<!--            border-radius: 0.3rem;-->
+<!--            margin-top: 2rem;-->
+<!--        }-->
+<!--    </style>-->
 
-<!--    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>-->
-<!--    <script>-->
-<!--        // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.-->
-<!--        Kakao.init('e6a4b96a4b6b23c1663853846b4c3f14'); // 사용할 앱의 JavaScript키를 입력해 주세요.-->
-<!--        // SDK 초기화 여부를 판단합니다.-->
-<!--    </script>-->
+    <!--    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>-->
+    <!--    <script>-->
+    <!--        // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.-->
+    <!--        Kakao.init('e6a4b96a4b6b23c1663853846b4c3f14'); // 사용할 앱의 JavaScript키를 입력해 주세요.-->
+    <!--        // SDK 초기화 여부를 판단합니다.-->
+    <!--    </script>-->
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
 <div class="container" style="text-align: center; width:850px;">
-    <div class="topMargin" style="display:inline-block; ">
-        <div style=" margin:70px;" class="topMargin">
-            <h1>로그인</h1>
-        </div>
-        <div class="topMargin" style="width: 300px;display: inline-block">
-            <input type="text" id="id" class="form-control"
-                   placeholder="ID" style="margin-top: 10px;">
-            <input type="password" id="pw" class="form-control"
-                   placeholder="PW" style="margin-top: 10px;">
+    <div class="signup_form" style="width: 500px; margin-top: 40px; display: inline-block;">
+        <form id="form2">
+            <fieldset>
+                <div class="topMargin">
+                    <img src="/adminImage/logo_blue2.png"
+                         style="margin-top: 20px; width: 300px; display: inline-block; margin-bottom: 20px;" alt="YOYO!">
+                </div>
+                <div>
+<!--                    <h5 style="margin-bottom: 25px; margin-top: 20px;">로그인</h5>-->
+                    <!--        <div class="topMargin" style="width: 300px;display: inline-block">-->
+                    <input type="text" id="id" class="form-control"
+                           placeholder="ID" style="margin-top: 10px;">
+                    <input type="password" id="pw" class="form-control"
+                           placeholder="PW" style="margin-top: 10px;">
 
-<!--            <input type="text" id="txt" class="form-control topMargin" placeholder="아래 이미지에 적힌 문자를 입력해주세요."-->
-<!--                   style="font-size: 14px"/>-->
-<!--            <img alt="자동입력방지" id="img" width="300" style="margin-top: 10px">-->
+                    <!--            <input type="text" id="txt" class="form-control topMargin" placeholder="아래 이미지에 적힌 문자를 입력해주세요."-->
+                    <!--                   style="font-size: 14px"/>-->
+                    <!--            <img alt="자동입력방지" id="img" width="300" style="margin-top: 10px">-->
+                </div>
+                <div class="topMargin">
+                    <button class="w-100 btn btn-outline-light" id="login_btn" type="submit">로그인</button>
+                </div>
+                <!--        <div class="hr-sect" style="text-align: center; margin: 15px 0; opacity: 70%">또는</div>-->
+                <!--        <div style="text-align: center; margin-bottom: 0.5em">-->
+                <!--            <a href="https://kauth.kakao.com/oauth/authorize?client_id=6c8a1661d27760e45954ff61c779e9e4&redirect_uri=http://localhost:8080/kakaoLogin&response_type=code"-->
+                <!--               style="text-decoration:none; text-align-all: center;">-->
+                <!--                <img src="/adminImage/kakaoBtn.png" alt="kakaoButton">-->
+                <!--            </a>-->
+                <!--        </div>-->
 
 
-        </div>
-        <div class="topMargin">
-            <button class="w-100 btn btn-outline-light" id="login_btn" type="submit" style="background-color: #283C82;    border: 1px solid #b1b1b1;
-            color: #FFFFFF;width: 300px; height:45px; font-size: 14px"> 로그인
-            </button>
-        </div>
-<!--        <div class="hr-sect" style="text-align: center; margin: 15px 0; opacity: 70%">또는</div>-->
-<!--        <div style="text-align: center; margin-bottom: 0.5em">-->
-<!--            <a href="https://kauth.kakao.com/oauth/authorize?client_id=6c8a1661d27760e45954ff61c779e9e4&redirect_uri=http://localhost:8080/kakaoLogin&response_type=code"-->
-<!--               style="text-decoration:none; text-align-all: center;">-->
-<!--                <img src="/adminImage/kakaoBtn.png" alt="kakaoButton">-->
-<!--            </a>-->
-<!--        </div>-->
-
-
-
-
-<!--        <div style="text-align : center;">-->
-<!--            <img src="/adminImage/naverBtn.png" alt="naverButton" id="naver_id_login" style="cursor: pointer">-->
-<!--        </div>-->
-        <div class="">
-            <div class="py-1 text-center" style="margin-top: 10px;">
-                <a class="btn" href="/signUp">회원가입</a>
-                <a class="btn" href="/findID">ID 찾기</a>
-                <a class="btn" href="/findPW">PW 찾기</a>
-            </div>
-        </div>
+                <!--        <div style="text-align : center;">-->
+                <!--            <img src="/adminImage/naverBtn.png" alt="naverButton" id="naver_id_login" style="cursor: pointer">-->
+                <!--        </div>-->
+                <div class="">
+                    <div class="py-1 text-center" style="margin-top: 10px;">
+                        <a class="btn" href="/signUp">회원가입</a>
+                        <a class="btn" href="/findID">ID 찾기</a>
+                        <a class="btn" href="/findPW">PW 찾기</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
     </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
+
+<style>
+    a {
+        text-decoration: none;
+        /*color: #00000090;*/
+    }
+
+    /*login_btn {*/
+    /*    display: block;*/
+    /*    box-sizing: border-box;*/
+    /*    margin: auto;*/
+    /*    width: 50%;*/
+    /*    padding: 1rem;*/
+    /*    font-size: 1rem;*/
+    /*    background-color: #283C82;*/
+    /*    border: 1px solid #b1b1b1;*/
+    /*    color: #FFFFFF;*/
+    /*    border-radius: 0.3rem;*/
+    /*    margin-top: 2rem;*/
+    /*}*/
+
+    .signup_form {
+        border: 1px solid white;
+        width: 400px;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .signup_form button {
+        display: block;
+        box-sizing: border-box;
+        margin: auto;
+        width: 50%;
+        padding: 1rem;
+        font-size: 1rem;
+        background-color: #283C82;
+        border: 1px solid #b1b1b1;
+        color: #FFFFFF;
+        border-radius: 0.3rem;
+        margin-top: 2rem;
+    }
+
+    .signup_form fieldset {
+        margin-top: 90px;
+        border: 2px solid #e2e2e2;
+        padding: 1.8rem 2rem 1.8rem;
+    }
+
+    h5 {
+        color: #595959;
+    }
+</style>
 
 <script>
     let key;
@@ -134,9 +187,9 @@
                             console.log(check)
                             if (check === true) {
                                 console.log("맞음")
-                                if(data =='admin'){
+                                if (data == 'admin') {
                                     window.location.href = "/admin/adminFood";
-                                }else{
+                                } else {
                                     window.location.href = "/";
                                 }
                             }
