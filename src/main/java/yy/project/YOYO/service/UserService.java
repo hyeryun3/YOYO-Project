@@ -10,6 +10,10 @@ import java.util.List;
 @Service
 public interface UserService{
 
+    User login(String id, String pw);
+
+    List<User> findByLUserID(String userID);
+
     int memberCheck(String userID);
 
     User save(User user);
