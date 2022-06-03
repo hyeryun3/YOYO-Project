@@ -10,13 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import yy.project.YOYO.argumentresolver.Login;
 import yy.project.YOYO.domain.User;
 import yy.project.YOYO.domain.UserTeam;
-import yy.project.YOYO.interceptor.SessionConst;
 import yy.project.YOYO.service.UserService;
 import yy.project.YOYO.service.UserTeamService;
 import yy.project.YOYO.vo.UserVO;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -27,13 +24,10 @@ public class UserController {
     private final UserService userService;
     private final UserTeamService userTeamService;
 
-
-
-
     @GetMapping("/myPage")
-    public String myPage(Model model){
+    public String myPage(Model model, @Login User loginUser){
 //        ==임시 로그인 ==
-        User user = userService.findByUserID("rabbith3");
+        User user = userService.findByUserID(loginUser.getUserID());
 
         UserVO vo = new UserVO();
         vo.setUserID(user.getUserID());
@@ -56,17 +50,17 @@ public class UserController {
     }
 
     @PostMapping("/myPage")
-    public String modifyMyPage(@ModelAttribute("user") UserVO userForm) throws Exception {
+    public String modifyMyPage(@Login User loginUser,@ModelAttribute("user") UserVO userForm) throws Exception {
 //        == 임시 로그인 ==
-        userService.updateUser("rabbith3", userForm);
+        userService.updateUser(userForm,loginUser);
 
         return "redirect:/myPage";
     }
 
     @GetMapping("/deleteUser")
-    public String deleteUser(){
+    public String deleteUser( @Login User loginUser){
         //        == 임시 로그인 ==
-        User user = userService.findByUserID("rabbith3");
+        User user = userService.findByUserID(loginUser.getUserID());
         List<UserTeam> ut = userTeamService.findByUID(user.getUID());
         if(ut.size()!=0){
             userTeamService.deleteByUID(user.getUID());// UserTeam에서 삭제
