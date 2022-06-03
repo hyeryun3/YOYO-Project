@@ -151,16 +151,20 @@
         border-radius: 15px;
         text-align: center;
         border: none;
-        background-color: #dee2e6;
+        background-color:#283C82;
         font-size: 16px;
         box-shadow: 2px 2px 3px #888888;
+        color: white;
     }
     input[type=submit]:hover, input[type=button]:hover{
         background-color: white;
         box-shadow: 2px 2px 3px #888888;
+        color: black;
     }
     #searchWord{
         height: 40px;
+        border-radius: 5px;
+        border : 1px solid gray;
     }
 
 </style>
@@ -203,24 +207,23 @@
                    </div><hr/>
                 </li>
 
-                    <li class="eachContent">
+                    <li class="eachContent" th:each=" user : ${Users}">
                     <div class="userInfo">
                         <div class="checkbox">
                             <input type="checkbox" name="userList" class="check"/>
                         </div>
                         <div class="id">
-                            <a>아이디</a>
+                            <a href="#" th:text="${user.userID}">아이디</a>
                         </div>
                         <div class="name">
-                            <span>이름</span>
+                            <span th:text="${user.userName}">이름</span>
                         </div>
                         <div class="email">
-                            <span>이메일</span>
+                            <span th:text="${user.email}">이메일</span>
                         </div>
                         <div class="address">
-                            <span>주소</span>
+                            <span th:text="${user.address}">주소</span>
                         </div>
-
 
                     </div><hr/>
                     </li>

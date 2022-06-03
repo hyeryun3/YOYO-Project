@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import yy.project.YOYO.domain.Food;
+import yy.project.YOYO.domain.User;
 import yy.project.YOYO.service.FoodService;
+import yy.project.YOYO.service.UserService;
 import yy.project.YOYO.vo.FoodVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +32,9 @@ public class AdminController {
 
     @Inject
     FoodService foodService;
+
+    @Inject
+    UserService userService;
 
 
     @GetMapping("/admin/adminFood")
@@ -52,7 +57,12 @@ public class AdminController {
     }
 
     @GetMapping("/admin/adminUser")
-    public String adminUser(){
+    public String adminUser(Model model){
+
+        List<User> Users = new ArrayList<>();
+
+        model.addAttribute("Users", userService.findAll());
+
         return "admin/adminUser";
     }
 
@@ -132,8 +142,6 @@ public class AdminController {
 
                 //음식 추가
                 foodService.save(food);
-
-                //음식 추가 sql
 
                 String msg = "<script>alert('음식이 추가가 완료되었습니다.');location.href='/admin/adminFood'; </script>";
 
@@ -270,10 +278,8 @@ public class AdminController {
 
             if(vo.getFoodImg() != null && !vo.getFoodImg().equals("")){
                 modifyFood.setFoodImg(vo.getFoodImg());
-                foodService.save(modifyFood);
-            }else{
-                foodService.save(modifyFood);
             }
+            foodService.save(modifyFood);
 
             String msg = "<script>alert('음식 수정이 완료되었습니다.');location.href='/admin/adminFood';</script>";
 
