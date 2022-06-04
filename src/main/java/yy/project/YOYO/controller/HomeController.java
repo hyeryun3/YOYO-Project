@@ -12,6 +12,8 @@ import yy.project.YOYO.domain.User;
 @Slf4j
 @RequiredArgsConstructor
 public class HomeController {
+
+
     @GetMapping("/")
     public String home(Model model, @Login User loginUser){
 
