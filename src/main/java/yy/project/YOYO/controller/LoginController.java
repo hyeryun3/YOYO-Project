@@ -104,30 +104,32 @@ public class LoginController {
             log.info("role : {}",loginUser.getRole());
             String role= loginUser.getRole();
             if (role.equals("admin")) {
+                log.info("-----------------------------admin 접속완료---------------------------");
                 return "admin";
             }
+            log.info("-----------------------------custom 접속완료---------------------------");
             return "custom";
 
         }
     }
 
-    @ResponseBody
-    @PostMapping("/getCheck")
-    public Boolean getCheck(@Login User loginUser){
+//    @ResponseBody
+//    @PostMapping("/getCheck")
+//    public Boolean getCheck(@Login User loginUser){
+//
+//        log.info("{}", loginUser.getUserName());
+//       // return false; 로직을 짰는데 해당 로직이 잘못됐다 ex) 자동방지문자가 틀렸을 때?
+//        return true; //이거는 자동방지문자가 일치할 때
+//    }
 
-        log.info("{}", loginUser.getUserName());
-       // return false; 로직을 짰는데 해당 로직이 잘못됐다 ex) 자동방지문자가 틀렸을 때?
-        return true; //이거는 자동방지문자가 일치할 때
-    }
-
-    @ResponseBody
-    @GetMapping("/1")
-    public String cc(@Login User loginUser){
-
-        log.info("{}", loginUser.getUserName());
-        log.info("{}", loginUser.getRole());
-        return "확인";
-    }
+//    @ResponseBody
+//    @GetMapping("/1")
+//    public String cc(@Login User loginUser){
+//
+//        log.info("{}", loginUser.getUserName());
+//        log.info("{}", loginUser.getRole());
+//        return "확인";
+//    }
 
     @ResponseBody
     @PostMapping("/checkUser")
