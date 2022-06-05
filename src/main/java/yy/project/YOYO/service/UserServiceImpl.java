@@ -2,6 +2,9 @@ package yy.project.YOYO.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
@@ -152,8 +155,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<User> findByUserIDIgnoreCaseContainingOrAddressContainingOrUserNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(String searchWord1, String searchWord2, String searchWord3, String searchWord4, Pageable pageable) {
+        return userRepository.findByUserIDIgnoreCaseContainingOrAddressContainingOrUserNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(searchWord1, searchWord2, searchWord3, searchWord4, pageable);
+    }
+
+    @Override
+    public List<User> deleteByUserIDIn(List<String> userID) {
+        return userRepository.deleteByUserIDIn(userID);
     }
 
 
