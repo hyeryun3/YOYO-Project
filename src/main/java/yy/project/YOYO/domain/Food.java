@@ -42,4 +42,22 @@ public class Food {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="tID")
     private Team team;
+
+    @Override
+    public int hashCode() {
+
+        return foodName.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if(obj instanceof Food) {
+            Food food=(Food)obj;
+            boolean bool=food.foodName.equals(this.foodName);
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

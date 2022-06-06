@@ -119,9 +119,10 @@
     #foodAll::-webkit-scrollbar{
         display: none;
     }
+    /*
     #foods{
         background: yellow;
-    }
+    }*/
     .eachFood{
         width: 25%;
         float: left;
@@ -153,7 +154,7 @@
             let type = $(this).text();
 
             $.ajax({
-                url: "/admin/showFoods",
+                url: "/showFoods",
                 data : 'foodType=' + type,
                 method: 'post',
 
@@ -209,6 +210,7 @@
         </div>
 
     </div>
+
     <div th:replace="fragments/footer :: footer"></div>
 
 </div>

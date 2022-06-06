@@ -1,0 +1,317 @@
+
+
+<div th:fragment="food">
+
+
+
+  <style>
+    ul, li{
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    body{
+
+    }
+    #foods{
+      display: flex;
+      justify-content: center;
+      margin-top: 100px;
+    }
+    #foodList{
+      text-align: center;
+      width: 100%;
+    }
+    .foodInfo{
+      float: left;
+      width: 16.6%;
+      font-size: 20px;
+      transition: all 0.3s ease-out;
+      margin-bottom:30px;
+    }
+    .foodInfo:hover{
+      transform: translateY(-20px);
+    }
+    .foodInfo>div{
+      margin-bottom: 5px;
+    }
+    .foodName{
+      font-weight: 600;
+      font-size:20px;
+    }
+    .foodPhoto{
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
+    }
+    .foodPhoto:hover{
+      opacity: 0.85;
+    }
+    .foodPhoto img{
+      width: 100%;
+      height: 100%;
+      border-radius: 70px;
+      opacity: 0.9;
+      box-shadow: 3px 3px 3px gray;
+
+    }
+    .foodPhoto img:hover{
+      box-shadow: 5px 5px 5px gray;
+    }
+    .foodDesc{
+      font-size: 18px;
+      font-weight : 500;
+    }
+    #more{
+
+    }
+
+    #modalFood{
+      justify-content: center;
+      align-items: center;
+      overflow-y: auto;
+    }
+    #modalFood .modal-dialog{
+      overflow-y: initial !important;
+    }
+    #modalFood .modal-title{
+      margin: 10px 30px;
+      width: 90%;
+    }
+    #modalFood .modal-body{
+      overflow-y: auto;
+      height: 100%;
+      margin-bottom:30px;
+    }
+
+    #foodCategory{
+      width: 100%;
+      margin-top:20px;
+      text-align: center;
+      height : 100px;
+      font-size: 20px;
+      line-height: 100px;
+
+    }
+    #foodCategory ul{
+      text-align: center;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content:space-around;
+      width: 100%;
+      /*margin: 50px 0px;*/
+    }
+    #foodAll{
+      /*margin: 20px;*/
+      width: 100%;
+      height: 700px;
+      overflow: scroll;
+    }
+    #foodAll::-webkit-scrollbar{
+      display: none;
+    }
+
+    .eachFood{
+      width: 25%;
+      float: left;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .foodName{
+      font-weight: bold;
+      font-size:17px;
+    }
+    .foodPicture{
+      width:150px !important;
+      border-radius: 20px;
+      object-fit:cover;
+      height: 150px;
+      max-width: 100%;
+    }
+
+    #foodClose{
+      float: right;
+      width: 10%;
+    }
+
+  </style>
+  <script>
+    var weatherData = null;
+    var params;
+    function onGeoOk(position) {
+
+      const API_KEY = "34f03c607cbd5ac6878b951a96d17bef";
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const url = "https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lon+"&lang=kr&appid="+API_KEY+"&units=metric";
+
+      fetch(url)
+              .then(response => response.json())
+              .then(data => {
+
+                let weatherinfo = data.weather[0].main;
+                let tempinfo = data.main.temp;
+
+                console.log(weatherinfo);
+                console.log(tempinfo);
+
+                //날씨, 온도 정보
+
+                params = "weather=" + weatherinfo + "&temperature=" + tempinfo;
+
+                FoodRecommend();
+
+              });
+    }
+    function FoodRecommend(){
+      $.ajax({
+
+        url : "/getFoodRecommend",
+        data : params,
+        type : "get",
+
+        success : function(result, status){
+
+          var tag = "";
+          var $result = $(result);
+
+          $result.each(function(idx, vo){
+
+            tag +="<li class='foodInfo'>";
+            tag += "<div class='foodName'>" + vo.foodName + "</div>";
+            tag += "<div class='foodPhoto'><a href=''><img src='/static/image/food/" + vo.foodImg + "'></a></div>";
+
+            tag += "<div class='foodDesc'>" + vo.foodCategory + "</div></li>"
+
+
+          });
+
+          tag +="<li class='foodInfo' id='more' data-toggle='modal' data-target='#modalFood'>";
+          tag += "<div class='foodName'>" + "더보기" + "</div>";
+          tag += "<div class='foodPhoto'><a id='moreFoods'><img src='/static/image/food/more.jpg'></a></div>";
+
+          tag += "<div class='foodDesc'></div></li>"
+
+          $("#foodList").html(tag);
+
+        },
+        error : function(error){
+          console.log(error.responseText);
+        }
+
+      });
+    }
+    function onGeoError() {
+      alert('위치를 찾을 수 없습니다. ')
+    }
+
+    navigator.geolocation.getCurrentPosition(onGeoOk,onGeoError);
+
+    $(function (){
+
+      let type = "";
+
+      $('#modalFood').on('show.bs.modal', function (e) {
+
+        type="전체";
+
+        showFood(type);
+
+        $("#total").click();
+
+      });
+
+
+
+      $(".foodType").click(function(){
+
+        type = $(this).text();
+
+        showFood(type);
+
+      });
+
+      function showFood(type){
+
+        $.ajax({
+          url: '/showFoods',
+          data : 'foodType=' + type,
+          method: 'post',
+
+          success: function(result){
+            let tag = "";
+            let $result = $(result);
+
+            console.log("here");
+
+            $result.each(function(idx,vo){
+              tag+= "<li class='eachFood'>";
+              tag += "<span class='foodName'>" + vo.foodName+ "</span><br/>";
+              tag += "<img class='foodPicture img-fluid' src='/static/image/food/" + vo.foodImg + "'><br/>";
+              tag += "<span class='foodCate'>" + vo.foodCategory + "</span></li>";
+
+              $("#food").html(tag);
+            });
+          },
+          error: function(error){
+            console.log(error.responseText);
+          }
+        });
+
+      }
+
+      $("#foodClose").click(function(){
+        $("#modalFood").modal('hide');
+      });
+
+
+    });
+
+
+  </script>
+
+
+  <div id="foods">
+    <ul id="foodList">
+
+    </ul>
+  </div>
+
+  <div class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" id="modalFood" onload="showFood('전체')">
+    <div class="modal-dialog modal-lg" >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">음식 리스트</h5><hr/>
+          <button type="button"  class="close" data-dismiss="modal" aria-label="Close" id="foodClose"> <span aria-hidden="true">&times;</span></button>
+        </div>
+        <div id="foodCategory">
+          <ul>
+            <li><a href="#" class="foodType" id="total">전체</a></li>
+            <li><a href="#" class="foodType">한식</a></li>
+            <li><a href="#" class="foodType">일식</a></li>
+            <li><a href="#" class="foodType">중식</a></li>
+            <li><a href="#" class="foodType">디저트</a></li>
+            <li><a href="#" class="foodType">기타</a></li>
+          </ul>
+        </div>
+        <div class="modal-body" >
+          <div id="foodAll">
+            <ul id="food">
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>

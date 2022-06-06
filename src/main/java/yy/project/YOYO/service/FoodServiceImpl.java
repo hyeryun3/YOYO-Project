@@ -48,5 +48,30 @@ public class FoodServiceImpl implements FoodService{
         return foodRepository.findByFoodName(foodName);
     }
 
+    @Override
+    public List<Food> findByEvent(String event) {
+        return foodRepository.findByEvent(event);
+    }
+
+    @Override
+    public List<Food> findByWeather(String weather) {
+        return foodRepository.findByWeather(weather);
+    }
+
+    @Override
+    public List<Food> findBySeason(String season) {
+        return foodRepository.findBySeason(season);
+    }
+
+    @Override
+    public List<Food> findByTemperature(String temperature) {
+        return foodRepository.findByTemperature(temperature);
+    }
+
+    @Override
+    public List<Food> findByPriority(Character priority) {
+        return foodRepository.findByPriority(priority);
+    }
+
 
 }
