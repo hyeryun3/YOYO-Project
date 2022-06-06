@@ -28,5 +28,15 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
 
     Food findByFoodName(@Param("foodName") String foodName);
 
+    List<Food> findByEvent(String event);
+
+    List<Food> findByWeather(String weather);
+
+    List<Food> findBySeason(String season);
+
+    List<Food> findByTemperature(String temperature);
+
+    List<Food> findByPriority(Character priority);
+
 
 }
