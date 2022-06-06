@@ -20,8 +20,8 @@
                 data.forEach(function (vo) {
                     let div = document.createElement('div');
                     div.setAttribute('style', 'border-radius:10px; margin:100px 0; max-width:100%; height:auto; background-color:#00000010; padding:30px;');
-                    let teamName = document.createElement('h2')
-                    teamName.innerHTML='[ '+vo.teamName +' ]';
+                    let teamName = document.createElement('h2');
+                    teamName.innerHTML='<a href=/viewMeeting/'+vo.tid+'>'+'[ '+vo.teamName +' ]'+'</a>';
                     let editBtn = document.createElement('button')
                     editBtn.setAttribute('style','width:50%')
                     editBtn.innerHTML='수정하기';
@@ -77,120 +77,6 @@
         });
     }
 
-</script>
-
-<script>
-
-    //댓글
-    $(function(){
-        //댓글 목록 가져오기 함수
-        function commentListAll(){ //현재 팀의 댓글을 모두 가져오기
-            var url = "comment/list";
-            var params = "tID=${vo.tID}";
-            $.ajax({
-                url:url,
-                data:params,
-                success:function(result){
-                    var $result = $(result);
-                    var tag = "<ul>";
-                    $result.each(function(idx, vo){
-                        tag += "<li><div>"+ vo.uid;
-                        tag += "("+ vo.upload_time+")";
-
-                        if(vo.uID == '${logId}'){
-                            tag += "<input type='button' value='수정'/>";
-                            tag += "<input type='button' value='삭제' title='"+vo.cmID+"'/>";
-                        }
-                        tag += "<br/>"+vo.comment_content+"</div>";
-
-                        //본인 댓글 수정
-                        if(vo.uid=='${logId}'){
-                            tag += "<div style='display:none'><form method='post'>";
-                            tag += "<input type='hidden' name='replyno' value='"+vo.cmID+"'/>";
-                            tag += "<textarea name='coment' style='width:400px;height:50px;'>"+vo.comment_content+"</textarea>";
-                            tag += "<input type='submit' value='수정'/>";
-                            tag += "</form></div>";
-                        }
-                        tag += "<hr/></li>";
-                    });
-                    tag += "</ul>";
-
-                    $("#commentList").html(tag);
-                },error:function(e){
-                    console.log(e.responseText);
-                }
-            });
-        }
-        //댓글등록
-        $("#commentFrm").submit(function(){
-            event.preventDefault();//form 기본이벤트 제거
-            if($("#comment").val()==""){//댓글 없음
-                alert("댓글을 입력하세요.");
-                return;
-            }else{//댓글 입력
-                var params = $("#commentFrm").serialize();
-
-                $.ajax({
-                    url:'/comment/writeOk',
-                    data:params,
-                    type:'POST',
-                    success:function(r){
-                        //폼 초기화
-                        $("#comment").val("");
-                        //댓글목록 refresh
-                        commentListAll();
-                    },error:function(e){
-                        console.log(e.responseText);
-                    }
-                });
-            }
-        });
-
-        //댓글 수정(Edit)버튼 선택시 폼 보여주기
-        $(document).on('click', '#commentList input[value=Edit]', function(){
-            $(this).parent().css("display", "none");
-
-            $(this).parent().next().css("display","block");
-        });
-
-        //댓글 수정
-        $(document).on('submit', '#commnetList form', function(){
-            event.preventDefault();
-            //데이터
-            var params = $(this).serialize();
-            var url = '/comment/editOk';
-            $.ajax({
-                url:url,
-                data:params,
-                type:'POST',
-                success:function(result){
-                    console.log(result);
-                    commentListAll();
-                },error:function(){
-                    console.log('수정실패');
-                }
-            });
-        });
-
-        //댓글 삭제
-        $(document).on('click', '#commentList input[value=Del]', function(){
-            if(confirm('댓글을 삭제하시겠습니까?')){
-                var params = "cmID="+$(this).attr("title");
-                $.ajax({
-                    url:'/comment/del',
-                    data:params,
-                    success:function(result){
-                        console.log(result);
-                        commentListAll();
-                    },error:function(){
-                        console.log("댓글삭제 에러");
-                    }
-                });
-            }
-        });
-        //현재 글의 댓글
-        commentListAll();
-    });
 </script>
 </body>
 </html>
