@@ -18,7 +18,8 @@
             <fieldset>
                 <div class="topMargin">
                     <img src="/adminImage/logo_blue2.png"
-                         style="margin-top: 20px; width: 300px; display: inline-block; margin-bottom: 20px;" alt="YOYO!">
+                         style="margin-top: 20px; width: 300px; display: inline-block; margin-bottom: 20px;"
+                         alt="YOYO!">
                 </div>
                 <div>
 <!--                    <h5 style="margin-bottom: 25px; margin-top: 20px;">로그인</h5>-->
@@ -33,7 +34,6 @@
                     <!--            <img alt="자동입력방지" id="img" width="300" style="margin-top: 10px">-->
                 </div>
                 <div class="topMargin">
-
                     <button  class="w-100 btn btn-outline-light" id="login_btn" type="submit" >로그인</button>
                 </div>
                 <!--        <div class="hr-sect" style="text-align: center; margin: 15px 0; opacity: 70%">또는</div>-->
@@ -124,18 +124,22 @@
             success: function (data) {
 
                 if (data == "아이디 또는 비밀번호가 일치하지 않습니다.") {
+                    alert("아이디 또는 비밀번호를 확인해주세요.");
 
-                    history.go(0);
+                    if(id == "" ){
+                        $('id').focus();
+                    } else if(pw == "") {
+                        $('pw').focus();
+                    } return true;
 
                 }
+
                 //현재 data는 "admin" or "custom"
                    if (data == 'admin') {
-
                         window.location.href = "/admin/adminFood";
                     }
                      else
                         {
-
                             window.location.href = "/";
                         }
             },
