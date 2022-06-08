@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import yy.project.YOYO.argumentresolver.Login;
 import yy.project.YOYO.domain.User;
 import yy.project.YOYO.domain.UserTeam;
+import yy.project.YOYO.service.CommentService;
 import yy.project.YOYO.service.UserService;
 import yy.project.YOYO.service.UserTeamService;
 import yy.project.YOYO.vo.UserVO;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -23,6 +26,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserTeamService userTeamService;
+    private final CommentService commentService;
 
     @GetMapping("/myPage")
     public String myPage(Model model, @Login User loginUser){
@@ -54,18 +58,24 @@ public class UserController {
 //        == 임시 로그인 ==
         userService.updateUser(userForm,loginUser);
 
-        return "redirect:/myPage";
+        return "redirect:/";
     }
 
     @GetMapping("/deleteUser")
-    public String deleteUser( @Login User loginUser){
+    public String deleteUser( @Login User loginUser,HttpServletRequest request){
         //        == 임시 로그인 ==
-        User user = userService.findByUserID(loginUser.getUserID());
-        List<UserTeam> ut = userTeamService.findByUID(user.getUID());
+        commentService.deleteByWriterUID(loginUser.getUID());
+
+        List<UserTeam> ut = userTeamService.findByUID(loginUser.getUID());
         if(ut.size()!=0){
-            userTeamService.deleteByUID(user.getUID());// UserTeam에서 삭제
+            userTeamService.deleteByUID(loginUser.getUID());// UserTeam에서 삭제
         }
-        userService.deleteUser(user); // 회원리스트에서 삭제
+        userService.deleteUser(loginUser); // 회원리스트에서 삭제
+
+        HttpSession session = request.getSession(false);
+        if(session !=null){
+            session.invalidate();
+        }
         return "redirect:/";
     }
 

@@ -5,8 +5,8 @@
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<h3 style="text-align: center; color: #386ad1; margin-top: 50px;">My Page</h3>
-<div class="myPageContainer" >
+<h3 style="text-align: center; color: #386ad1; margin-top: 100px;">My Page</h3>
+<div class="myPageContainer">
     <div class="col-7" style="margin: 0 auto; width:700px">
     <fieldset>
         <form role="form" id="form" th:object="${user}" enctype="multipart/form-data" method="post"
@@ -44,7 +44,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" th:for="address">주소</label>
                 <div class="col-sm-8">
-                    <input type="text" id="address" name="address" class="form-control" th:value="*{address}" readonly>
+                    <input type="text" id="address" name="address" class="form-control" th:value="*{address}" >
                 </div>
             </div>
             <div class="form-group row">
@@ -55,18 +55,55 @@
                 </div>
             </div>
         </form>
-    </fieldset>
         <div class="form-group">
-            <button type="submit" class="btn btn-outline-secondary" id="update" style="display:inline-block; float: left">저장하기</button>
+            <button type="submit" class="btn btn-outline-secondary" id="update">저장하기</button>
         </div>
         <form >
-            <button type="button" class="btn btn-primary" id="deleteAccount" style="display: inline-block">회원탈퇴</button>
+            <button type="button" class="btn btn-outline-light" id="deleteAccount">회원탈퇴</button>
         </form>
     </div>
 
 </div>
 <div th:replace="fragments/footer :: footer"></div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<style>
+    #deleteAccount {
+        display: block;
+        box-sizing: border-box;
+        /*padding: 1rem;*/
+        font-size: 17px;
+        background-color: #283C82;
+        border: 1px solid #b1b1b1;
+        color: #FFFFFF;
+        border-radius: 0.3rem;
+        margin-top: 10px;
+        height: 40px;
+    }
+
+    #update {
+        display:inline-block;
+        float: left;
+        box-sizing: border-box;
+        /*padding: 1rem;*/
+        font-size: 17px;
+        border: 1px solid #b1b1b1;
+        border-radius: 0.3rem;
+        margin-top: 10px;
+        height: 40px;
+    }
+
+</style>
 <script>
+
+    $('#address').click(function (){
+        new daum.Postcode({
+            oncomplete: function (data) { //선택시 입력값 세팅
+                document.getElementById("address").value = data.address; // 주소 넣기
+            }
+        }).open();
+    })
+
     $(function () {
         $("#input-image").on('change', function () {
             $("#preview").css('display', 'none');
