@@ -11,4 +11,6 @@ import javax.transaction.Transactional;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     Comment findBycmID(Long cmID);
+
+    void deleteByWriterUID(Long uId);
 }

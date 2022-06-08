@@ -59,6 +59,11 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
+    public void deleteByWriterUID(Long uId){
+        commentRepository.deleteByWriterUID(uId);
+    }
+
+    @Override
     public boolean updateCommentCheck(Long cmID, Long uid) {
         if(commentRepository.findBycmID(cmID).getWriterUID()==uid){
             return true;

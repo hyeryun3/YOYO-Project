@@ -19,10 +19,10 @@
             </div>
             <input type="hidden" id="tID">
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label" for="meetingPlace">모임 장소</label>
+                <label class="col-sm-4 col-form-label" for="meetingPlace">출발 장소</label>
                 <div class="col-sm-8">
                     <select id="meetingPlace" class="form-control" style="font-size: 14px">
-                        <option>중간 지점</option>
+                        <option>우리 집</option>
                         <option>직접 지정</option>
                     </select>
                     <input type="text" class="form-control" id="writePlace" name="writePlace" style="padding-left: 20px" hidden>
@@ -50,8 +50,8 @@
 
     $('#save').click(function (){
         let place;
-        if($('#meetingPlace').val()=='중간 지점'){
-            place='중간 지점';
+        if($('#meetingPlace').val()=='우리 집'){
+            place='우리 집';
         }else{
             place=$('#writePlace').val();
         }
