@@ -18,6 +18,8 @@ public interface CommentService {
 
     void delete(Long cmID);
 
+    void deleteByWriterUID(Long uId);
+
     boolean updateCommentCheck(Long cmID, Long uid);
 
     void updateCommentSave(Long cmID, String commentContent);
