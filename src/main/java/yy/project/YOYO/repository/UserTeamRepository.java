@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import yy.project.YOYO.domain.User;
 import yy.project.YOYO.domain.UserTeam;
 
 import javax.transaction.Transactional;
@@ -27,4 +28,8 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
     @Modifying
     @Query("delete from UserTeam ut where ut.user.uID=:uId")
     void deleteByUID(@Param("uId") Long uId);
+
+    @Query("select ut from UserTeam ut where ut.team.tID=:tId and ut.user.uID=:uId")
+    UserTeam findByUIDAndTID(@Param("uId") Long uId,@Param("tId") Long tId);
+
 }

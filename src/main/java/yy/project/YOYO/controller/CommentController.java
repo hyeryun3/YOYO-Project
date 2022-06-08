@@ -20,6 +20,7 @@ import yy.project.YOYO.service.UserTeamService;
 import yy.project.YOYO.vo.CommentVO;
 import yy.project.YOYO.vo.MeetingVO;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -33,10 +34,17 @@ import static yy.project.YOYO.controller.MeetingController.meetingvo;
 @RequiredArgsConstructor
 public class CommentController {
 
+
     private final CommentService commentService;
     private final UserService userService;
     private final TeamService teamService;
     private final UserTeamService userTeamService;
+
+//    @GetMapping("/viewMeeting/{tID}")
+//    public String viewMeeting(){
+//
+//        return "viewMeeting";
+//    }
 
     @GetMapping("/viewMeeting/{tID}")
     public String viewMeeting(@PathVariable("tID") Long tID,Model model,@Login User loginUser){
@@ -52,13 +60,13 @@ public class CommentController {
                 userIDs.add(ut.get(i).getUser().getUserID());
             }
         }
+        model.addAttribute("teamName",team.getTeamName());
         model.addAttribute("user", loginUser.getUserID());
         model.addAttribute("userIDs",userIDs);
-        model.addAttribute("teamName", team.getTeamName());
-        model.addAttribute("place", team.getPlace());
-        model.addAttribute("date", team.getDate());
         return "viewMeeting";
     }
+
+
 
     @ResponseBody
     @GetMapping("/findComment")
