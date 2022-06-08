@@ -199,5 +199,7 @@ public class MeetingController {
         return "checkMeeting";
     }
 
+    static MeetingVO meetingvo = new MeetingVO();
+
 
 }

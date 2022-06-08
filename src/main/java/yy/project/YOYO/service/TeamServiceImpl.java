@@ -21,4 +21,9 @@ public class TeamServiceImpl implements TeamService{
         return teamRepository.findBytID(tID);
     }
 
+    @Override
+    public Team findBytID2(Long tID) {
+        return teamRepository.findBytID(tID);
+    }
+
 }
