@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<h3 style="text-align: center; color: #386ad1; margin-top: 50px;">약속 상세보기</h3>
+<div class="meetingContainer">
+    <div class="col-7" style="margin: 0 auto; width:700px">
+        <form id="EditForm" th:object="${team}">
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="meetingName">모임 이름</label>
+                <div class="col-sm-8">
+                    <input type="text" name="meetingName" id="meetingName" th:value="*{teamName}" class="form-control"
+                           readonly/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">모임 멤버</label>
+                <div class="col-sm-8" id="plususers">
+                    <div class="btn-group" role="group">
+                        <div class="col-sm-10" style="padding:0">
+                            <input type="text" name="users" id="users" class="form-control" size="25"
+                                   placeholder="멤버 아이디를 입력해주세요."/>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="button" value="추가" id="usersplus" class="btn btn-outline-secondary"/>
+                        </div>
+                    </div>
+                    <div class="mb-3 row" id="pu"></div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="meetingPlace">모임 장소</label>
+                <div class="col-sm-8">
+                    <select id="meetingPlace" class="form-control" style="font-size: 14px" th:value="*{place}">
+                        <option>중간 지점</option>
+                        <option>직접 지정</option>
+                    </select>
+                    <input type="text" class="form-control" id="writePlace" name="writePlace" style="padding-left: 20px"
+                           hidden>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="meetingDate">모임 날짜</label>
+                <div class="col-sm-8">
+                    <input type="datetime-local" onchange="setMinValue()" name="meetingDate" id="meetingDate"
+                           class="form-control" style="color:#00000090" th:value="*{date}"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding: 0px; border: 0px;">
+    <div id="deleteBtn" style="border-radius: 0.5rem; height: 10px;"></div>
+    <div id="updateBtn" style="border-radius: 0.5rem; height: 10px;"></div>
+</div>
+<hr class="h-divider" style="margin-top: 50px;">
+
+<form style="margin-top: 60px; padding-left:20px">
+    <div style="margin:auto;">
+        <h2>댓글보기</h2>
+    </div>
+    <div>
+        <div id="commentList">
+        </div>
+    </div>
+</form>
+
+<form>
+    <div class="form-group" style="margin: 0 20px">
+        <div class="row">
+            <textarea id="comment" placeholder="내용을 입력해주세요"
+                      style="padding-left:5;padding-right:50;padding-bottom:50;padding-top:50;word-break:break-all;width:100%"></textarea>
+            <button type="button" class="btn btn-outline-dark col-1" id="btn"
+                    style="border-color: #00000030; float: right; font-size: 15px; height: 30px">
+                등록
+            </button>
+        </div>
+    </div>
+</form>
+
+</div>
+
+<script>
+    let me = '[[${user}]]'; // 나의 계정
+    let members= [];
+    let place = '[[${team.place}]]'
+    let userList = '[[${userIDs}]]'
+    let tid='[[${tID}]]'
+
+    userList = userList.replace('[','')
+    userList = userList.replace(']','')
+    let aa = userList.split(',')
+    if(aa!=''){
+        aa.forEach(function (mem){
+            mem = mem.trim()
+            plusMem(mem);
+        })
+    }
+
+    if(place == "중간 지점" || place == "중간지점"){
+        $('#meetingPlace').val("중간 지점")
+
+    }else{
+        $('#meetingPlace').val("직접 지정")
+
+    }
+
+    function plusMem (sendData){
+        let div = document.querySelector('#pu');
+        let group = document.createElement('div');
+        group.setAttribute('class','btn-group');
+        group.setAttribute('role','group');
+
+        let userdiv = document.createElement('div');
+        userdiv.setAttribute('class','col-sm-10');
+        userdiv.setAttribute('style','padding:0px 0px 0px 15px');
+        let usertxt = document.createElement('input');
+        usertxt.setAttribute('type', 'text');
+        usertxt.setAttribute('size','25');
+        usertxt.setAttribute('name', 'users');
+        usertxt.setAttribute('id', 'users');
+        usertxt.setAttribute('class', 'form-control');
+        usertxt.setAttribute('value', sendData);
+        usertxt.setAttribute('readonly',true);
+        userdiv.append(usertxt);
+
+        group.append(userdiv);
+        div.append(group);
+    }
+
+    let curURL = window.location.href;
+    let urlArr = curURL.split("/");
+
+    $(document).ready(function () {
+        // findContent();
+        findComment();
+        // deleteContent();
+
+        $("#btn").on('click', function () {
+            saveComment();
+        })
+    });
+
+    function saveComment() {
+        if ($('#comment').val() == "") {
+            $("#comment").attr('placeholder', '최소 한글자 이상을 입력하세요.');
+        } else {
+            $.ajax({
+                url: "/saveComment",
+                type: "GET",
+                data: {
+                    comment: $("#comment").val(),
+                },
+                success: function (data) {
+                    let commentList = document.getElementById('commentList');
+
+                    let div1 = document.createElement('form');
+                    div1.setAttribute('class', 'row');
+                    div1.setAttribute('id', data.cmID + 'div');
+                    div1.setAttribute('style', 'margin-bottom: 40px;');
+                    let div2 = document.createElement('div')
+                    div2.setAttribute('class', 'col-auto');
+                    div2.setAttribute('style', 'margin-top: 30px;, margin-right: 30px;, font-weight: bold');
+                    let input = document.createElement('input');
+                    input.setAttribute('class', 'form-control');
+                    let name = document.createElement('div');
+                    name.setAttribute('class', 'col-2')
+                    name.setAttribute('style', 'margin-right: 30px;');
+                    name.innerHTML = "🙂 " + data.writerName + "님의 댓글  ";
+                    let content = document.createElement('input');
+                    content.setAttribute('type', 'text');
+                    content.setAttribute('value', data.commentContent);
+                    content.setAttribute('id', data.cmID);
+                    content.setAttribute('name', 'comments');
+                    content.setAttribute('class', 'col-8');
+                    content.setAttribute('style', 'border:1px solid #00000020')
+
+                    div1.appendChild(name);
+                    div1.appendChild(content);
+
+                    // 수정버튼 생성
+                    let updateComment = document.createElement('button');
+                    updateComment.setAttribute('type', 'button');
+                    updateComment.setAttribute('class', 'btn btn-outline-dark');
+                    updateComment.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px')
+
+                    updateComment.innerHTML = "수정";
+                    div1.appendChild(updateComment);
+
+                    // 삭제버튼 생성
+                    let delComment = document.createElement('button');
+                    delComment.setAttribute('type', 'button');
+                    delComment.setAttribute('class', 'btn btn-outline-dark');
+                    delComment.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px')
+
+                    delComment.innerHTML = "삭제";
+                    div1.appendChild(delComment);
+                    commentList.appendChild(div1);
+
+                    $("#comment").val("");
+
+                    // 댓글 삭제
+                    delComment.addEventListener("click", () => {
+                        $.ajax({
+                            url: "/deleteComment",
+                            type: "GET",
+                            dataType: "json",
+                            data: {
+                                cmID: data.cmID,
+                            },
+                            success: function (res) {
+                                if (res == true) {
+                                    $('#' + data.cmID + 'div').remove()
+                                }
+                            }, error: function () {
+                                alert("댓글 삭제 에러");
+                                window.location.replace('/boardSearch');
+                            }
+                        });
+                    });
+                    // 댓글 수정
+                    updateComment.addEventListener("click", () => {
+                        let comments = document.getElementById(data.cmID)
+
+                        $.ajax({
+                            url: "/updateCommentSave", //댓글 수정하기 버튼 누르고 나오는 수정하기 버튼
+                            type: "GET",
+                            dataType: "json",
+                            data: {
+                                cmID: data.cmID,
+                                commentContent: comments.value
+                            },
+                            success: function (data) {
+                                if (data == true) {
+                                }
+                            }
+                        });
+                    })
+                }
+            });
+        }
+    }
+
+    function findComment() {
+        $.ajax({
+            url: "/findComment",
+            type: "GET",
+            success: function (data) {
+                let commentList = document.getElementById('commentList');
+                data.forEach(function (comment) {
+                    let div1 = document.createElement('form');
+                    div1.setAttribute('class', 'row');
+                    div1.setAttribute('id', comment.cmID + 'div');
+                    div1.setAttribute('style', 'margin-bottom: 40px;');
+                    let div2 = document.createElement('div')
+                    div2.setAttribute('class', 'col-auto');
+                    div2.setAttribute('style', 'margin-top: 30px;, margin-right: 30px;, font-weight: bold');
+                    let input = document.createElement('input');
+                    input.setAttribute('class', 'form-control');
+                    let name = document.createElement('div');
+                    name.setAttribute('class', 'col-2')
+                    name.setAttribute('style', 'margin-right: 30px;');
+                    name.innerHTML = "🙂 " + comment.writerName + "님의 댓글  ";
+                    let content = document.createElement('input');
+                    content.setAttribute('type', 'text');
+                    content.setAttribute('value', comment.commentContent);
+                    content.setAttribute('id', comment.cmID);
+                    content.setAttribute('name', 'comments');
+                    content.setAttribute('class', 'col-8');
+                    content.setAttribute('style', 'border:1px solid #00000020')
+                    div1.appendChild(name);
+                    div1.appendChild(content);
+
+                    let updateComment = document.createElement('button');
+                    updateComment.setAttribute('type', 'button');
+                    updateComment.setAttribute('class', 'btn btn-outline-dark');
+                    updateComment.setAttribute('style', 'border-color: #00000030; width:20px;')
+
+                    updateComment.innerHTML = "수정";
+                    div1.appendChild(updateComment);
+
+                    let delComment = document.createElement('button');
+                    delComment.setAttribute('type', 'button');
+                    delComment.setAttribute('class', 'btn btn-outline-dark');
+                    delComment.setAttribute('style', 'border-color: #00000030; margin-left:1px;')
+
+                    delComment.innerHTML = "삭제";
+                    div1.appendChild(delComment);
+
+                    $.ajax({
+                        url: "/updateCommentCheck",
+                        type: "GET",
+                        data: {
+                            cmID: comment.cmID
+                        },
+                        success: function (data) {
+                            if (data == false) {
+                                content.setAttribute('style', 'border:none')
+                                updateComment.setAttribute('hidden', 'true')
+                                content.setAttribute('readOnly', 'true')
+                            }
+                        }
+                    });
+
+                    $.ajax({
+                        url: "/deleteCommentCheck",
+                        type: "GET",
+                        data: {
+                            cmID: comment.cmID
+                        },
+                        success: function (data) {
+                            if (data == false) {
+                                delComment.setAttribute('hidden', 'true')
+                                content.setAttribute('readOnly', 'true')
+
+                            }
+                        }
+                    });
+
+                    // 댓글 삭제
+                    delComment.addEventListener("click", () => {
+                        $.ajax({
+                            url: "/deleteComment",
+                            type: "GET",
+                            dataType: "json",
+                            data: {
+                                cmID: comment.cmID,
+                            },
+                            success: function (data) {
+                                if (data == true) {
+                                    $('#' + comment.cmID + 'div').remove()
+                                }
+                            }, error: function () {
+                                alert("댓글 삭제 에러");
+                                window.location.replace('/boardSearch');
+                            }
+                        });
+                    });
+                    // 댓글 수정
+                    updateComment.addEventListener("click", () => {
+                        let comments = document.getElementById(comment.cmID)
+
+                        $.ajax({
+                            url: "/updateCommentSave",
+                            type: "GET",
+                            dataType: "json",
+                            data: {
+                                cmID: comment.cmID,
+                                commentContent: comments.value
+                            },
+                            success: function (data) {
+                                if (data == true) {
+
+                                }
+                            }
+                        });
+                    })
+
+                    commentList.appendChild(div1);
+                });
+            }
+        });
+    }
+</script>
+<div th:replace="fragments/footer :: footer"></div>
+
+
+</body>
+</html>
