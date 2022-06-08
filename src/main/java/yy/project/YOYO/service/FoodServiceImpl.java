@@ -73,5 +73,10 @@ public class FoodServiceImpl implements FoodService{
         return foodRepository.findByPriority(priority);
     }
 
+    @Override
+    public Food findByfID(Long fID) {
+        return foodRepository.findByfID(fID);
+    }
+
 
 }
