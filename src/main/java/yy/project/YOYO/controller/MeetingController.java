@@ -2,8 +2,6 @@ package yy.project.YOYO.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,17 +9,15 @@ import yy.project.YOYO.argumentresolver.Login;
 import yy.project.YOYO.domain.Team;
 import yy.project.YOYO.domain.User;
 import yy.project.YOYO.domain.UserTeam;
+import yy.project.YOYO.form.TeamForm;
 import yy.project.YOYO.service.TeamService;
 import yy.project.YOYO.service.UserService;
 import yy.project.YOYO.service.UserTeamService;
-import yy.project.YOYO.form.TeamForm;
 import yy.project.YOYO.vo.MeetingVO;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -166,7 +162,7 @@ public class MeetingController {
     public String editMeeting(TeamForm teamForm, @PathVariable("tID") Long tID, @Login User loginUser){
         Team team = teamService.findBytID(tID);
         String getDates = teamForm.getMeetingDate().replace("T"," ");
-        LocalDateTime dateTime = LocalDateTime.parse(getDates,DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDateTime dateTime = LocalDateTime.parse(getDates,DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
         team.setDate(dateTime);
         if(teamForm.getWritePlace()!=""){
