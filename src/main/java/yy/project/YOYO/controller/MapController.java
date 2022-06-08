@@ -15,6 +15,7 @@ import yy.project.YOYO.domain.User;
 @Controller
 @RequiredArgsConstructor
 public class MapController {
+
     @GetMapping("/map")
     public String map(){
         return "map";
