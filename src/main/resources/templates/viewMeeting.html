@@ -17,6 +17,12 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">모임 멤버</label>
                 <div class="col-sm-8" id="plususers">
+                    <div class="btn-group" role="group">
+                        <div class="col-sm-8">
+                            <input type="text" name="users" id="users" class="form-control" size="50"
+                                   placeholder="멤버 아이디를 입력해주세요."/>
+                        </div>
+                    </div>
                     <div class="mb-3 row" id="pu"></div>
                 </div>
             </div>
@@ -30,6 +36,13 @@
                 <label class="col-sm-4 col-form-label" for="meetingDate">모임 날짜</label>
                 <div class="col-sm-8">
                     <label id="meetingDate"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <div style="margin-top:20px;">
+                        <button class="w-100 btn btn-outline-light" id="map">비회원 중간지점 찾아보기</button>
+                    </div>
                 </div>
             </div>
         </form>
@@ -60,6 +73,25 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/locale/ko.min.js"></script>
 <script>
+    let tid='[[${tID}]]'
+    $('document').ready(function(){
+
+    $('#map').click(function(evt){
+        evt.preventDefault()
+        console.log("tid",tid)
+        $.ajax({
+            url: "/locationMap",
+            type: "post",
+            data: {tid,tid},
+            success:function (data){
+                location.href="/map"
+            }
+        })
+
+    })
+    })
+
+
     let curURL = window.location.href;
     let urlArr = curURL.split("/");
     let me = '[[${user}]]'; // 나의 계정
@@ -68,7 +100,6 @@
     let teamName = '[[${teamName}]]';
     let userList = '[[${userIDs}]]'
     let date = '[[${date}]]';
-    let tid='[[${tID}]]';
 
     userList = userList.replace('[','')
     userList = userList.replace(']','')

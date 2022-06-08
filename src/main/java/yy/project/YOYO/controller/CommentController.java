@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import yy.project.YOYO.argumentresolver.Login;
 import yy.project.YOYO.domain.Comment;
 import yy.project.YOYO.domain.Team;
@@ -63,6 +60,7 @@ public class CommentController {
         model.addAttribute("teamName",team.getTeamName());
         model.addAttribute("user", loginUser.getUserID());
         model.addAttribute("userIDs",userIDs);
+        model.addAttribute("tID",tID);
         return "viewMeeting";
     }
 
@@ -143,5 +141,22 @@ public class CommentController {
 
         commentService.updateCommentSave(cmID, commentContent);
         return true;
+    }
+
+    static Long stid;
+
+    @ResponseBody
+    @PostMapping("/locationMap")
+    public void locationMap(@RequestParam("tid") Long tid){
+        stid = tid;
+    }
+
+    @ResponseBody
+    @PostMapping("/mapData")
+    public void mapData(@RequestParam("x") String x,@RequestParam("y") String y){
+        Team team = teamService.findBytID(stid);
+        team.setPlaceX(x);
+        team.setPlaceY(y);
+        teamService.save(team);
     }
 }
