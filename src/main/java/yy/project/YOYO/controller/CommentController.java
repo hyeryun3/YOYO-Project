@@ -61,6 +61,7 @@ public class CommentController {
         model.addAttribute("user", loginUser.getUserID());
         model.addAttribute("userIDs",userIDs);
         model.addAttribute("tID",tID);
+        model.addAttribute("date", team.getDate());
         return "viewMeeting";
     }
 
