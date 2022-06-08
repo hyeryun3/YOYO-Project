@@ -22,7 +22,7 @@
                             <input type="text" name="users" id="users" class="form-control" size="25" placeholder="멤버 아이디를 입력해주세요."/>
                         </div>
                         <div class="col-sm-2" >
-                            <input type="button" value="추가" id="usersplus" class="btn btn-outline-secondary"/>
+                            <input type="button" value="추가" id="usersplus" class="btn btn-outline-light"/>
                         </div>
                     </div>
                     <div class="mb-3 row" id="pu"> </div>
@@ -46,7 +46,7 @@
             </div>
             <div class="form-group row">
                 <div class="col-sm-12">
-                    <button type="submit" class="btn" id="submit">그룹 수정</button>
+                    <button type="submit" class="btn btn-outline-light" id="submit">그룹 수정</button>
                 </div>
             </div>
         </form>
@@ -55,6 +55,28 @@
 <div th:replace="fragments/footer :: footer"></div>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+
+<style>
+    #usersplus, userminus {
+        height: 35px;
+        font-size: 14px;
+        /*padding: 1rem;*/
+        background-color: #283C82;
+        border: 1px solid #b1b1b1;
+        color: #FFFFFF;
+        border-radius: 0.3rem;
+    }
+
+    #submit {
+        height: 40px;
+        font-size: 17px;
+        /*padding: 1rem;*/
+        background-color: #283C82;
+        border: 1px solid #b1b1b1;
+        color: #FFFFFF;
+        border-radius: 0.3rem;
+    }
+</style>
 <script>
     let me = '[[${user}]]'; // 나의 계정
     let members= [];
@@ -132,7 +154,8 @@
         btn.setAttribute('type', 'button');
         btn.setAttribute('value', '삭제');
         btn.setAttribute('name', 'usersminus');
-        btn.setAttribute('class', 'btn btn-outline-secondary');
+        btn.setAttribute('class', 'btn btn-outline-light');
+        btn.setAttribute('style', 'height: 35px; font-size: 14px; background-color: #283C82; border: 1px solid #b1b1b1; color: #FFFFFF; border-radius: 0.3rem;');
         btndiv.append(btn);
 
         group.append(userdiv);
