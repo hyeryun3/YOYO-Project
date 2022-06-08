@@ -28,31 +28,35 @@
 
 
     let temp = 1;
+    let count = 0;
     $('#addFriend').click(function () {
-        var add_address = document.getElementById('add_address')
-        var input = document.createElement('input')
-        input.setAttribute('type', 'text')
-        input.setAttribute('id', 'address_kakao' + temp)
-        // input.setAttribute('class','address_kakao')
-        input.setAttribute('name', 'address_kakao' + temp)
-        add_address.appendChild(input);
-        temp++;
+        if (count < 3) {
+            var add_address = document.getElementById('add_address')
+            var input = document.createElement('input')
+            input.setAttribute('type', 'text')
+            input.setAttribute('id', 'address_kakao' + temp)
+            // input.setAttribute('class','address_kakao')
+            input.setAttribute('name', 'address_kakao' + temp)
+            add_address.appendChild(input);
+            temp++;
 
-        // $('input[name^="address_kakao"]').click(function(){
-        input.addEventListener('click', function () {
+            // $('input[name^="address_kakao"]').click(function(){
+            input.addEventListener('click', function () {
 
-            console.log("클릭")
-            var tt = this
-            //카카오 지도 발생
-            new daum.Postcode({
-                oncomplete: function (data) { //선택시 입력값 세팅
-                    console.log(data.address)
-                    console.log(tt)
-                    tt.value = data.address; // 주소 넣기
-                    // document.querySelector("input[name=address_detail]").focus(); //상세입력 포커싱
-                }
-            }).open();
-        })
+                console.log("클릭")
+                var tt = this
+                //카카오 지도 발생
+                new daum.Postcode({
+                    oncomplete: function (data) { //선택시 입력값 세팅
+                        console.log(data.address)
+                        console.log(tt)
+                        tt.value = data.address; // 주소 넣기
+                        // document.querySelector("input[name=address_detail]").focus(); //상세입력 포커싱
+                    }
+                }).open();
+            })
+        }
+        count++
     })
 
     $('input[name="address_kakao0"]').click(function () {
@@ -67,18 +71,6 @@
         }).open();
     })
 
-
-    // window.onload = function () {
-    //     document.getElementById("address_kakao").addEventListener("click", function () { //주소입력칸을 클릭하면
-    //         //카카오 지도 발생
-    //         new daum.Postcode({
-    //             oncomplete: function (data) { //선택시 입력값 세팅
-    //                 document.getElementById("address_kakao").value = data.address; // 주소 넣기
-    //                 // document.querySelector("input[name=address_detail]").focus(); //상세입력 포커싱
-    //             }
-    //         }).open();
-    //     });
-    // }
 </script>
 
 
@@ -88,6 +80,7 @@
     var sum_y = 0;
     var sum_x = 0;
     var bounds;
+    let marker
 
     var result_x;
     var result_y;
@@ -103,9 +96,7 @@
 
     function button1_click() {
 
-
         var address1 = document.getElementById('address_kakao0').value;
-
         var address2 = document.getElementById('address_kakao1').value;
 
         //배열생성
@@ -199,6 +190,99 @@
                 map: map,
                 position: coords
             });
+
+        let inputData = document.querySelectorAll('input[id^="address_kakao"]');
+        let arr = [];
+
+        inputData.forEach(function (data) {
+            arr.push(data.value)
+        })
+
+        var points = [];
+        //배열생성
+        arr.forEach(function (ar) {
+            // 주소-좌표 변환 객체를 생성합니다
+            var geocoder = new kakao.maps.services.Geocoder();
+            // 주소로 좌표를 검색합니다
+
+            geocoder.addressSearch(ar, function (result, status) {
+                // 정상적으로 검색이 완료됐으면
+                if (status === kakao.maps.services.Status.OK) {
+
+                    //여기 모든좌표 주석처럼 들어가면 중앙지점 찾아줌
+                    points.push(
+                        new kakao.maps.LatLng(result[0].y, result[0].x)
+                    )
+
+                    console.log('points [] 값', points[0])
+                    console.log('points [] 값', points[1])
+
+                    console.log(typeof (result[0].x));
+
+                    sum_x += parseFloat(result[0].x);
+                    sum_y += parseFloat(result[0].y);
+
+                    console.log('누적x값', sum_x);
+                    console.log('누적y값', sum_y);
+
+                    console.log('중앙x', sum_x / arr.length);
+                    console.log('중앙y', sum_y / arr.length);
+
+                    result_x = String(sum_x / arr.length);
+                    result_y = String(sum_y / arr.length);
+
+                    console.log('string 중앙x', result_x); // 경도
+                    console.log('string 중앙y', result_y); // 위도
+
+                    // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+                    bounds = new kakao.maps.LatLngBounds();
+
+                    var i;
+                    for (i = 0; i < points.length; i++) {
+                        // 배열의 좌표들이 잘 보이게 마커를 지도에 추가합니다
+                        marker = new kakao.maps.Marker({position: points[i]});
+                        marker.setMap(map);
+                        console.log('-------point 값-------', points[i]);
+                        // LatLngBounds 객체에 좌표를 추가합니다
+                        bounds.extend(points[i]);
+                    }
+
+                    var coords = new kakao.maps.LatLng(result_y, result_x);
+
+                    $.ajax({
+                        url: "/mapData",
+                        type: "POST",
+                        data: {x:result_x,y:result_y},
+                        success: function(data){
+                        }
+                    })
+                    // 결과값으로 받은 위치를 마커로 표시합니다
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+
+                    map.setBounds(bounds);
+
+                    //인포윈도우로 장소에 대한 설명을 표시합니다
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">중앙</div>'
+                    });
+                    infowindow.open(map, marker);
+                    //LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
+
+                    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                    map.setCenter(coords);
+                } else {
+                    console.log('----------------------에러--------------------------')
+                }
+
+            });
+        })
+    }
+</script>
+</body>
+</html>
 
             // 인포윈도우로 장소에 대한 설명을 표시합니다
             var infowindow = new kakao.maps.InfoWindow({
@@ -465,5 +549,3 @@
 <!--</script>-->
 <!--</body>-->
 <!--</html>-->
-
-

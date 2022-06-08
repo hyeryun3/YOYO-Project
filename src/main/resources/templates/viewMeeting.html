@@ -11,7 +11,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="meetingName">모임 이름</label>
                 <div class="col-sm-8">
-                    <label class="col-sm-4 col-form-label" id="meetingName" style="text-align: center;"></label>
+                    <label class="col-sm-4 col-form-label" id="meetingName" ></label>
                 </div>
             </div>
             <div class="form-group row">
@@ -23,13 +23,20 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="meetingPlace">모임 장소</label>
                 <div class="col-sm-8">
-                    <label class="col-sm-4 col-form-label" id="meetingPlace" style="text-align: center;"></label>
+                    <label class="col-form-label" id="meetingPlace" style="text-align: center;"></label>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="meetingDate">모임 날짜</label>
                 <div class="col-sm-8">
                     <label id="meetingDate"></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <div style="margin-top:20px;">
+                        <button class="w-100 btn btn-outline-light" id="map1" style="background-color: #283C82">중간지점 찾아보기</button>
+                    </div>
                 </div>
             </div>
         </form>
@@ -61,6 +68,25 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/locale/ko.min.js"></script>
 <script>
+    let tid='[[${tID}]]'
+    $('document').ready(function(){
+
+    $('#map1').click(function(evt){
+        evt.preventDefault()
+        console.log("tid",tid)
+        $.ajax({
+            url: "/locationMap",
+            type: "post",
+            data: {tid,tid},
+            success:function (data){
+                location.href="/map"
+            }
+        })
+
+    })
+    })
+
+
     let curURL = window.location.href;
     let urlArr = curURL.split("/");
     let me = '[[${user}]]'; // 나의 계정
@@ -154,7 +180,7 @@
                     // 수정버튼 생성
                     let updateComment = document.createElement('button');
                     updateComment.setAttribute('type', 'button');
-                    updateComment.setAttribute('class', 'btn btn-outline-dark col-1');
+                    updateComment.setAttribute('class', 'btn btn-outline-dark');
                     updateComment.setAttribute('id', 'btn');
                     updateComment.setAttribute('style', 'border-color: #00000030; float:right; font-size: 15px; height:30px; width:60px')
 
