@@ -165,7 +165,7 @@
                     $result.each(function(idx,vo){
                         tag+= "<li class='eachFood'>";
                         tag += "<span class='foodName'>" + vo.foodName+ "</span><br/>";
-                        tag += "<img class='foodPicture img-fluid' src='/static/image/food/" + vo.foodImg + "'><br/>";
+                        tag += "<img class='foodPicture img-fluid' src='/adminImage/food/" + vo.foodImg + "'><br/>";
                         tag += "<span class='foodCate'>" + vo.foodCategory + "</span></li>";
 
                         $("#foods").html(tag);
@@ -201,7 +201,7 @@
                 <ul id="foods">
                     <li class='eachFood' th:each="food : ${allFood}">
                         <span class='foodName' th:text="${food.foodName}"></span><br/>
-                        <img class='foodPicture img-fluid' th:src="@{/static/image/food/} + ${food.foodImg}"><br/>
+                        <img class='foodPicture img-fluid' th:src="@{/adminImage/food/} + ${food.foodImg}"><br/>
                         <span class='foodCate' th:text="${food.foodCategory}"></span>
                     </li>
 
