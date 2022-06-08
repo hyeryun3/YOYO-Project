@@ -130,7 +130,10 @@ public class AdminController {
         }
         else{
             //사진 파일 업로드 위한 절대 주소
-            String path = request.getSession().getServletContext().getRealPath("/static/image/food");
+
+
+            String path = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static" + File.separator+"adminImage" + File.separator+"food";
+
 
 
             try{
@@ -243,7 +246,7 @@ public class AdminController {
         //사진 파일 이름
         String beforeFile = foodService.findByFoodName(vo.getFoodName()).getFoodImg();
 
-        String path = request.getSession().getServletContext().getRealPath("/static/image/food");
+        String path = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static" + File.separator+"adminImage" + File.separator+"food";
 
         try{
 

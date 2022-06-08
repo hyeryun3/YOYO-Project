@@ -7,10 +7,67 @@
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
 <div class="container" style="text-align: center" id="container">
 </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header row" >
+                <h5 class="col-sm-10 modal-title" id="exampleModalLabel">출발지 설정</h5>
+                <button type="button" class="col-sm-2 close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <input type="hidden" id="tID">
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="meetingPlace">출발 장소</label>
+                <div class="col-sm-8">
+                    <select id="meetingPlace" class="form-control" style="font-size: 14px">
+                        <option>우리 집</option>
+                        <option>직접 지정</option>
+                    </select>
+                    <input type="text" class="form-control" id="writePlace" name="writePlace" style="padding-left: 20px" hidden>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="save">저장하기</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div th:replace="fragments/footer :: footer"></div>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 
+    $('#writePlace').click(function (){
+        new daum.Postcode({
+            oncomplete: function (data) { //선택시 입력값 세팅
+                document.getElementById("writePlace").value = data.address; // 주소 넣기
+            }
+        }).open();
+    })
+
+    $('#save').click(function (){
+        let place;
+        if($('#meetingPlace').val()=='우리 집'){
+            place='우리 집';
+        }else{
+            place=$('#writePlace').val();
+        }
+        $.ajax({
+            url: "/changeStartPlace",
+            type: "POST",
+            data: {place:place,tID:$('#tID').val()},
+            success:function(data){
+                console.log("저장완료")
+                history.go(0);
+            }
+        })
+    })
+
     findMeeting()
+
     function findMeeting() {
         $.ajax({
             url: "/findMeeting",
@@ -18,53 +75,61 @@
             success: function (data) {
                 let container = document.getElementById('container');
                 data.forEach(function (vo) {
+                    let nameData =vo.tid
                     let div = document.createElement('div');
                     div.setAttribute('style', 'border-radius:10px; margin:100px 0; max-width:100%; height:auto; background-color:#00000010; padding:30px;');
                     let teamName = document.createElement('h2')
-                    teamName.innerHTML='<a href=/viewMeeting/{tID}>'+'[ '+ vo.teamName +' ]'+'</a>';
+                    // teamName.innerHTML = '<a href=/viewMeeting/{tID}>' + '[ ' + vo.teamName + ' ]' + '</a>';
+                    teamName.innerHTML = '[ ' + vo.teamName + ' ]';
                     let editBtn = document.createElement('button')
-                    editBtn.setAttribute('style','width:50%')
-                    editBtn.innerHTML='수정하기';
+                    editBtn.setAttribute('style', 'width:50%')
+                    editBtn.innerHTML = '수정하기';
                     let detailBtn = document.createElement('button')
-                    detailBtn.setAttribute('style','width:50%')
-                    detailBtn.innerHTML='자세히';
+                    detailBtn.setAttribute('style', 'width:50%')
+                    detailBtn.innerHTML = '자세히';
 
-                    editBtn.addEventListener('click',function (){
+                    editBtn.addEventListener('click', function () {
                         console.log('클릭')
-                        location.href="/meeting/"+vo.tid;
+                        location.href = "/meeting/" + vo.tid;
                     })
 
-                    detailBtn.addEventListener('click',function (){
+                    detailBtn.addEventListener('click', function () {
                         console.log('클릭')
-                        location.href="/viewMeeting/"+vo.tid;
+                        location.href = "/viewMeeting/" + vo.tid;
                     })
 
                     let place = document.createElement('h2')
-                    place.setAttribute('style','margin:20px 0 ')
+                    place.setAttribute('style', 'margin:20px 0 ')
 
-                    place.innerHTML=vo.place + '에서 만나요😉';
+                    place.innerHTML = vo.place + '에서 만나요😉';
                     let time = document.createElement('h2')
 
-                    vo.time= vo.time.replace("T"," ").slice(0,16)
-                    var year = vo.time.slice(0,4)
-                    var month = vo.time.slice(5,7)
-                    var day = vo.time.slice(8,10)
-                    var hour = vo.time.slice(11,13)
-                    var min = vo.time.slice(14,16)
+                    vo.time = vo.time.replace("T", " ").slice(0, 16)
+                    var year = vo.time.slice(0, 4)
+                    var month = vo.time.slice(5, 7)
+                    var day = vo.time.slice(8, 10)
+                    var hour = vo.time.slice(11, 13)
+                    var min = vo.time.slice(14, 16)
 
-                    var str = year+'년 ' + month + '월 ' + day + '일 ' + hour + '시 '+ min+'분';
-                    time.innerHTML=str
+                    var str = year + '년 ' + month + '월 ' + day + '일 ' + hour + '시 ' + min + '분';
+                    time.innerHTML = str
 
 
                     let memDiv = document.createElement('div');
-                    vo.members.forEach(function(mem){
+                    vo.members.forEach(function (mem, idx) {
                         let img = document.createElement('img');
-                        img.setAttribute('src',mem)
-                        img.setAttribute('style','border:1px solid #000000; border-radius:10px;width:50px;height:50px; margin:0 10px')
+                        console.log('img',img)
+                        img.setAttribute('src', mem)
+                        img.setAttribute('name', vo.memberID[idx])
+
+                        img.setAttribute('style', 'border:1px solid #000000; border-radius:10px;width:50px;height:50px; margin:0 10px')
 
                         memDiv.appendChild(img);
-                    })
 
+                        img.addEventListener('click',function(){
+                            $('#tID').val(nameData);
+                        })
+                    })
 
                     div.appendChild(teamName);
                     div.appendChild(memDiv)
@@ -76,16 +141,38 @@
                     container.appendChild(div);
                 });
 
+                checkMe()
+
+
                 let plusbtn = document.createElement('button');
-                plusbtn.setAttribute('onclick','location.href="/createMeeting"')
-                plusbtn.setAttribute('style','background-color:#00000030; font-size:30px; height:200px')
-                plusbtn.innerHTML='+';
+                plusbtn.setAttribute('onclick', 'location.href="/createMeeting"')
+                plusbtn.setAttribute('style', 'background-color:#00000030; font-size:30px; height:200px')
+                plusbtn.innerHTML = '+';
                 container.appendChild(plusbtn);
+
 
             }
         });
     }
 
+    function checkMe() {
+        let me = '[[${me}]]'
+
+        $('img[name="'+me+'"]').attr('data-toggle','modal')
+        $('img[name="'+me+'"]').attr('data-target','#exampleModal')
+
+    }
+
+    $('#meetingPlace').click(function(){
+        console.log($('#meetingPlace').val())
+        if($('#meetingPlace').val()=="직접 지정"){
+            $('#writePlace').attr('hidden',false);
+        }else{
+            $('#writePlace').attr('hidden',true);
+        }
+    })
 </script>
+
+
 </body>
 </html>
