@@ -132,17 +132,19 @@
       float: right;
       width: 10%;
     }
-    /*#comment{*/
-    /*  top: 50%;*/
-    /*  left: 25px;*/
-    /*  width: 150px;*/
-    /*}*/
+
+    #comment{
+      position: relative;
+      top: 50%;
+      left: 25px;
+      width: 150px;
+    }
 
   </style>
   <script>
     var weatherData = null;
     var params;
-    var teamID = null;
+    var teamID = '[[${tID}]]';
     function onGeoOk(position) {
 
       const API_KEY = "34f03c607cbd5ac6878b951a96d17bef";

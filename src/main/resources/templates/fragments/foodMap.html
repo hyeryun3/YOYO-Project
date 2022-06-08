@@ -45,12 +45,12 @@
         }
     </style>
 
-    <button type="button" class="w-100 btn btn-outline-light" data-toggle="modal" data-target="#foodMap" id="showRest" onclick="relayoutNow(lat, lon)">
+    <button type="button" class="btn btn-sm " data-toggle="modal" data-target="#foodMap" id="showRest" onclick="relayoutNow()">
         음식점 보기
     </button>
 
     <!-- Modal -->
-    <div class="modal fade" id="foodMap" tabindex="-1" aria-hidden="true" onload="relayoutNow(lat, lon)">
+    <div class="modal fade" id="foodMap" tabindex="-1" aria-hidden="true" onload="relayoutNow()">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -60,21 +60,18 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="map_wrap">
-                        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;" onload=" relayoutNow(lat, lon)"></div>
-
-                        <div id="menu_wrap" class="bg_white" onload=" relayoutNow(lat, lon)">
+                    <div class="map_wrap" style="position: relative;">
+                        <div id="map" style="width:100%;height:100%;overflow:hidden;" ></div>
+                        <div id="menu_wrap" class="bg_white">
+                            <form onsubmit="searchPlaces(); return false; ">
+                                키워드 : <input type="text" placeholder="지역명 & 음식을 검색하세요" id="keyword" size="15">
+                                <button>검색하기</button>
+                            </form>
                             <div class="option">
-                                <div>
-                                    <form onsubmit="searchPlaces(); return false;">
-                                        키워드 : <input type="text" placeholder="지역명 & 음식을 검색하세요" id="keyword" size="15">
-                                        <button type="submit">검색하기</button>
-                                    </form>
-                                </div>
                             </div>
                             <hr>
-                            <ul id="placesList" onload=" relayoutNow(lat, lon)"></ul>
-                            <div id="pagination" onload=" relayoutNow(lat, lon)"></div>
+                            <ul id="placesList"></ul>
+                            <div id="pagination"></div>
                         </div>
                     </div>
                 </div>
@@ -83,18 +80,6 @@
         </div>
     </div>
 
-    <style>
-        #showRest {
-            background-color: #386ad1;
-            width: 500px;
-            color: #FFFFFF;
-            font-size: 25px;
-            height: 100px;
-            border-radius: 0.3rem;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-    </style>
 
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=63f44951e06875b4db337f3ca80193fd&libraries=services"></script>
     <script>
@@ -116,27 +101,15 @@
         // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
         var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
-        var lat = 33.383293 // 위도
-        var lon = 126.259003; // 경도
-
         // 키워드로 장소를 검색합니다
-        searchPlaces(lat, lon);
+        searchPlaces();
 
         // 키워드 검색을 요청하는 함수입니다
-        function searchPlaces(lat, lon) {
+        function searchPlaces() {
 
-            /*var keyword = document.getElementById('keyword').value;
-
-            if (!keyword.replace(/^\s+|\s+$/g, '')) {
-                alert('키워드를 입력해주세요!');
-                return false;
-            }
-
-            // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-            ps.keywordSearch( keyword, placesSearchCB);*/
-
-            var lat = lat, // 위도
-                lon = lon; // 경도
+            var lat = 33.383293 // 위도
+            var lon = 126.259003; // 경도
+            var coords = new kakao.maps.LatLng(lat, lon);
             var locPosition = {
                 location : new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
                 radius : 5000,
@@ -150,15 +123,14 @@
                 console.log(keyword + ">");
             }
             if(keyword!=null && keyword!=''){
-                ps.keywordSearch( "파스타", placesSearchCB, {
-                    radius: 2000,
-                    location : center
+                ps.keywordSearch( keyword, placesSearchCB, {
+
                 });
                 console.log(keyword);
             }
 
-            //relayoutNow(lat, lon);
-
+            map.setCenter(coords);
+            map.relayout();
 
         }
 
@@ -344,29 +316,5 @@
             }
         }
 
-        function relayoutNow(lat, lon) {
-
-            // 지도를 표시하는 div 크기를 변경한 이후 지도가 정상적으로 표출되지 않을 수도 있습니다
-            // 크기를 변경한 이후에는 반드시  map.relayout 함수를 호출해야 합니다
-            // window의 resize 이벤트에 의한 크기변경은 map.relayout 함수가 자동으로 호출됩니다
-            setTimeout(function() {
-                map.relayout();
-                map.setCenter(new kakao.maps.LatLng(lat, lon));
-            }, 0);
-
-        }
-
-        relayoutNow(lat, lon);
-
-        /*setTimeout(function() {
-            map.relayout();
-
-            // map.setLevel(2); 필요하면 레벨조정
-        }, 100);*/
     </script>
-
-
-
-
-
 </div>

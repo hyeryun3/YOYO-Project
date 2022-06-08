@@ -4,7 +4,7 @@
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<h3 style="text-align: center; color: #386ad1; margin-top: 100px;">View Meeting</h3>
+<h3 style="text-align: center; color: #386ad1; margin-top: 50px;">약속 상세보기</h3>
 <div class="meetingContainer">
     <div class="col-7" style="margin: 0 auto; width:700px">
         <form id="EditForm" th:object="${team}">
@@ -41,17 +41,15 @@
             </div>
         </form>
     </div>
+</div>
+
 <div>
     <form>
-<!--        <hr class="h-divider" style="margin-top: 40px; width: 60%; text-align: center;">-->
         <div style="margin: 0 auto; width:60%;">
-            <div class="row" style="margin-top: 50px;">
-                <h4>댓글 작성하기</h4>
-            </div>
             <div class="row">
-                <textarea id="comment" rows="2" placeholder="내용을 입력해주세요" style="width: 1000px; marign-top: 10px; margin-right: 10px; margin-bottom: 20px;"></textarea>
-                <button type="button" class="btn btn-outline-dark col-1" id="btn"
-                        style="border-color: #00000030; font-size: 15px; height: 50px;">
+                <h4>댓글 작성하기</h4>
+                <textarea id="comment" placeholder="내용을 입력해주세요" style="width:100%;"></textarea>
+                <button type="button" class="btn btn-outline-dark col-1" id="btn" style="border-color: #00000030; float: right; font-size: 15px; height: 50px">
                     등록
                 </button>
             </div>
@@ -62,7 +60,7 @@
 <form style="margin: 0 auto; width:60%;">
     <div id="commentList"></div>
 </form>
-</div>
+
 <div th:replace="fragments/food :: food"></div>
 <div th:replace="fragments/foodMap :: foodMap"></div>
 <div th:replace="fragments/footer :: footer"></div>
@@ -97,6 +95,7 @@
     let teamName = '[[${teamName}]]';
     let userList = '[[${userIDs}]]'
     let date = '[[${date}]]';
+    let tid ='[[${tID}]]';
 
     userList = userList.replace('[','')
     userList = userList.replace(']','')
@@ -110,7 +109,7 @@
 
     document.getElementById("meetingName").innerHTML = teamName;
     document.getElementById("meetingPlace").innerHTML = place;
-    $('#meetingDate').html(moment(date).format('YYYY년 MMMM Do, a hh:mm'));
+    $('#meetingDate').html(moment(date).format('YYYY년 M월 D일, a hh:mm'));
 
     function plusMem (sendData){
         let div = document.querySelector('#pu');
@@ -367,5 +366,6 @@
         });
     }
 </script>
+
 </body>
 </html>
