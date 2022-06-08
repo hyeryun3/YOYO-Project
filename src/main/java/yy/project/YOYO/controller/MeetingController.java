@@ -210,7 +210,12 @@ public class MeetingController {
     public void changeStartPlace(@RequestParam("place") String startPlace, @RequestParam("tID") String tiD, @Login User loginUser){
         Long tId = Long.parseLong(tiD);
         UserTeam ut = userTeamService.findByUIDAndTID(loginUser.getUID(), tId);
-        ut.setStartPlace(startPlace);
+
+        if(startPlace.equals("우리 집")){
+            ut.setStartPlace(loginUser.getAddress());
+        }else{
+            ut.setStartPlace(startPlace);
+        }
         userTeamService.save(ut);
 
     }
