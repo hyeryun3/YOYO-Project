@@ -7,4 +7,5 @@ import yy.project.YOYO.domain.Team;
 public interface TeamService {
     Team save(Team team);
     Team findBytID(Long tID);
+    Team findBytID2(Long tID);
 }
