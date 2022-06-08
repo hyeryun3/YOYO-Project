@@ -12,5 +12,4 @@ public interface UserTeamService {
     List<UserTeam> findByUID(Long uid);
     List<UserTeam> findByTID(Long tid);
     void deleteByTID(Long tid);
-
 }

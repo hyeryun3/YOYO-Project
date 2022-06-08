@@ -9,24 +9,30 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserTeamServiceImpl implements UserTeamService{
+public class UserTeamServiceImpl implements UserTeamService {
     private final UserTeamRepository userTeamRepository;
 
-    public UserTeam save(UserTeam userTeam){
+    public UserTeam save(UserTeam userTeam) {
         return userTeamRepository.save(userTeam);
     }
 
-    public void deleteByUID(Long uid){
+    public void deleteByUID(Long uid) {
         userTeamRepository.deleteByUID(uid);
-    };
-    public void deleteByTID(Long tid){
-        userTeamRepository.deleteByTID(tid);
-    };
-
-    public List<UserTeam> findByUID(Long uid){
-       return userTeamRepository.findByUID(uid);
     }
-    public List<UserTeam> findByTID(Long tid){ return userTeamRepository.findByTID(tid); }
 
+    ;
 
+    public void deleteByTID(Long tid) {
+        userTeamRepository.deleteByTID(tid);
+    }
+
+    ;
+
+    public List<UserTeam> findByUID(Long uid) {
+        return userTeamRepository.findByUID(uid);
+    }
+
+    public List<UserTeam> findByTID(Long tid) {
+        return userTeamRepository.findByTID(tid);
+    }
 }

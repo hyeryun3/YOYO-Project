@@ -33,6 +33,8 @@ public class MeetingController {
     private final TeamService teamService;
     private final UserTeamService userTeamService;
 
+    static MeetingVO meetingvo = new MeetingVO();
+
     @GetMapping("/createMeeting")
     public String home(Model model, @Login User loginUser){
         model.addAttribute("user", loginUser.getUserID());
@@ -196,10 +198,5 @@ public class MeetingController {
         return "checkMeeting";
     }
 
-    @PostMapping("/viewMeeting/{tID}") //게시물 상세보기
-    public String detailContentPost(@PathVariable("tID") Long tID, String bID) {
-        contentvo.setBbID(Long.parseLong(bID));
-        return "viewMeeting";
-    }
 }
 

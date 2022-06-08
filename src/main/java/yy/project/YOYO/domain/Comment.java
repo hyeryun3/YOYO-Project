@@ -16,6 +16,9 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cmID;
 
+    @NotNull
+    private Long writerUID;
+
     private String commentContent;
 
     private LocalDateTime uploadTime;
