@@ -36,6 +36,7 @@
     </div>
 </div>
 <div th:replace="fragments/food :: food"></div>
+<div th:replace="fragments/foodMap :: foodMap"></div>
 <div>
     <form>
         <div style="margin: 0 auto; width:60%;">
@@ -66,7 +67,7 @@
     let teamName = '[[${teamName}]]';
     let userList = '[[${userIDs}]]'
     let date = '[[${date}]]';
-    let tid='[[${tID}]]'
+    let tid='[[${tID}]]';
 
     userList = userList.replace('[','')
     userList = userList.replace(']','')
