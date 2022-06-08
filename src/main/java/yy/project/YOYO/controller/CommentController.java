@@ -20,6 +20,7 @@ import yy.project.YOYO.service.UserTeamService;
 import yy.project.YOYO.vo.CommentVO;
 import yy.project.YOYO.vo.MeetingVO;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -59,48 +60,13 @@ public class CommentController {
                 userIDs.add(ut.get(i).getUser().getUserID());
             }
         }
+        model.addAttribute("teamName",team.getTeamName());
         model.addAttribute("user", loginUser.getUserID());
         model.addAttribute("userIDs",userIDs);
         return "viewMeeting";
     }
 
-//    @ResponseBody
-//    @GetMapping("/detailMeeting")
-//    public List<MeetingVO> findMeeting(Model model, @Login User loginUser){
-//
-//        List<UserTeam> myTeams = userTeamService.findByUID(loginUser.getUID());
-//        model.addAttribute("user",loginUser);
-//
-//        MeetingVO vo = null;
-//        List<MeetingVO> voList = new ArrayList<>();
-//
-//        for(int i=0; i<myTeams.size(); i++){
-//            vo = new MeetingVO();
-//            Team team = myTeams.get(i).getTeam();
-//            if(team.getDate().isAfter(LocalDateTime.now())) {
-//                Long tid = team.getTID();
-//                vo.setPlace(team.getPlace());
-//                vo.setTeamName(team.getTeamName());
-//                vo.setTime(team.getDate());
-//                List<UserTeam> byTID = userTeamService.findByTID(tid);
-//                List<String> mem = new ArrayList<>();
-//                for (int j = 0; j < byTID.size(); j++) {
-//                    if (byTID.get(j).getUser().getUserImage() == null) {
-//                        mem.add("/adminImage/userIcon.png");
-//                    } else {
-//                        mem.add(byTID.get(j).getUser().getUserImage());
-//                    }
-//                }
-//                vo.setMembers(mem);
-//                vo.setTID(tid);
-//                voList.add(vo);
-//            }
-//        }
-//
-//        voList = voList.stream().sorted(Comparator.comparing(MeetingVO::getTime)).collect(Collectors.toList());
-//
-//        return voList;
-//    }
+
 
     @ResponseBody
     @GetMapping("/findComment")
