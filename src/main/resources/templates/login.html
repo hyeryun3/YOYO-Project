@@ -22,7 +22,7 @@
                          alt="YOYO!">
                 </div>
                 <div>
-                    <!--                    <h5 style="margin-bottom: 25px; margin-top: 20px;">로그인</h5>-->
+<!--                    <h5 style="margin-bottom: 25px; margin-top: 20px;">로그인</h5>-->
                     <!--        <div class="topMargin" style="width: 300px;display: inline-block">-->
                     <input type="text" id="id" class="form-control"
                            placeholder="ID" style="margin-top: 10px;">
@@ -34,8 +34,7 @@
                     <!--            <img alt="자동입력방지" id="img" width="300" style="margin-top: 10px">-->
                 </div>
                 <div class="topMargin">
-
-                    <button class="w-100 btn btn-outline-light" id="login_btn" type="submit">로그인</button>
+                    <button  class="w-100 btn btn-outline-light" id="login_btn" type="submit" >로그인</button>
                 </div>
                 <!--        <div class="hr-sect" style="text-align: center; margin: 15px 0; opacity: 70%">또는</div>-->
                 <!--        <div style="text-align: center; margin-bottom: 0.5em">-->
@@ -52,8 +51,8 @@
                 <div class="">
                     <div class="py-1 text-center" style="margin-top: 10px;">
                         <a class="btn" href="/signUp">회원가입</a>
-                        <a class="btn" href="/findID">ID 찾기</a>
-                        <a class="btn" href="/findPW">PW 찾기</a>
+                        <a class="btn" href="/findId">ID 찾기</a>
+                        <a class="btn" href="/findPw">PW 찾기</a>
                     </div>
                 </div>
             </fieldset>
@@ -125,18 +124,24 @@
             success: function (data) {
 
                 if (data == "아이디 또는 비밀번호가 일치하지 않습니다.") {
+                    alert("아이디 또는 비밀번호를 확인해주세요.");
 
-                    history.go(0);
+                    if(id == "" ){
+                        $('id').focus();
+                    } else if(pw == "") {
+                        $('pw').focus();
+                    } return true;
 
                 }
+
                 //현재 data는 "admin" or "custom"
-                if (data == 'admin') {
-
-                    window.location.href = "/admin/adminFood";
-                } else {
-
-                    window.location.href = "/";
-                }
+                   if (data == 'admin') {
+                        window.location.href = "/admin/adminFood";
+                    }
+                     else
+                        {
+                            window.location.href = "/";
+                        }
             },
         });
     }

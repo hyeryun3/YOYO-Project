@@ -81,8 +81,10 @@
     $('document').ready(function () {
         let btn = document.querySelector('button[id="find"]');
 
+
         btn.addEventListener('click', function (evt) {
-            evt.preventDefault()
+            evt.preventDefault();
+
             let name = $('#name').val();
             let email = $('#email').val()
 
@@ -96,7 +98,7 @@
             }
             $.ajax({
                 type: "post",
-                url: "/findID",
+                url: "/findId",
                 data: {name: name, email: email},
                 success: function (data) {
 
