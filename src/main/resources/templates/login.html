@@ -127,10 +127,15 @@
                     alert("아이디 또는 비밀번호를 확인해주세요.");
 
                     if(id == "" ){
-                        $('id').focus();
+                        $('#id').focus();
                     } else if(pw == "") {
-                        $('pw').focus();
-                    } return true;
+                        $('#pw').focus();
+                    } else{
+                        $('#id').val("")
+                        $('#pw').val("")
+                        $('#id').focus();
+                        return true
+                    }
 
                 }
 

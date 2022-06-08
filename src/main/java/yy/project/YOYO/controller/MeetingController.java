@@ -59,7 +59,7 @@ public class MeetingController {
 
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 //        LocalDateTime dateTime = LocalDateTime.parse(teamForm.getMeetingDate());
-        LocalDateTime dateTime = LocalDateTime.parse(getDates,DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDateTime dateTime = LocalDateTime.parse(getDates,DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
         System.out.println(teamForm.getWritePlace());
         team.setDate(dateTime);
@@ -97,7 +97,8 @@ public class MeetingController {
     }
 
     @GetMapping("/checkMeeting")
-    public String checkMeeting(){
+    public String checkMeeting(Model model,@Login User loginUser){
+        model.addAttribute("me",loginUser.getUserID());
         return "checkMeeting";
     }
 
@@ -122,7 +123,9 @@ public class MeetingController {
                 vo.setTime(team.getDate());
                 List<UserTeam> byTID = userTeamService.findByTID(tid);
                 List<String> mem = new ArrayList<>();
+                List<String> memberID = new ArrayList<>();
                 for (int j = 0; j < byTID.size(); j++) {
+                    memberID.add(byTID.get(j).getUser().getUserID());
                     if (byTID.get(j).getUser().getUserImage() == null) {
                         mem.add("/adminImage/userIcon.png");
                     } else {
@@ -130,6 +133,7 @@ public class MeetingController {
                     }
                 }
                 vo.setMembers(mem);
+                vo.setMemberID(memberID);
                 vo.setTID(tid);
                 voList.add(vo);
             }
@@ -200,6 +204,17 @@ public class MeetingController {
     }
 
     static MeetingVO meetingvo = new MeetingVO();
+
+    @ResponseBody
+    @PostMapping ("/changeStartPlace")
+    public void changeStartPlace(@RequestParam("place") String startPlace, @RequestParam("tID") String tiD, @Login User loginUser){
+        Long tId = Long.parseLong(tiD);
+        UserTeam ut = userTeamService.findByUIDAndTID(loginUser.getUID(), tId);
+        ut.setStartPlace(startPlace);
+        userTeamService.save(ut);
+
+    }
+
 
 
 }

@@ -54,7 +54,7 @@ public class UserController {
 //        == 임시 로그인 ==
         userService.updateUser(userForm,loginUser);
 
-        return "redirect:/myPage";
+        return "redirect:/";
     }
 
     @GetMapping("/deleteUser")
