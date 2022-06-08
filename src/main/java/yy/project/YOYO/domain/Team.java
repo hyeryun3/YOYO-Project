@@ -35,6 +35,7 @@ public class Team {
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<UserTeam> userTeams = new ArrayList<>();
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
-    private List<UserTeam> Food = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "fID")
+    private Food Food;
 }

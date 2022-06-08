@@ -4,12 +4,12 @@
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<h3 style="text-align: center; color: #386ad1; margin-top: 50px;">Create Meeting</h3>
+<h3 style="text-align: center; color: #386ad1; margin-top: 100px;">Create Meeting</h3>
 <div class="meetingContainer">
     <div class="col-7" style="margin: 0 auto; width:700px">
         <form id="CreateForm" >
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label" for="meetingName">*모임 이름</label>
+                <label class="col-sm-4 col-form-label" for="meetingName">모임 이름</label>
                 <div class="col-sm-8">
                     <input type="text" name="meetingName" id="meetingName" placeholder="모임 이름을 입력해주세요." class="form-control"  required/>
                 </div>
@@ -21,8 +21,8 @@
                         <div class="col-sm-10" style="padding:0">
                             <input type="text" name="users" id="users" class="form-control" size="25" placeholder="멤버 아이디를 입력해주세요."/>
                         </div>
-                        <div class="col-sm-2" >
-                            <input type="button" value="추가" id="usersplus" class="btn btn-outline-secondary"/>
+                        <div class="col-sm-1">
+                            <input type="button" value="추가" id="usersplus" class="btn btn-outline-light"/>
                         </div>
                     </div>
                     <div class="mb-3 row" id="pu"> </div>
@@ -54,6 +54,38 @@
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<style>
+    #usersplus {
+        /*display: block;*/
+        /*box-sizing: border-box;*/
+        /*margin: auto;*/
+        height: 35px;
+        /*width: 50%;*/
+        font-size: 14px;
+        /*padding: 1rem;*/
+        background-color: #283C82;
+        border: 1px solid #b1b1b1;
+        color: #FFFFFF;
+        border-radius: 0.3rem;
+    }
+
+    #submit {
+        /*display: block;*/
+        /*box-sizing: border-box;*/
+        /*margin: auto;*/
+        height: 40px;
+        /*width: 50%;*/
+        font-size: 17px;
+        /*padding: 1rem;*/
+        background-color: #283C82;
+        border: 1px solid #b1b1b1;
+        color: #FFFFFF;
+        border-radius: 0.3rem;
+        margin-top: 20px;
+    }
+</style>
+
 <script>
     $('#meetingPlace').click(function(){
         console.log($('#meetingPlace').val())
@@ -116,7 +148,8 @@
         btn.setAttribute('type', 'button');
         btn.setAttribute('value', '삭제');
         btn.setAttribute('name', 'usersminus');
-        btn.setAttribute('class', 'btn btn-outline-secondary');
+        btn.setAttribute('class', 'btn btn-outline-light');
+        btn.setAttribute('style', 'height: 35px; font-size: 14px; background-color: #283C82; border: 1px solid #b1b1b1; color: #FFFFFF; border-radius: 0.3rem;');
         btndiv.append(btn);
 
         group.append(userdiv);
