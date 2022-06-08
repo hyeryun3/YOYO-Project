@@ -11,45 +11,25 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="meetingName">모임 이름</label>
                 <div class="col-sm-8">
-                    <input type="text" name="meetingName" id="meetingName" th:value="*{teamName}" class="form-control"
-                           readonly/>
+                    <label class="col-sm-4 col-form-label" id="meetingName" style="text-align: center;"></label>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">모임 멤버</label>
                 <div class="col-sm-8" id="plususers">
-                    <div class="btn-group" role="group">
-                        <div class="col-sm-10" style="padding:0">
-                            <input type="text" name="users" id="users" class="form-control" size="25"
-                                   placeholder="멤버 아이디를 입력해주세요."/>
-                        </div>
-                        <div class="col-sm-2">
-                            <input type="button" value="추가" id="usersplus" class="btn btn-outline-secondary"/>
-                        </div>
-                    </div>
                     <div class="mb-3 row" id="pu"></div>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="meetingPlace">모임 장소</label>
                 <div class="col-sm-8">
-                    <select id="meetingPlace" class="form-control" style="font-size: 14px" th:value="*{place}">
-                        <option>중간 지점</option>
-                        <option>직접 지정</option>
-                    </select>
-                    <input type="text" class="form-control" id="writePlace" name="writePlace" style="padding-left: 20px"
-                           hidden>
+                    <label class="col-sm-4 col-form-label" id="meetingPlace" style="text-align: center;"></label>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="meetingDate">모임 날짜</label>
                 <div class="col-sm-8">
-                    <input type="datetime-local" onchange="setMinValue()" name="meetingDate" id="meetingDate"
-                           class="form-control" style="color:#00000090" th:value="*{date}"/>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-12">
+                    <label id="meetingDate"></label>
                 </div>
             </div>
         </form>
@@ -57,23 +37,17 @@
 </div>
 
 
-
-
-<div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding: 0px; border: 0px;">
-    <div id="deleteBtn" style="border-radius: 0.5rem; height: 10px;"></div>
-    <div id="updateBtn" style="border-radius: 0.5rem; height: 10px;"></div>
-</div>
 <hr class="h-divider" style="margin-top: 50px;">
 <form>
-    <div class="form-group" style="margin: 0 20px">
+    <div  style="margin: 0 auto; width:60%;">
         <div class="row">
-            <h4>comment</h4>
+            <h4>댓글 작성하기</h4>
         </div>
         <div class="row">
             <textarea class="form-group col-11" rows="2" id="comment" placeholder="내용을 입력해주세요"
                       style="width:100%;"></textarea>
             <button type="button" class="btn btn-outline-dark col-1" id="btn"
-                    style="border-color: #00000030; float: right; font-size: 15px; height: 70px">
+                    style="border-color: #00000030; float: right; font-size: 15px; height: 50px">
                 등록
             </button>
         </div>
@@ -81,65 +55,68 @@
 </form>
 
 
-<form style="margin-top: 60px; padding-left:20px">
+<form style="margin: 0 auto; width:60%;">
     <div>
             <div id="commentList">
         </div>
     </div>
 </form>
 </div>
-
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/locale/ko.min.js"></script>
 <script>
     let curURL = window.location.href;
     let urlArr = curURL.split("/");
-    let idx = urlArr[urlArr.length - 1];
+    let me = '[[${user}]]'; // 나의 계정
+    let members= [];
+    let place = '[[${team.place}]]'
+    let teamName = '[[${teamName}]]';
+    let userList = '[[${userIDs}]]'
+    let date = '[[${date}]]';
+    let tid='[[${tID}]]'
+
+    userList = userList.replace('[','')
+    userList = userList.replace(']','')
+    let aa = userList.split(',')
+    if(aa!=''){
+        aa.forEach(function (mem){
+            mem = mem.trim()
+            plusMem(mem);
+        })
+    }
+
+    document.getElementById("meetingName").innerHTML = teamName;
+    document.getElementById("meetingPlace").innerHTML = place;
+    $('#meetingDate').html(moment(date).format('YYYY년 MMMM Do, a hh:mm:ss'));
+
+    function plusMem (sendData){
+        let div = document.querySelector('#pu');
+        let group = document.createElement('div');
+
+        let userdiv = document.createElement('div');
+        userdiv.setAttribute('class','col-sm-10');
+        userdiv.setAttribute('style','padding:0px 0px 0px 15px');
+        let usertxt = document.createElement('input');
+        usertxt.setAttribute('type', 'text');
+        usertxt.setAttribute('size','25');
+        usertxt.setAttribute('name', 'users');
+        usertxt.setAttribute('id', 'users');
+        usertxt.setAttribute('class', 'form-control');
+        usertxt.setAttribute('value', sendData);
+        usertxt.setAttribute('readonly',true);
+        userdiv.append(usertxt);
+
+        group.append(userdiv);
+
+        div.append(group);
+    }
 
     $(document).ready(function () {
-        // findContent();
         findComment();
-        // deleteContent();
-
         $("#btn").on('click', function () {
             saveComment();
         })
     });
-
-    // function deleteContent() {
-    //     $.ajax({
-    //         url: "/deleteContent",
-    //         type: "GET",
-    //         success: function (data) {
-    //             if (data == true) {
-    //                 //삭제 버튼 생성
-    //                 let deletebtn = document.getElementById("deleteBtn");
-    //                 let del = document.createElement('button');
-    //                 del.setAttribute('class', 'btn btn-outline-dark')
-    //                 del.setAttribute('id', 'delbtn')
-    //                 del.setAttribute('style', 'border-color: #00000030; font-size: 15px;')
-    //                 del.innerHTML = "게시물 삭제";
-    //                 deletebtn.appendChild(del);
-    //
-    //                 del.addEventListener("click", () => {
-    //                     let ans = confirm("게시글을 삭제하시겠습니까?")
-    //                     if (ans) {
-    //                         $.ajax({
-    //                             url: "/deleteBoard",
-    //                             type: "GET",
-    //                             success: function (data) {
-    //                                 alert("게시글이 삭제되었습니다.")
-    //                                 window.location.href = "/boardSearch";
-    //
-    //                             }, error: function () {
-    //                             }
-    //                         });
-    //                     }
-    //                 });
-    //             }
-    //         }, error: function () {
-    //             alert("error");
-    //         }
-    //     });
-    // }
 
     function saveComment() {
         if ($('#comment').val() == "") {
@@ -181,8 +158,9 @@
                     // 수정버튼 생성
                     let updateComment = document.createElement('button');
                     updateComment.setAttribute('type', 'button');
-                    updateComment.setAttribute('class', 'btn btn-outline-dark');
-                    updateComment.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px')
+                    updateComment.setAttribute('class', 'btn btn-outline-dark col-1');
+                    updateComment.setAttribute('id', 'btn');
+                    updateComment.setAttribute('style', 'border-color: #00000030; float:right; font-size: 15px; height:30px; width:60px')
 
                     updateComment.innerHTML = "수정";
                     div1.appendChild(updateComment);
@@ -191,7 +169,7 @@
                     let delComment = document.createElement('button');
                     delComment.setAttribute('type', 'button');
                     delComment.setAttribute('class', 'btn btn-outline-dark');
-                    delComment.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px')
+                    delComment.setAttribute('style', 'border-color: #00000030; float:right; font-size: 15px; height:30px; width:60px')
 
                     delComment.innerHTML = "삭제";
                     div1.appendChild(delComment);
@@ -241,124 +219,6 @@
         }
     }
 
-    // $.ajax({
-    //     url: "/checkUser",
-    //     type: "POST",
-    //     success: function (data) {
-    //         console.log('성공')
-    //         console.log(data)
-    //         if (data == 0) {
-    //             $('#comment').attr('readonly', 'true')
-    //             $('#comment').attr('placeholder', '회원만 이용할 수 있습니다.')
-    //         }
-    //     }
-    // })
-
-    // function findContent() {
-    //     $.ajax({
-    //         url: "/detailContent", //게시물 상세조회
-    //         type: "GET",
-    //         data: {
-    //             idx: idx
-    //         },
-    //         success: function (data) {
-    //             console.log(data)
-    //             let bID = document.getElementById('bID');
-    //             bID.innerHTML = data.idx
-    //             let date = document.getElementById('date');
-    //             date.innerHTML = data.uploadTime
-    //             let name = document.getElementById('name');
-    //             name.innerHTML = data.name
-    //             let title = document.getElementById('title');
-    //             let title1 = document.createElement('div');
-    //             title1.setAttribute('id', 'titleID');
-    //             title1.innerHTML = data.title;
-    //             title.appendChild(title1);
-    //
-    //             let content = document.getElementById('content');
-    //             let content1 = document.createElement('div');
-    //             content1.setAttribute('id', 'contentID');
-    //             content1.innerHTML = data.content;
-    //             content.appendChild(content1);
-
-    //여기는 수정 버튼 로직인데 deleteContent에서도 같은 로직이라서 해당 url로 매핑한다.
-    // $.ajax({
-    //     url: "/deleteContent",
-    //     type: "GET",
-    //     success: function (flag) {
-    //         if (flag == true) {
-    //             //글 작성자만 수정 버튼 생겨
-    //             let updatebtn1 = document.getElementById("updateBtn");
-    //             let update1 = document.createElement('button');
-    //             update1.setAttribute('class', 'btn btn-outline-dark')
-    //             update1.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px')
-    //             update1.innerHTML = "게시물 수정";
-    //             updatebtn1.appendChild(update1);
-    //             update1.addEventListener("click", () => {
-    //                 $('#delbtn').hide();
-    //                 $('#titleID').empty();
-    //                 $('#contentID').empty();
-    //                 $('#updateBtn').empty();
-    //
-    //                 let title3 = document.getElementById('title');
-    //                 let editTitle = document.createElement('input')
-    //                 editTitle.setAttribute('type', 'text');
-    //                 editTitle.setAttribute('id', 'ti');
-    //                 editTitle.setAttribute('style', 'width: 800px; border:1px solid #00000020; padding-left:10px');
-    //                 editTitle.setAttribute('value', data.title);
-    //                 title3.appendChild(editTitle);
-    //                 let content3 = document.getElementById('content');
-    //                 let editContent = document.createElement('textarea')
-    //                 // editContent.setAttribute('type', 'textarea');
-    //                 editContent.setAttribute('rows', '13');
-    //                 editContent.setAttribute('id', 'co');
-    //                 editContent.setAttribute('style', 'width: 100%; border:1px solid #00000020; padding-left:10px');
-    //                 editContent.innerHTML = data.content;
-    //                 content3.appendChild(editContent);
-    //
-    //                 let updatebtn2 = document.getElementById("updateBtn");
-    //                 let update2 = document.createElement('button');
-    //                 update2.setAttribute('class', 'btn btn-outline-dark');
-    //                 update2.setAttribute('id', 'update2')
-    //                 update2.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px;margin-right:10px')
-    //                 update2.innerHTML = "수정 완료";
-    //                 updatebtn2.appendChild(update2);
-    //                 $("#update2").on('click', function () {
-    //                     saveUpdateContent();
-    //                 })
-
-    // function saveUpdateContent() { //수정 완료 후 게시글 보여주기
-    //     $.ajax({
-    //         url: "/updateContent",
-    //         type: "GET",
-    //         dataType: "json",
-    //         data: {
-    //             ti: $("#ti").val(),
-    //             co: $("#co").val(),
-    //         },
-    //         success: function (data) {
-    //             if (data == true) {
-    //                 window.location.replace('/detailContent/' + idx);
-    //             }
-    //         }, error: function () {
-    //             alert("게시글 업데이트 에러");
-    //             window.location.replace('/board');
-    //         }
-    //     });
-    // }
-    //
-    //                         });
-    //                     }
-    //                 }, error: function () {
-    //                     alert("error");
-    //                 }
-    //             });
-    //         }, error: function () {
-    //             alert("error");
-    //         }
-    //     });
-    // }
-
     function findComment() {
         $.ajax({
             url: "/findComment",
@@ -393,7 +253,7 @@
                     let updateComment = document.createElement('button');
                     updateComment.setAttribute('type', 'button');
                     updateComment.setAttribute('class', 'btn btn-outline-dark');
-                    updateComment.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px')
+                    updateComment.setAttribute('style', 'border-color: #00000030; float:right; font-size: 15px; height:30px; width:60px')
 
                     updateComment.innerHTML = "수정";
                     div1.appendChild(updateComment);
@@ -402,7 +262,7 @@
                     let delComment = document.createElement('button');
                     delComment.setAttribute('type', 'button');
                     delComment.setAttribute('class', 'btn btn-outline-dark');
-                    delComment.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px')
+                    delComment.setAttribute('style', 'border-color: #00000030; float:right; font-size: 15px; height:30px; width:60px')
 
                     delComment.innerHTML = "삭제";
                     div1.appendChild(delComment);
@@ -472,7 +332,7 @@
                             },
                             success: function (data) {
                                 if (data == true) {
-                                    // window.location.replace('/detailContent/' + idx);
+
                                 }
                             }
                         });

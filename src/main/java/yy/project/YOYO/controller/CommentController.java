@@ -33,17 +33,10 @@ import static yy.project.YOYO.controller.MeetingController.meetingvo;
 @RequiredArgsConstructor
 public class CommentController {
 
-
     private final CommentService commentService;
     private final UserService userService;
     private final TeamService teamService;
     private final UserTeamService userTeamService;
-
-//    @GetMapping("/viewMeeting/{tID}")
-//    public String viewMeeting(){
-//
-//        return "viewMeeting";
-//    }
 
     @GetMapping("/viewMeeting/{tID}")
     public String viewMeeting(@PathVariable("tID") Long tID,Model model,@Login User loginUser){
@@ -61,46 +54,11 @@ public class CommentController {
         }
         model.addAttribute("user", loginUser.getUserID());
         model.addAttribute("userIDs",userIDs);
+        model.addAttribute("teamName", team.getTeamName());
+        model.addAttribute("place", team.getPlace());
+        model.addAttribute("date", team.getDate());
         return "viewMeeting";
     }
-
-//    @ResponseBody
-//    @GetMapping("/detailMeeting")
-//    public List<MeetingVO> findMeeting(Model model, @Login User loginUser){
-//
-//        List<UserTeam> myTeams = userTeamService.findByUID(loginUser.getUID());
-//        model.addAttribute("user",loginUser);
-//
-//        MeetingVO vo = null;
-//        List<MeetingVO> voList = new ArrayList<>();
-//
-//        for(int i=0; i<myTeams.size(); i++){
-//            vo = new MeetingVO();
-//            Team team = myTeams.get(i).getTeam();
-//            if(team.getDate().isAfter(LocalDateTime.now())) {
-//                Long tid = team.getTID();
-//                vo.setPlace(team.getPlace());
-//                vo.setTeamName(team.getTeamName());
-//                vo.setTime(team.getDate());
-//                List<UserTeam> byTID = userTeamService.findByTID(tid);
-//                List<String> mem = new ArrayList<>();
-//                for (int j = 0; j < byTID.size(); j++) {
-//                    if (byTID.get(j).getUser().getUserImage() == null) {
-//                        mem.add("/adminImage/userIcon.png");
-//                    } else {
-//                        mem.add(byTID.get(j).getUser().getUserImage());
-//                    }
-//                }
-//                vo.setMembers(mem);
-//                vo.setTID(tid);
-//                voList.add(vo);
-//            }
-//        }
-//
-//        voList = voList.stream().sorted(Comparator.comparing(MeetingVO::getTime)).collect(Collectors.toList());
-//
-//        return voList;
-//    }
 
     @ResponseBody
     @GetMapping("/findComment")

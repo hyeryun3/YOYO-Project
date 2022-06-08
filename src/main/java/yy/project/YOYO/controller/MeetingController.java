@@ -59,7 +59,7 @@ public class MeetingController {
 
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 //        LocalDateTime dateTime = LocalDateTime.parse(teamForm.getMeetingDate());
-        LocalDateTime dateTime = LocalDateTime.parse(getDates,DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDateTime dateTime = LocalDateTime.parse(getDates,DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
         System.out.println(teamForm.getWritePlace());
         team.setDate(dateTime);
