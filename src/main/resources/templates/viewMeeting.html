@@ -23,9 +23,6 @@
                             <input type="text" name="users" id="users" class="form-control" size="50"
                                    placeholder="멤버 아이디를 입력해주세요."/>
                         </div>
-<!--                        <div class="col-sm-2">-->
-<!--                            <input type="button" value="추가" id="usersplus" class="btn btn-outline-light"/>-->
-<!--                        </div>-->
                     </div>
                     <div class="mb-3 row" id="pu"></div>
                 </div>
@@ -50,6 +47,9 @@
             </div>
             <div class="form-group row">
                 <div class="col-sm-12">
+                    <div style="margin-top:20px;">
+                        <button class="w-100 btn btn-outline-light" id="map">비회원 중간지점 찾아보기</button>
+                    </div>
                 </div>
             </div>
         </form>
@@ -97,6 +97,25 @@
 </style>
 
 <script>
+    let tid='[[${tID}]]'
+    $('document').ready(function(){
+
+    $('#map').click(function(evt){
+        evt.preventDefault()
+        console.log("tid",tid)
+        $.ajax({
+            url: "/locationMap",
+            type: "post",
+            data: {tid,tid},
+            success:function (data){
+                location.href="/map"
+            }
+        })
+
+    })
+    })
+
+
     let curURL = window.location.href;
     let urlArr = curURL.split("/");
     let idx = urlArr[urlArr.length - 1];
@@ -210,20 +229,6 @@
             });
         }
     }
-
-    // $.ajax({
-    //     url: "/checkUser",
-    //     type: "POST",
-    //     success: function (data) {
-    //         console.log('성공')
-    //         console.log(data)
-    //         if (data == 0) {
-    //             $('#comment').attr('readonly', 'true')
-    //             $('#comment').attr('placeholder', '회원만 이용할 수 있습니다.')
-    //         }
-    //     }
-    // })
-
 
     function findComment() {
         $.ajax({
