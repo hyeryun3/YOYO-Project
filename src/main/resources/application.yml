@@ -5,9 +5,9 @@ spring:
     active: stomp
 
   datasource:
-    url: jdbc:mysql://yoyo.cgenyk496gbx.us-east-1.rds.amazonaws.com:3306/yoyo?serverTimezone=UTC&characterEncoding=UTF-8
-    username: 
-    password: 
+    url: jdbc:mysql://yoyo.cwmjilclck4e.ap-northeast-2.rds.amazonaws.com:3306/yoyo?serverTimezone=UTC&characterEncoding=UTF-8
+    username: admin
+    password: private_merge
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   servlet:

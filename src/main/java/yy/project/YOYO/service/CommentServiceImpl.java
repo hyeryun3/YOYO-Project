@@ -8,6 +8,7 @@ import yy.project.YOYO.repository.UserRepository;
 import yy.project.YOYO.vo.CommentVO;
 
 import javax.transaction.Transactional;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +24,10 @@ public class CommentServiceImpl implements CommentService{
     public List<CommentVO> findComment(Long tID) {
         List<Comment> comments = commentRepository.findAll();
         List<CommentVO> cvos = new ArrayList<>();
+        System.out.println(tID);
         for(Comment c : comments){
             if(c.getTeam().getTID()==tID){
+                System.out.println(tID);
                 CommentVO commentVO = new CommentVO();
                 commentVO.setCommentContent(c.getCommentContent());
                 commentVO.setCmID(c.getCmID());

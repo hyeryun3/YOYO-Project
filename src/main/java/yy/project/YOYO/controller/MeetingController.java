@@ -2,10 +2,11 @@ package yy.project.YOYO.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import yy.project.YOYO.argumentresolver.Login;
 import yy.project.YOYO.domain.Team;
 import yy.project.YOYO.domain.User;
@@ -16,10 +17,11 @@ import yy.project.YOYO.service.UserTeamService;
 import yy.project.YOYO.form.TeamForm;
 import yy.project.YOYO.vo.MeetingVO;
 
-import javax.inject.Inject;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +35,6 @@ public class MeetingController {
     private final TeamService teamService;
     private final UserTeamService userTeamService;
 
-    static MeetingVO meetingvo = new MeetingVO();
 
     @GetMapping("/createMeeting")
     public String home(Model model, @Login User loginUser){
@@ -198,5 +199,7 @@ public class MeetingController {
         return "checkMeeting";
     }
 
-}
+    static MeetingVO meetingvo = new MeetingVO();
 
+
+}

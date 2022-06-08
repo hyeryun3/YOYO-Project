@@ -20,24 +20,23 @@
                 data.forEach(function (vo) {
                     let div = document.createElement('div');
                     div.setAttribute('style', 'border-radius:10px; margin:100px 0; max-width:100%; height:auto; background-color:#00000010; padding:30px;');
-                    let teamName = document.createElement('h2');
-                    teamName.innerHTML='[ '+ vo.teamName +' ]';
+                    let teamName = document.createElement('h2')
+                    teamName.innerHTML='<a href=/viewMeeting/{tID}>'+'[ '+ vo.teamName +' ]'+'</a>';
                     let editBtn = document.createElement('button')
                     editBtn.setAttribute('style','width:50%')
                     editBtn.innerHTML='수정하기';
-
                     let detailBtn = document.createElement('button')
                     detailBtn.setAttribute('style','width:50%')
                     detailBtn.innerHTML='자세히';
 
-                    detailBtn.addEventListener('click',function (){
-                        console.log('클릭')
-                        location.href="/viewMeeting/"+vo.tid;
-                    })
-
                     editBtn.addEventListener('click',function (){
                         console.log('클릭')
                         location.href="/meeting/"+vo.tid;
+                    })
+
+                    detailBtn.addEventListener('click',function (){
+                        console.log('클릭')
+                        location.href="/viewMeeting/"+vo.tid;
                     })
 
                     let place = document.createElement('h2')
