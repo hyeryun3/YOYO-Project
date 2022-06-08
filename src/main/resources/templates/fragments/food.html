@@ -146,8 +146,12 @@
     function onGeoOk(position) {
 
       const API_KEY = "34f03c607cbd5ac6878b951a96d17bef";
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
+      //const lat = position.coords.latitude;
+      //const lat = 28.6;
+      //const lon = position.coords.longitude;
+      //const lon = 77;
+      const lat = 37;
+      const lon = 127;
       const url = "https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lon+"&lang=kr&appid="+API_KEY+"&units=metric";
 
       fetch(url)
@@ -159,6 +163,8 @@
 
                 console.log(weatherinfo);
                 console.log(tempinfo);
+                console.log(lat);
+                console.log(lon);
 
                 //날씨, 온도 정보
 
@@ -184,7 +190,7 @@
 
             tag +="<li class='foodInfo'>";
             tag += "<div class='foodName'>" + vo.foodName + "</div>";
-            tag += "<div class='foodPhoto'><a href=''><img src='/static/image/food/" + vo.foodImg + "'></a></div>";
+            tag += "<div class='foodPhoto'><a href=''><img src='/adminImage/food/" + vo.foodImg + "'></a></div>";
 
             tag += "<div class='foodDesc'>" + vo.foodCategory + "</div></li>"
 
@@ -193,7 +199,7 @@
 
           tag +="<li class='foodInfo' data-toggle='modal' data-target='#modalFood' id='more'>";
           tag += "<div class='foodName moreName'>" +"." +" </div>";
-          tag += "<div class='foodPhoto morePhoto'><a id='moreFoods'><img src='/static/image/food/more.jpg'></a><div id='comment'>음식 더보기</div></div>";
+          tag += "<div class='foodPhoto morePhoto'><a id='moreFoods'><img src='/adminImage/food/more.jpg'></a><div id='comment'>음식 더보기</div></div>";
 
           tag += "<div class='foodDesc'></div></li>"
 
@@ -250,7 +256,7 @@
             $result.each(function(idx,vo){
               tag+= "<li class='eachFood'>";
               tag += "<span class='foodName'>" + vo.foodName+ "</span><br/>";
-              tag += "<img class='foodPicture img-fluid' src='/static/image/food/" + vo.foodImg + "'><br/>";
+              tag += "<img class='foodPicture img-fluid' src='/adminImage/food/" + vo.foodImg + "'><br/>";
               tag += "<span class='foodCate'>" + vo.foodCategory + "</span></li>";
 
               $("#food").html(tag);
