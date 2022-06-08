@@ -35,16 +35,14 @@
         </form>
     </div>
 </div>
-<div th:replace="fragments/food :: food"></div>
-<div th:replace="fragments/foodMap :: foodMap"></div>
+
 <div>
     <form>
         <div style="margin: 0 auto; width:60%;">
             <div class="row">
                 <h4>댓글 작성하기</h4>
                 <textarea id="comment" placeholder="내용을 입력해주세요" style="width:100%;"></textarea>
-                <button type="button" class="btn btn-outline-dark col-1" id="btn"
-                        style="border-color: #00000030; float: right; font-size: 15px; height: 50px">
+                <button type="button" class="btn btn-outline-dark col-1" id="btn" style="border-color: #00000030; float: right; font-size: 15px; height: 50px">
                     등록
                 </button>
             </div>
@@ -55,6 +53,10 @@
 <form style="margin: 0 auto; width:60%;">
     <div id="commentList"></div>
 </form>
+
+<div th:replace="fragments/food :: food"></div>
+<div th:replace="fragments/foodMap :: foodMap"></div>
+<div th:replace="fragments/footer :: footer"></div>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/locale/ko.min.js"></script>
@@ -67,7 +69,7 @@
     let teamName = '[[${teamName}]]';
     let userList = '[[${userIDs}]]'
     let date = '[[${date}]]';
-    let tid='[[${tID}]]';
+    let tid ='[[${tID}]]';
 
     userList = userList.replace('[','')
     userList = userList.replace(']','')
@@ -81,7 +83,7 @@
 
     document.getElementById("meetingName").innerHTML = teamName;
     document.getElementById("meetingPlace").innerHTML = place;
-    $('#meetingDate').html(moment(date).format('YYYY년 MMMM Do, a hh:mm:ss'));
+    $('#meetingDate').html(moment(date).format('YYYY년 M월 D일, a hh:mm'));
 
     function plusMem (sendData){
         let div = document.querySelector('#pu');
@@ -338,8 +340,6 @@
         });
     }
 </script>
-<div th:replace="fragments/footer :: footer"></div>
-
 
 </body>
 </html>
