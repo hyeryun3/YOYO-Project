@@ -35,33 +35,26 @@
         </form>
     </div>
 </div>
-
-
-<hr class="h-divider" style="margin-top: 50px;">
-<form>
-    <div  style="margin: 0 auto; width:60%;">
-        <div class="row">
-            <h4>댓글 작성하기</h4>
+<div th:replace="fragments/food :: food"></div>
+<div>
+    <form>
+        <div style="margin: 0 auto; width:60%;">
+            <div class="row">
+                <h4>댓글 작성하기</h4>
+                <textarea id="comment" placeholder="내용을 입력해주세요" style="width:100%;"></textarea>
+                <button type="button" class="btn btn-outline-dark col-1" id="btn"
+                        style="border-color: #00000030; float: right; font-size: 15px; height: 50px">
+                    등록
+                </button>
+            </div>
         </div>
-        <div class="row">
-            <textarea class="form-group col-11" rows="2" id="comment" placeholder="내용을 입력해주세요"
-                      style="width:100%;"></textarea>
-            <button type="button" class="btn btn-outline-dark col-1" id="btn"
-                    style="border-color: #00000030; float: right; font-size: 15px; height: 50px">
-                등록
-            </button>
-        </div>
-    </div>
-</form>
-
+    </form>
+</div>
 
 <form style="margin: 0 auto; width:60%;">
-    <div>
-            <div id="commentList">
-        </div>
-    </div>
+    <div id="commentList"></div>
 </form>
-</div>
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/locale/ko.min.js"></script>
 <script>
