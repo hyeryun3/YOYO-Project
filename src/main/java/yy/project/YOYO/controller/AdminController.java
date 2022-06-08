@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import yy.project.YOYO.domain.Food;
+import yy.project.YOYO.domain.Team;
 import yy.project.YOYO.domain.User;
 import yy.project.YOYO.service.FoodService;
+import yy.project.YOYO.service.TeamService;
 import yy.project.YOYO.service.UserService;
 import yy.project.YOYO.vo.FoodVO;
 import yy.project.YOYO.vo.UserVO;
@@ -38,6 +40,9 @@ public class AdminController {
 
     @Inject
     UserService userService;
+
+    @Inject
+    TeamService teamService;
 
 
     @GetMapping("/admin/adminFood")
@@ -220,6 +225,8 @@ public class AdminController {
 
         List<Food> food = foodList(type);
 
+        System.out.println("hello");
+
         return food;
     }
 
@@ -229,6 +236,24 @@ public class AdminController {
     @ResponseBody
     public Food searchFoodData(@RequestParam("searchFood") String searchFood){
         return foodService.findByFoodName(searchFood);
+    }
+
+    @PostMapping("/selectFoodOk")
+    @ResponseBody
+    public String selectFoodOk(@RequestParam("fID") Long fID, @RequestParam("tID") Long tID){
+
+        Team team = teamService.findBytID(tID);
+
+        Food food = foodService.findByfID(fID);
+        System.out.println(food.getFoodName());
+
+        System.out.println(team.getTeamName());
+
+        team.setFood(food);
+
+        teamService.save(team);
+
+        return "OK";
     }
 
 
@@ -463,6 +488,7 @@ public class AdminController {
 
         for(Food fvo: list) {
             System.out.println(fvo.getFoodName()+ "+");
+            System.out.println(fvo.getFID() + " ");
         }
 
 
@@ -477,12 +503,12 @@ public class AdminController {
             i++;
             cnt++;
         }
-		/*
 
-		for(FoodVO fvo: list) {
-			System.out.println(fvo.getFname());
+
+		for(Food fvo: list) {
+			System.out.println(fvo.getFID());
 		}
-		*/
+
 
         return list;
 
@@ -509,6 +535,9 @@ public class AdminController {
         }
         return foods;
     }
+
+
+
 
 
     //파일 삭제

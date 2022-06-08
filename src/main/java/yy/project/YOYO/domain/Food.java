@@ -38,10 +38,11 @@ public class Food {
     @NotNull
     private char priority;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@OneToMany(mappedBy = "team")
     @JoinColumn(name="tID")
-    private Team team;
+    private Team team;*/
+
+
 
     @Override
     public int hashCode() {
