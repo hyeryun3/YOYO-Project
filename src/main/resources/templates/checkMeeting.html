@@ -79,7 +79,8 @@
                     let div = document.createElement('div');
                     div.setAttribute('style', 'border-radius:10px; margin:100px 0; max-width:100%; height:auto; background-color:#00000010; padding:30px;');
                     let teamName = document.createElement('h2')
-                    teamName.innerHTML = '<a href=/viewMeeting/{tID}>' + '[ ' + vo.teamName + ' ]' + '</a>';
+                    // teamName.innerHTML = '<a href=/viewMeeting/{tID}>' + '[ ' + vo.teamName + ' ]' + '</a>';
+                    teamName.innerHTML = '[ ' + vo.teamName + ' ]';
                     let editBtn = document.createElement('button')
                     editBtn.setAttribute('style', 'width:50%')
                     editBtn.innerHTML = '수정하기';
