@@ -28,5 +28,15 @@ public interface FoodService {
     //검색한 음식 1개 가져오기
     public Food findByFoodName(String foodName);
 
+    List<Food> findByEvent(String event);
+
+    List<Food> findByWeather(String weather);
+
+    List<Food> findBySeason(String season);
+
+    List<Food> findByTemperature(String temperature);
+
+    List<Food> findByPriority(Character priority);
+
 
 }

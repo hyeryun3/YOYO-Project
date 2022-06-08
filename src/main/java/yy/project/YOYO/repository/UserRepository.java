@@ -1,5 +1,7 @@
 package yy.project.YOYO.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,7 +28,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUserNameAndEmail(String userName, String email);
 
+    Page<User> findAll(Pageable pageable);
 
+    Page<User> findByUserIDIgnoreCaseContainingOrAddressContainingOrUserNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(String searchWord1, String searchWord2, String searchWord3, String searchWord4, Pageable pageable);
 
-    List<User> findAll();
+    List<User> deleteByUserIDIn(List<String> userID);
 }

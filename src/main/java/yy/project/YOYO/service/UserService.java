@@ -1,8 +1,10 @@
 package yy.project.YOYO.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import yy.project.YOYO.argumentresolver.Login;
 import yy.project.YOYO.domain.User;
 import yy.project.YOYO.vo.UserVO;
 
@@ -35,5 +37,9 @@ public interface UserService{
 
     void mailToPW(String userName, String email, String tempPW);
 
-    List<User> findAll();
+    Page<User> findAll(Pageable pageable);
+
+    Page<User> findByUserIDIgnoreCaseContainingOrAddressContainingOrUserNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(String searchWord1, String searchWord2, String searchWord3, String searchWord4, Pageable pageable);
+
+    List<User> deleteByUserIDIn(List<String> userID);
 }
