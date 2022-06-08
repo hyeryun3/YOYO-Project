@@ -19,13 +19,13 @@ public class FindController {
 
     private final UserService userService;
 
-    @GetMapping(value="/findID")
+    @GetMapping(value="/findId")
     public String findId() {
-        return "findID";
+        return "findId";
     }
 
     @ResponseBody
-    @PostMapping(value="/findID")
+    @PostMapping(value="/findId")
     public String findIdRes(@RequestParam("name") String userName, @RequestParam("email") String email) {
 
         User user = userService.findByUserNameAndEmail(userName, email);
@@ -36,13 +36,13 @@ public class FindController {
         }
     }
 
-    @GetMapping(value="/findPW")
+    @GetMapping(value="/findPw")
     public String findPW() {
-        return "findPW";
+        return "findPw";
     }
 
     @ResponseBody
-    @PostMapping("/findPW")
+    @PostMapping("/findPw")
     public String findPw2(@RequestParam("name") String userName, @RequestParam("email") String email, @RequestParam("id") String id) {
 
         User user = userService.findByUserNameAndEmail(userName,email);
