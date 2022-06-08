@@ -28,6 +28,10 @@ public class Team {
     @NotNull
     private String place;
 
+    private String placeX;
+
+    private String placeY;
+
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<UserTeam> userTeams = new ArrayList<>();
 
