@@ -38,5 +38,7 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
 
     List<Food> findByPriority(Character priority);
 
+    Food findByfID(@Param("fID") Long fID);
+
 
 }

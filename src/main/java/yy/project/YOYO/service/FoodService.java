@@ -38,5 +38,7 @@ public interface FoodService {
 
     List<Food> findByPriority(Character priority);
 
+    Food findByfID(Long fID);
+
 
 }
