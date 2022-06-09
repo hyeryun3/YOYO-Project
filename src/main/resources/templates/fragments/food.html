@@ -132,6 +132,7 @@
       float: right;
       width: 10%;
     }
+
     #comment{
       position: absolute;
       top: 50%;
@@ -140,11 +141,12 @@
     }
 
   </style>
+
   <script>
     var weatherData = null;
     var params;
     var teamID = '[[${tID}]]';
-    teamID = 35;
+
     function onGeoOk(position) {
 
       const API_KEY = "34f03c607cbd5ac6878b951a96d17bef";
