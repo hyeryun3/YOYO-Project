@@ -11,21 +11,19 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="meetingName">모임 이름</label>
                 <div class="col-sm-8">
-                    <label class="col-sm-4 col-form-label" id="meetingName" style="text-align: center;"></label>
+                    <label class="col-sm-4 col-form-label" id="meetingName" ></label>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">모임 멤버</label>
                 <div class="col-sm-8" id="plususers">
-                    <div class="btn-group" role="group">
-                    </div>
                     <div class="mb-3 row" id="pu"></div>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="meetingPlace">모임 장소</label>
                 <div class="col-sm-8">
-                    <label class="col-sm-4 col-form-label" id="meetingPlace" style="text-align: center;"></label>
+                    <label class="col-form-label" id="meetingPlace" style="text-align: center;"></label>
                 </div>
             </div>
             <div class="form-group row">
@@ -37,7 +35,7 @@
             <div class="form-group row">
                 <div class="col-sm-12">
                     <div style="margin-top:20px;">
-                        <button class="w-100 btn btn-outline-light" id="map">비회원 중간지점 찾아보기</button>
+                        <button class="w-100 btn btn-outline-light" id="map1" style="background-color: #283C82">중간지점 찾아보기</button>
                     </div>
                 </div>
             </div>
@@ -75,7 +73,7 @@
     let tid='[[${tID}]]'
     $('document').ready(function(){
 
-        $('#map').click(function(evt){
+        $('#map1').click(function(evt){
             evt.preventDefault()
             console.log("tid",tid)
             $.ajax({
