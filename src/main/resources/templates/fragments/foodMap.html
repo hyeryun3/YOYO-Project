@@ -45,7 +45,7 @@
         }
     </style>
 
-    <button type="button" class="btn btn-sm " data-toggle="modal" data-target="#foodMap" id="showRest" onclick="relayoutNow()">
+    <button type="button" class="w-100 btn btn-outline-light" data-toggle="modal" data-target="#foodMap" id="showRest" onclick="relayoutNow(lat, lon)">
         음식점 보기
     </button>
 
@@ -80,6 +80,18 @@
         </div>
     </div>
 
+    <style>
+        #showRest {
+            background-color: #386ad1;
+            width: 500px;
+            color: #FFFFFF;
+            font-size: 25px;
+            height: 100px;
+            border-radius: 0.3rem;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
 
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=63f44951e06875b4db337f3ca80193fd&libraries=services"></script>
     <script>

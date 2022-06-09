@@ -4,26 +4,28 @@
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<h3 style="text-align: center; color: #386ad1; margin-top: 50px;">약속 상세보기</h3>
+<h3 style="text-align: center; color: #386ad1; margin-top: 100px;">View Meeting</h3>
 <div class="meetingContainer">
     <div class="col-7" style="margin: 0 auto; width:700px">
         <form id="EditForm" th:object="${team}">
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="meetingName">모임 이름</label>
                 <div class="col-sm-8">
-                    <label class="col-sm-4 col-form-label" id="meetingName" ></label>
+                    <label class="col-sm-4 col-form-label" id="meetingName" style="text-align: center;"></label>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">모임 멤버</label>
                 <div class="col-sm-8" id="plususers">
+                    <div class="btn-group" role="group">
+                    </div>
                     <div class="mb-3 row" id="pu"></div>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="meetingPlace">모임 장소</label>
                 <div class="col-sm-8">
-                    <label class="col-form-label" id="meetingPlace" style="text-align: center;"></label>
+                    <label class="col-sm-4 col-form-label" id="meetingPlace" style="text-align: center;"></label>
                 </div>
             </div>
             <div class="form-group row">
@@ -35,32 +37,34 @@
             <div class="form-group row">
                 <div class="col-sm-12">
                     <div style="margin-top:20px;">
-                        <button class="w-100 btn btn-outline-light" id="map1" style="background-color: #283C82">중간지점 찾아보기</button>
+                        <button class="w-100 btn btn-outline-light" id="map">비회원 중간지점 찾아보기</button>
                     </div>
                 </div>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <form>
-        <div style="margin: 0 auto; width:60%;">
-            <div class="row">
-                <h4>댓글 작성하기</h4>
-                <textarea id="comment" placeholder="내용을 입력해주세요" style="width:100%;"></textarea>
-                <button type="button" class="btn btn-outline-dark col-1" id="btn" style="border-color: #00000030; float: right; font-size: 15px; height: 50px">
-                    등록
-                </button>
+    <div>
+        <form>
+            <!--        <hr class="h-divider" style="margin-top: 40px; width: 60%; text-align: center;">-->
+            <div style="margin: 0 auto; width:60%;">
+                <div class="row" style="margin-top: 50px;">
+                    <h4>댓글 작성하기</h4>
+                </div>
+                <div class="row">
+                    <textarea id="comment" rows="2" placeholder="내용을 입력해주세요" style="width: 1000px; marign-top: 10px; margin-right: 10px; margin-bottom: 20px;"></textarea>
+                    <button type="button" class="btn btn-outline-dark col-1" id="btn"
+                            style="border-color: #00000030; font-size: 15px; height: 50px;">
+                        등록
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
+    </div>
+
+    <form style="margin: 0 auto; width:60%;">
+        <div id="commentList"></div>
     </form>
 </div>
-
-<form style="margin: 0 auto; width:60%;">
-    <div id="commentList"></div>
-</form>
-
 <div th:replace="fragments/food :: food"></div>
 <div th:replace="fragments/foodMap :: foodMap"></div>
 <div th:replace="fragments/footer :: footer"></div>
@@ -71,19 +75,19 @@
     let tid='[[${tID}]]'
     $('document').ready(function(){
 
-    $('#map1').click(function(evt){
-        evt.preventDefault()
-        console.log("tid",tid)
-        $.ajax({
-            url: "/locationMap",
-            type: "post",
-            data: {tid,tid},
-            success:function (data){
-                location.href="/map"
-            }
-        })
+        $('#map').click(function(evt){
+            evt.preventDefault()
+            console.log("tid",tid)
+            $.ajax({
+                url: "/locationMap",
+                type: "post",
+                data: {tid,tid},
+                success:function (data){
+                    location.href="/map"
+                }
+            })
 
-    })
+        })
     })
 
 
@@ -95,7 +99,6 @@
     let teamName = '[[${teamName}]]';
     let userList = '[[${userIDs}]]'
     let date = '[[${date}]]';
-    let tid ='[[${tID}]]';
 
     userList = userList.replace('[','')
     userList = userList.replace(']','')
@@ -109,7 +112,7 @@
 
     document.getElementById("meetingName").innerHTML = teamName;
     document.getElementById("meetingPlace").innerHTML = place;
-    $('#meetingDate').html(moment(date).format('YYYY년 M월 D일, a hh:mm'));
+    $('#meetingDate').html(moment(date).format('YYYY년 MMMM Do, a hh:mm'));
 
     function plusMem (sendData){
         let div = document.querySelector('#pu');
@@ -366,6 +369,5 @@
         });
     }
 </script>
-
 </body>
 </html>

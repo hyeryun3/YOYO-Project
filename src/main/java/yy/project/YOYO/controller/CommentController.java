@@ -57,12 +57,12 @@ public class CommentController {
                 userIDs.add(ut.get(i).getUser().getUserID());
             }
         }
+
         model.addAttribute("teamName",team.getTeamName());
         model.addAttribute("user", loginUser.getUserID());
         model.addAttribute("userIDs",userIDs);
-
         model.addAttribute("date", team.getDate());
-       model.addAttribute("tID",tID);
+        model.addAttribute("tID",tID);
 
         return "viewMeeting";
     }
