@@ -36,12 +36,15 @@
         });
 
         $.ajax({
-            url:"/getUserInfo",
-            type:"GET",
+            url:"/getRole",
+            type:"POST",
             success: function(data){
-                if(data.role =='admin'){
+                console.log(data)
+                if(data=='admin'){
                     $('#adminPageLogo').attr("href","/admin/adminFood")
                     $('#createMeeting').attr("hidden",true);
+                    $('#checkMeeting').attr("hidden",true);
+                    $('#joinUser').attr("hidden",true);
                     $('#login').attr("hidden",true);
                     $('#myPage').attr("hidden",true);
                 }
