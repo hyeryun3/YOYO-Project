@@ -58,15 +58,16 @@
 
         </ul>
     </div>-->
+    <div th:replace="fragments/food :: food"></div>
     <div th:replace="fragments/foodMap :: foodMap"></div>
     <!--<a href=""></a>-->
 
-    <!--<button type="button" class="btn btn-sm " data-toggle="modal" data-target="#foodMap" id="showRest" onclick="relayoutNow(lat, lon)">
+    <!--<button type="button" class="btn btn-sm " data-toggle="modal" data-target="#foodMap" id="showRest" onclick="relayout()">
         음식점 보기
     </button>
 
     &lt;!&ndash; Modal &ndash;&gt;
-    <div class="modal fade" id="foodMap" tabindex="-1" aria-hidden="true" onload=" relayoutNow(lat, lon)">
+    <div class="modal fade" id="foodMap" tabindex="-1" aria-hidden="true" onload=" relayout()">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -77,9 +78,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="map_wrap">
-                        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;" onload=" relayoutNow(lat, lon)"></div>
+                        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;" onload=" relayout()"></div>
 
-                        <div id="menu_wrap" class="bg_white" onload=" relayoutNow(lat, lon)">
+                        <div id="menu_wrap" class="bg_white" onload=" relayout()">
                             <div class="option">
                                 <div>
                                     <form onsubmit="searchPlaces(); return false;">
@@ -89,8 +90,8 @@
                                 </div>
                             </div>
                             <hr>
-                            <ul id="placesList" onload=" relayoutNow(lat, lon)"></ul>
-                            <div id="pagination" onload=" relayoutNow(lat, lon)"></div>
+                            <ul id="placesList" onload=" relayout()"></ul>
+                            <div id="pagination" onload=" relayout()"></div>
                         </div>
                     </div>
                 </div>
@@ -157,7 +158,7 @@
             ps.keywordSearch( "파스타", placesSearchCB);
         }
 
-        relayoutNow(lat, lon);
+        relayout();
 
 
     }
@@ -344,7 +345,7 @@
         }
     }
 
-   function relayoutNow(lat, lon) {
+   function relayout() {
 
         // 지도를 표시하는 div 크기를 변경한 이후 지도가 정상적으로 표출되지 않을 수도 있습니다
         // 크기를 변경한 이후에는 반드시  map.relayout 함수를 호출해야 합니다
@@ -356,7 +357,7 @@
 
     }
 
-    relayoutNow(lat, lon);
+    relayout();
 
     /*setTimeout(function() {
         map.relayout();
