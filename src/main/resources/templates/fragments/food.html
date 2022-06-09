@@ -41,8 +41,8 @@
       font-size:20px;
     }
     .foodPhoto{
-      width: 200px;
-      height: 200px;
+      width: 120px;
+      height: 120px;
       margin: 0 auto;
     }
     .foodPhoto:hover{
@@ -132,12 +132,21 @@
       float: right;
       width: 10%;
     }
+
+    #comment{
+      position: absolute;
+      top: 50%;
+      left: -10px;
+      width: 150px;
+    }
+
   </style>
 
   <script>
     var weatherData = null;
     var params;
     var teamID = '[[${tID}]]';
+
     function onGeoOk(position) {
 
       const API_KEY = "34f03c607cbd5ac6878b951a96d17bef";

@@ -556,5 +556,45 @@ public class AdminController {
         return "admin/foodRecommend";
     }
 
+    @PostMapping("/teamFoodName")
+    @ResponseBody
+    public String teamFoodName(@RequestParam("tID") Long tID){
+
+        Team team = teamService.findBytID(tID);
+
+        Food food = foodService.findByfID(team.getFood().getFID());
+
+        String foodName = food.getFoodName();
+
+        System.out.println(foodName);
+
+        System.out.println(team.getTeamName());
+
+        return foodName;
+    }
+
+    @PostMapping("/getLocationX")
+    @ResponseBody
+    public String getLocationX(@RequestParam("tID") Long tID){
+
+        Team t = teamService.findBytID(tID);
+
+        System.out.println(t.getPlaceX());
+
+        return t.getPlaceX();
+    }
+
+    @PostMapping("/getLocationY")
+    @ResponseBody
+    public String getLocationY(@RequestParam("tID") Long tID){
+
+        Team t = teamService.findBytID(tID);
+
+        System.out.println(t.getPlaceY());
+
+        return t.getPlaceY();
+    }
+
+
 
 }
