@@ -22,8 +22,6 @@
                          alt="YOYO!">
                 </div>
                 <div>
-<!--                    <h5 style="margin-bottom: 25px; margin-top: 20px;">로그인</h5>-->
-                    <!--        <div class="topMargin" style="width: 300px;display: inline-block">-->
                     <input type="text" id="id" class="form-control"
                            placeholder="ID" style="margin-top: 10px;">
                     <input type="password" id="pw" class="form-control"
@@ -140,13 +138,13 @@
                 }
 
                 //현재 data는 "admin" or "custom"
-                   if (data == 'admin') {
-                        window.location.href = "/admin/adminFood";
-                    }
-                     else
-                        {
-                            window.location.href = "/";
-                        }
+                if (data == 'admin') {
+                    window.location.href = "/admin/adminFood";
+                }
+                else
+                {
+                    window.location.href = "/";
+                }
             },
         });
     }
