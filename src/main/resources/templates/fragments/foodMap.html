@@ -45,7 +45,7 @@
         }
     </style>
 
-    <button type="button" class="w-100 btn btn-outline-light" data-toggle="modal" data-target="#foodMap" id="showRest" onclick="relayout()">
+    <button type="button" class="w-100 btn btn-outline-light" data-toggle="modal" data-target="#foodMap" id="showRest" >
         음식점 보기
     </button>
 
@@ -97,16 +97,18 @@
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=63f44951e06875b4db337f3ca80193fd&libraries=services"></script>
     <script>
 
-        let foodname;
+        var foodname;
         /*var teamID = 35;*/
-        //var teamID = [[${tID}]];
-        var teamID =  35;
+        var teamID = [[${tID}]];
+
         let placex;
         let placey;
-        let foodName;
+
 
         getLocationX();
         getLocationY();
+
+
 
 
         // 마커를 담을 배열입니다
@@ -114,7 +116,7 @@
 
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = {
-                center: new kakao.maps.LatLng(placey, placex), // 지도의 중심좌표
+                center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
                 level: 3 // 지도의 확대 레벨
             };
 
@@ -128,6 +130,9 @@
         var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
         // 키워드로 장소를 검색합니다
+        function relayout(){
+            map.relayout();
+        }
 
         //getTeamFoodName();
 
@@ -152,40 +157,22 @@
                 size : 10
             };
             // 마커와 인포윈도우를 표시합니다
-            var keyword = document.getElementById('keyword').value;
+
+            let keywords = document.getElementById("keyword").value;
+
+
             getTeamFoodName();
 
-            /*$.ajax({
-                url: '/teamFoodName',
-                data : 'tID=35',  //teamID 받기
-                method: 'post',
-
-                success: function(result){
-
-                    foodname = result;
-                    console.log("결과->>>>>" + foodname);
-                    keyword = result;
-                    console.log("키워드=-----> "+ result);
-
-                },
-                error: function(error){
-                    console.log(error.responseText);
-                }
-            });
-
-
-*/
-
-            keyword = foodName;
-            console.log("밖---->" + keyword);
+            //keyword = foodName;
+            //console.log("밖---->" + keyword);
 
 
             // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-            if(keyword==null || keyword==''){
+            if(keywords==null || keywords==''){
                 ps.keywordSearch(foodname, placesSearchCB, locPosition);    //팀의 음식
                 console.log(foodname + ">");
             }
-            if(keyword!=null && keyword!=''){
+            if(keywords!=null && keywords!=''){
                 ps.keywordSearch(foodname, placesSearchCB, {
 
                 });
@@ -219,6 +206,9 @@
                 return;
 
             }
+
+            map.setCenter(coords);
+            map.relayout();
         }
 
         // 검색 결과 목록과 마커를 표출하는 함수입니다
@@ -379,10 +369,12 @@
             }
         }
 
+/*
 
         function relayout(){
             map.relayout();
         }
+*/
 
 
 
@@ -394,7 +386,7 @@
 
                 success: function(result){
 
-                    foodName = result;
+                    foodname = result;
                     //alert(teamFoodName);
 
                 },
