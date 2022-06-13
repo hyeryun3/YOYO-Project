@@ -1,5 +1,6 @@
 package yy.project.YOYO.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,25 +31,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import javax.inject.Inject;
 
 @Controller
+@RequiredArgsConstructor
 public class AdminController {
 
-    @Inject
-    FoodService foodService;
+    private final FoodService foodService;
 
-    @Inject
-    UserService userService;
+    private final UserService userService;
 
-    @Inject
-    TeamService teamService;
+    private final TeamService teamService;
 
 
     @GetMapping("/admin/adminFood")
     public String adminFood(Model model){
-
-        List<Food> allFood = new ArrayList<>();
 
         model.addAttribute("allFood",foodService.findAll());
 
@@ -106,7 +102,6 @@ public class AdminController {
 
         //System.out.println(vo.getUserList().size());
 
-        List<String> list = new ArrayList<>();
 
         /*for(String user : vo.getUserList()){
             System.out.println(user + " ");
@@ -131,7 +126,7 @@ public class AdminController {
         if(cnt>0){
             String msg = "<script>alert('이미 있는 음식입니다.'); history.back();</script>";
 
-            entity = new ResponseEntity<>(msg, headers, HttpStatus.BAD_REQUEST);
+            entity = new ResponseEntity<String>(msg, headers, HttpStatus.BAD_REQUEST);
         }
         else{
             //사진 파일 업로드 위한 절대 주소
@@ -200,7 +195,7 @@ public class AdminController {
 
                 String msg = "<script>alert('음식이 추가가 완료되었습니다.');location.href='/admin/adminFood'; </script>";
 
-                entity = new ResponseEntity(msg, headers,HttpStatus.OK );
+                entity = new ResponseEntity<String>(msg, headers,HttpStatus.OK );
 
 
             }catch (Exception e){
@@ -209,7 +204,7 @@ public class AdminController {
                 deleteFile(path, vo.getFoodImg());
 
                 String msg = "<script>alert('음식이 추가를 실패하였습니다.'); history.back(); </script>";
-                entity = new ResponseEntity(msg, headers,HttpStatus.BAD_REQUEST );
+                entity = new ResponseEntity<String>(msg, headers,HttpStatus.BAD_REQUEST );
             }
 
         }
@@ -345,7 +340,7 @@ public class AdminController {
 
             String msg = "<script>alert('음식 수정이 완료되었습니다.');location.href='/admin/adminFood';</script>";
 
-            entity = new ResponseEntity(msg, headers, HttpStatus.OK);
+            entity = new ResponseEntity<String>(msg, headers, HttpStatus.OK);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -353,7 +348,7 @@ public class AdminController {
             deleteFile(path, vo.getFoodImg());
 
             String msg = "<script>alert('음식 수정을 실패하였습니다.');history.back();</script>";
-            entity = new ResponseEntity(msg, headers, HttpStatus.BAD_REQUEST);
+            entity = new ResponseEntity<String>(msg, headers, HttpStatus.BAD_REQUEST);
 
         }
         return entity;
