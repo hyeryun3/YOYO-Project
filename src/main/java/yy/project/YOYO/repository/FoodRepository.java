@@ -17,7 +17,7 @@ import java.util.List;
 @Transactional
 public interface FoodRepository extends JpaRepository<Food, Long> {
 
-    @Query(value="select count(*) from food f where f.food_name=:foodName", nativeQuery = true)
+    @Query(value="select count(f) from Food f where f.foodName=:foodName")
     int checkFood(@Param("foodName") String foodName);
 
     List<Food> findByFoodCategory(@Param("foodType") String foodType);
