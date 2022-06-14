@@ -37,6 +37,6 @@ out/
 .vscode/
 
 ### my ignore ###
-#src/main/resources/application.yml
+src/main/resources/application.yml
 YOYO-Project\
 YOYO-Project\
