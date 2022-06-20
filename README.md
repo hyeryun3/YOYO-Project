@@ -32,5 +32,7 @@
 <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=Figma&logoColor=white" align="left"/>
 <br>
 
+##### - 배포 주소 (8월 말까지 유효)
+http://yoyo-env.eba-xhnqgume.ap-northeast-2.elasticbeanstalk.com/
 
 
