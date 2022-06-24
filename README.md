@@ -32,7 +32,14 @@
 <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=Figma&logoColor=white" align="left"/>
 <br>
 
-##### - 배포 주소 (8월 말까지 유효)
+##### - 배포 주소 (8월 말까지 유효) _ 배포주소 보안 문제로 음식 추천 불가함.
 http://yoyo-env.eba-xhnqgume.ap-northeast-2.elasticbeanstalk.com/
 
+
+### 기능
+1. 약속 생성 및 수정
+2. 약속 조회
+3. 입력 위치에 따른 중간 지점 찾기
+4. 날씨에 따른 음식 추천
+5. 약속 장소 근처 해당 음식점 추천
 
