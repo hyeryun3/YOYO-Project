@@ -47,6 +47,6 @@
 날씨API를 이용해 날씨에 따른 음식 추천을 구현하였습니다.
 
 
-### :bulb: 배포 주소 (8월 말까지 유효) _ 배포주소 보안 문제로 음식 추천 불가함.
+### :bulb: 배포 주소 (7월 말까지 유효) _ 배포주소 보안 문제로 음식 추천 불가함.
 http://yoyo-env.eba-xhnqgume.ap-northeast-2.elasticbeanstalk.com/
 
